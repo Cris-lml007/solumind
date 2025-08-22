@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nit')->nullable();
             $table->string('phone')->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('person_id')->references('id')->on('people')->onDelete('cascade');
         });

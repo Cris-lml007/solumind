@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
         });
