@@ -324,7 +324,7 @@ return [
         ],
         [
             'text' => 'Proveedores',
-            'url' => 'admin/settings',
+            'route' => 'dashboard.supplier',
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
@@ -418,7 +418,7 @@ return [
 
     'plugins' => [
         'Datatables' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
