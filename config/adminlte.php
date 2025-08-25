@@ -318,8 +318,13 @@ return [
         ],
         ['header' => 'Inventario'],
         [
+            'text' => 'Ensamblaje',
+            'route' => 'dashboard.assembly',
+            'icon' => 'fas fa-fw fa-tools',
+        ],
+        [
             'text' => 'Productos',
-            'url' => 'admin/settings',
+            'route' => 'dashboard.product',
             'icon' => 'fas fa-fw fa-box',
         ],
         [

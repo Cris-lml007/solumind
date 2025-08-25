@@ -3,11 +3,11 @@
 @section('content')
     <div class="d-flex justify-content-between mb-3 p-0" style="align-items: center;">
         <div>
-            <h1 class="m-0">Lista de Proveedores</h1>
-            <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Proveedores</strong></h6>
+            <h1 class="m-0">Lista de Ensamblajes</h1>
+            <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Ensamblaje</strong></h6>
         </div>
         <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
-            Proveedor</button>
+            Ensamblaje</button>
     </div>
 
     <div class="card">
@@ -15,11 +15,10 @@
             <x-adminlte.tool.datatable id="table1" :heads="$heads" :config="$config">
                 @foreach ($data as $item)
                     <tr>
-                        <td class="simpleline"><strong>{{ $item->nit }}</strong></td>
-                        <td><strong>{{ $item->person->name }}</strong><br>{{ $item->organization }}</td>
-                        <td><strong>{{ $item->email }}</strong><br>{{ $item->phone }}</td>
-                        <!-- <td class="simpleline"><strong>Social</strong></td> -->
-                        <td class="simpleline"><a href="{{ route('dashboard.supplier.form', $item->nit) }}"
+                        <td><strong>{{ $item->cod }}</strong></td>
+                        <td><strong>{{ $item->name }}</strong><br></td>
+                        <td><strong>{{ $item->price + $item->extra }}</strong></td>
+                        <td><a href="{{ route('dashboard.assembly.form', $item->cod) }}"
                                 class="btn btn-primary"><i class="fa fa-ellipsis-v"></i></a>
                         </td>
                     </tr>
@@ -28,7 +27,7 @@
         </div>
     </div>
     <x-modal id="modal" title="Nuevo Proveedor" class="modal-lg">
-        <livewire:supplier-form></livewire:supplier-form>
+        <livewire:assembly-form></livewire:assembly-form>
     </x-modal>
 @endsection
 

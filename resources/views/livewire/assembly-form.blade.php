@@ -1,0 +1,164 @@
+<x-slot name="path_dir">
+    <strong>Dashboard > Ensamblaje ></strong>
+</x-slot>
+
+<div>
+    @if (empty($code))
+        <div class="modal-body">
+            <label for="code">Codigo</label>
+            <input type="text" name="code" class="form-control" wire:model="code">
+            <label for="name">Nombre</label>
+            <input type="text" name="name" class="form-control" wire:model="name">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" wire:click="create">Guardar</button>
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
+    @else
+        <div>
+            <div class="d-flex">
+                <div style="width: 50%;">
+                    <label for="code">Codigo</label>
+                    <input type="text" name="code" class="form-control mb-3"
+                        placeholder="Ingrese codigo del producto" wire:model="code">
+                </div>
+                <div style="width: 50%; margin-left: 10px;">
+                    <label for="category">Nombre</label>
+                    <input type="text" name="name" class="form-control mb-3"
+                        placeholder="Ingrese nombre del ensamblaje" wire:model="name">
+                </div>
+            </div>
+            <div>
+                <label for="description">Descripción</label>
+                <textarea class="form-control mb-3" name="description" rows="3" placeholder="Ingrese descripción del producto"
+                    wire:model="description"></textarea>
+            </div>
+            <h6><strong>Imagen del Producto</strong></h6>
+            <div class="d-flex">
+                <div style="width: 100%;">
+                    <input type="file" name="image1" class="form-control mb-3" wire:model="img">
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+                <h5 class="align-self-center m-0 p-0"><strong>Lista de Materiales</strong></h5>
+                <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"><i
+                        class="fa fa-plus"></i> Añadir Producto</button>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <th>Id</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
+                </thead>
+                <tbody>
+                    @foreach ($products as $iter)
+                        <tr>
+                            <td>{{ $iter['id'] }}</td>
+                            <td>{{ $iter['name'] }}</td>
+                            <td>{{ $iter['quantity'] }}</td>
+                            <td>{{ $iter['price'] }}</td>
+                            <td>{{ (int) $iter['quantity'] * (int) $iter['price'] }}</td>
+                            <td>
+                                <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"
+                                    wire:click="update({{ $iter['id'] }})"><i class="fa fa-pen"></i></button>
+                                <button wire:click="delete({{ $iter['id'] }})" class="btn btn-danger"><i
+                                        class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="3"></th>
+                        <th>Total</th>
+                        <th colspan="2">{{ $price }} Bs</th>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="d-flex">
+                <div class="w-50">
+                    <label for="price">Imprevistos (Bs)</label>
+                    <input type="number" name="price" class="form-control mb-3" placeholder="Ingrese imprevistos"
+                        wire:model.lazy="extra">
+                </div>
+                <div class="w-50">
+                    <label for="price">Precio (Bs)</label>
+                    <input type="number" name="price" class="form-control mb-3" placeholder="Ingrese precio"
+                        value="{{ $price + (empty($extra) ? 0 : $extra) }}" disabled>
+                </div>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-primary me-1" wire:click="save">Guardar</button>
+                <button class="btn btn-danger" wire:click="remove">Eliminar</button>
+            </div>
+
+
+            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+                wire:ignore.self>
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir Producto</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <label for="search">Buscar</label>
+                            <input type="text" wire:model.lazy="search" class="form-control mb-3">
+                            <div class="d-flex">
+                                <input type="number" id="ipd" class="d-none" wire:model="ipd">
+                                <div class="w-50 me-1">
+                                    <label for="n">Producto</label>
+                                    <select id="n" class="form-select mb-3" wire:model.lazy="na">
+                                        <option>Seleccione Producto</option>
+                                        @foreach ($list as $item)
+                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <label for="q">Cantidad</label>
+                                    <input type="number" id="q" class="form-control mb-3"
+                                        wire:model.lazy="q">
+                                </div>
+                                <div class="w-50">
+                                    <label for="supplier">Proveedor</label>
+                                    <input type="text" disabled class="form-control mb-3" wire:model="s" disabled>
+                                    <label for="p">Precio (Bs)</label>
+                                    <input type="number" id="p" class="form-control mb-3"
+                                        wire:model.lazy="p" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="btn-add">Añadir</button>
+                            <button data-bs-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+</div>
+
+@if (!empty($code))
+    @script
+        <script>
+            const p = document.getElementById('p');
+            const n = document.getElementById('n');
+            const q = document.getElementById('q');
+            const ipd = document.getElementById('ipd');
+            document.getElementById('btn-add').addEventListener('click', () => {
+                const i = n.selectedIndex;
+                console.log(ipd.value)
+                $wire.dispatch('add', [n.value, ipd.value, n.options[i].text, q.value, p.value]);
+                // p.value = null;
+                // n.value = null;
+                // q.value = null;
+            });
+        </script>
+    @endscript
+@endif
