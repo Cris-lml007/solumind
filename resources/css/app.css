@@ -1,0 +1,252 @@
+@import '../../public/vendor/adminlte/dist/css/adminlte.css';
+
+/* 1. VARIABLES DE COLOR */
+:root {
+    --color-fondo-principal: #101010;
+    --color-fondo-widgets: #000000;
+    --color-bordes: #404040;
+    --color-texto-principal: #e9ecef;
+    --color-texto-secundario: #a0a0a0;
+    --color-acento-dorado: #f7b924;
+    --color-acento-dorado-hover: #ffca2c;
+}
+
+/* 2. ESTILOS GENERALES Y LAYOUT */
+body, .wrapper, .content-wrapper {
+    background-color: var(--color-fondo-principal);
+    color: var(--color-texto-principal);
+}
+
+/* 3. BARRA DE NAVEGACIÓN (HEADER) */
+.main-header.navbar {
+    background-color: var(--color-fondo-widgets);
+    border-bottom: 1px solid var(--color-bordes);
+}
+.main-header .nav-link {
+    color: var(--color-texto-principal);
+}
+
+/* 4. BARRA LATERAL (SIDEBAR) */
+.main-sidebar {
+    background-color: var(--color-fondo-widgets);
+}
+.brand-link {
+    background-color: var(--color-fondo-widgets) !important; 
+    border-bottom: 1px solid var(--color-bordes);
+}
+.brand-link .brand-text {
+    color: var(--color-acento-dorado) !important;
+    font-weight: bold;
+}
+.nav-header {
+    color: var(--color-acento-dorado) !important;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.nav-sidebar .nav-link {
+    color: var(--color-texto-principal) !important;
+}
+.nav-sidebar .nav-link:hover {
+    background-color: var(--color-bordes);
+}
+.nav-sidebar .nav-link:hover i.nav-icon {
+    color: var(--color-acento-dorado) !important;
+}
+.nav-sidebar .nav-item > .nav-link.active,
+.nav-sidebar .nav-item > .nav-link.active:focus {
+    background-color: var(--color-acento-dorado) !important;
+    color: #000000 !important; 
+    font-weight: bold;
+    box-shadow: none !important;
+}
+.nav-sidebar .nav-link.active i.nav-icon {
+    color: #000000 !important;
+}
+
+/* 5. TARJETAS Y WIDGETS (CARDS) */
+/* FONDO DE LA TARJETA */
+.card {
+    background-color: var(--color-fondo-widgets);
+    border: 1px solid var(--color-bordes);
+    box-shadow: none;
+}
+.card-header {
+    border-bottom: 1px solid var(--color-bordes);
+}
+h1, h2, h3, h4, h5, h6 {
+    color: var(--color-texto-principal);
+}
+.content-header h1 {
+    color: var(--color-acento-dorado);
+    font-weight: bold;
+}
+
+
+/* 6. BOTONES Y ENLACES */
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus,
+.btn-warning {
+    background-color: var(--color-acento-dorado) !important;
+    border-color: var(--color-acento-dorado) !important;
+    color: #1f1f1f !important;
+    font-weight: bold;
+    box-shadow: none !important;
+}
+
+.btn-primary:hover,
+.btn-warning:hover {
+    background-color: var(--color-acento-dorado-hover) !important;
+    border-color: var(--color-acento-dorado-hover) !important;
+}
+
+a {
+    color: var(--color-acento-dorado);
+}
+a:hover {
+    color: var(--color-acento-dorado-hover);
+}
+
+
+/* 7. ICONOS SUPERIORES */
+.main-header .nav-link[data-widget="pushmenu"] i,
+.main-header .nav-link[data-widget="fullscreen"] i {
+    color: var(--color-acento-dorado);
+}
+.main-header .nav-link[data-widget="pushmenu"]:hover i,
+.main-header .nav-link[data-widget="fullscreen"]:hover i {
+    color: var(--color-acento-dorado-hover);
+}
+
+div.dataTables_wrapper div.row {
+    background: transparent !important;
+    color: var(--color-texto-secundario) !important;
+}
+
+.dataTables_length label, .dataTables_filter label {
+    color: var(--color-texto-secundario) !important;
+    font-weight: normal;
+}
+
+.dataTables_length select, .dataTables_filter input {
+    background-color: var(--color-fondo-principal) !important;
+    color: var(--color-texto-principal) !important;
+    border: 1px solid var(--color-bordes) !important;
+}
+
+/* Cabecera de la tabla */
+table.dataTable thead th {
+    color: var(--color-texto-principal) !important;
+    border-bottom: 2px solid var(--color-bordes) !important;
+}
+
+/* Filas de la tabla */
+table.dataTable tbody tr {
+    background-color: transparent !important;
+    color: var(--color-texto-principal) !important;
+}
+table.dataTable.table-hover tbody tr:hover {
+    background-color: var(--color-fondo-principal) !important;
+}
+table.dataTable tbody td {
+    border-top: 1px solid var(--color-bordes) !important;
+}
+
+/* Paginación */
+.dataTables_paginate .page-item a.page-link {
+    background-color: var(--color-fondo-widgets) !important;
+    border: 1px solid var(--color-bordes) !important;
+    color: var(--color-texto-secundario) !important;
+}
+.dataTables_paginate .page-item.disabled a.page-link {
+    background-color: var(--color-fondo-widgets) !important;
+    color: #6c757d !important;
+}
+.dataTables_paginate .page-item a.page-link:hover {
+    background-color: var(--color-bordes) !important;
+}
+.dataTables_paginate .page-item.active a.page-link {
+    background-color: var(--color-acento-dorado) !important;
+    border-color: var(--color-acento-dorado) !important;
+    color: #000000 !important;
+}
+
+.dataTables_wrapper .btn-primary,
+.dataTables_wrapper .btn-info {
+    background-color: var(--color-acento-dorado) !important;
+    border-color: var(--color-acento-dorado) !important;
+    color: #000000 !important;
+}
+
+/* LOGIN */
+body.login-page,
+body.register-page {
+    background-color: var(--color-fondo-widgets) !important; 
+}
+
+.login-logo a,
+.register-logo a {
+    color: var(--color-acento-dorado) !important; 
+}
+
+.login-page .card,
+.register-page .card {
+    background-color: var(--color-fondo-principal);
+    border: 1px solid var(--color-bordes);
+}
+
+.login-card-body .card-header,
+.register-card-body .card-header {
+    border-color: var(--color-bordes);
+}
+
+.login-page .login-box-msg,
+.register-page .register-box-msg {
+    color: var(--color-texto-principal);
+}
+
+.login-page .input-group .form-control,
+.register-page .input-group .form-control {
+    background-color: var(--color-fondo-widgets);
+    border-color: var(--color-bordes);
+    color: var(--color-texto-principal);
+}
+
+.login-page .input-group .form-control:focus,
+.register-page .input-group .form-control:focus {
+    border-color: var(--color-acento-dorado); 
+    box-shadow: none;
+}
+
+.login-page .input-group .input-group-text,
+.register-page .input-group .input-group-text {
+    background-color: var(--color-fondo-widgets);
+    border-color: var(--color-bordes);
+    color: var(--color-texto-secundario);
+}
+
+.login-page .btn-primary,
+.register-page .btn-primary {
+    background-color: var(--color-acento-dorado) !important;
+    border-color: var(--color-acento-dorado) !important;
+    color: #1f1f1f !important;
+    font-weight: bold;
+}
+
+.login-page .btn-primary:hover,
+.register-page .btn-primary:hover {
+    background-color: var(--color-acento-dorado-hover) !important;
+    border-color: var(--color-acento-dorado-hover) !important;
+}
+
+.login-page p a,
+.register-page p a {
+    color: var(--color-acento-dorado-hover);
+}
+
+.login-page p a:hover,
+.register-page p a:hover {
+    color: var(--color-texto-principal);
+}
