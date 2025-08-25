@@ -87,6 +87,11 @@ class SupplierForm extends Component
         $this->redirect(route('dashboard.supplier'));
     }
 
+    public function remove(){
+        $this->supplier->delete();
+        $this->redirect(route('dashboard.supplier'));
+    }
+
     public function render()
     {
         return view('livewire.supplier-form');

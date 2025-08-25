@@ -53,7 +53,7 @@
         <hr class="w-100">
         <div class="d-flex justify-content-end my-3">
             <button class="btn btn-primary me-1" wire:click="save">Modificar</button>
-            <button class="btn btn-danger" wire:click="delete">Eliminar</button>
+            <button class="btn btn-danger" wire:click="remove">Eliminar</button>
         </div>
     @else
         <div class="modal-footer">
