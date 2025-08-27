@@ -12,6 +12,9 @@ use Livewire\Component;
 #[Title('Detalle Proveedor')]
 class SupplierForm extends Component
 {
+
+    public $listeners = ['remove' => 'remove'];
+
     #[Validate('required|integer|min_digits:6|max_digits:10')]
     public $ci = '';
     #[Validate('required|string')]

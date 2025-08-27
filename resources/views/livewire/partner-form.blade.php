@@ -70,7 +70,7 @@
         <hr class="w-100">
         <div class="d-flex justify-content-end my-3">
             <button class="btn btn-primary me-1" wire:click="save">Modificar</button>
-            <button class="btn btn-danger" wire:click="remove">Eliminar</button>
+            <button class="btn btn-danger" id="btn-remove">Eliminar</button>
         </div>
     @else
         <div class="modal-footer">
@@ -82,8 +82,19 @@
 
 @script
     <script>
-        $wire.on('alerta', () => {
-            alert("ad");
+        document.getElementById('btn-remove').addEventListener('click', () => {
+            Swal.fire({
+                title: 'Esta Seguro?...',
+                text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: "#F7B924",
+                cancelButtonColor: "red",
+                confirmButtonText: "Si, deseo borrar!",
+                cancelButtonText: "Cancelar"
+            }).then((result)=>{
+                if( result.isConfirmed ) $wire.dispatch('remove');
+            })
         });
     </script>
 @endscript

@@ -9,7 +9,7 @@ use Livewire\Component;
 
 class PartnerForm extends Component
 {
-    public $listeners = ['alert'];
+    public $listeners = ['remove' => 'remove'];
 
     #[Validate('required|integer|min_digits:6|max_digits:10')]
     public $ci;
@@ -68,6 +68,11 @@ class PartnerForm extends Component
         $this->partner->person_id = $this->person->id;
         $this->partner->save();
 
+        $this->redirect(route('dashboard.partner'));
+    }
+
+    public function remove(){
+        $this->partner->delete();
         $this->redirect(route('dashboard.partner'));
     }
 

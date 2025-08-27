@@ -16,6 +16,8 @@ class ProductForm extends Component
 {
     use WithFileUploads;
 
+    public $listeners = ['remove'=> 'remove'];
+
     public $code = 'nf-fa-stop';
 
     #[Validate('required')]
