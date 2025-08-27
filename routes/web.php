@@ -23,7 +23,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         Route::get('assembly','assembly')->name('dashboard.assembly');
         Route::get('partner','partner')->name('dashboard.partner');
     });
-    Route::get('supplier/{nit}',SupplierForm::class)->name('dashboard.supplier.form');
+    Route::get('supplier/{id}',SupplierForm::class)->name('dashboard.supplier.form');
     Route::get('product/{id}',ProductForm::class)->name('dashboard.product.form');
     Route::get('assembly/{code}',AssemblyForm::class)->name('dashboard.assembly.form');
     Route::get('partner/{id}',PartnerForm::class)->name('dashboard.partner.form');

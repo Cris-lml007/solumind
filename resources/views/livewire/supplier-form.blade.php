@@ -44,7 +44,7 @@
         <div class="d-flex">
             <div style="width: 50%;">
                 <label for="nit">NIT</label>
-                <input type="number" name="nit" class="form-control mb-1" placeholder="Ingrese NIT"
+                <input type="number" name="nit" class="form-control mb-1" placeholder="Ingrese NIT o CI"
                     wire:model="nit">
                 <div class="text-danger" style="height: 20px;">
                     @error('nit')

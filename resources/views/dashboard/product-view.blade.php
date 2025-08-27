@@ -17,9 +17,11 @@
                     <tr>
                         <td><strong>{{ $item->id }}</strong></td>
                         <td><strong>{{ $item->name }}</strong></td>
-                        <td><strong>{{ $item->supplier->organization }}</strong></td>
+                        <td><strong>{{ $item->supplier->organization == null ? $item->supplier->person->name : $item->supplier->organization }}</strong>
+                        </td>
                         <td><strong>{{ $item->price }}</strong></td>
-                        <td><a href="{{route('dashboard.product.form',$item->id)}}" class="btn btn-primary"><i class="fa fa-ellipsis-v"></i></a>
+                        <td><a href="{{ route('dashboard.product.form', $item->id) }}" class="btn btn-primary"><i
+                                    class="fa fa-ellipsis-v"></i></a>
                         </td>
                     </tr>
                 @endforeach

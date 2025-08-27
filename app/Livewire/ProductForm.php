@@ -4,9 +4,11 @@ namespace App\Livewire;
 
 use App\Models\Product;
 use App\Models\Supplier;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 #[Title('Detalle de Producto')]
@@ -16,9 +18,12 @@ class ProductForm extends Component
 
     public $code = 'nf-fa-stop';
 
+    #[Validate('required')]
     public $name;
+    #[Validate('required')]
     public $price;
     public $description;
+    #[Validate('required|integer|exists:suppliers')]
     public $nit;
     public $category;
     public $img;
@@ -27,6 +32,10 @@ class ProductForm extends Component
     public Product $product;
     #[Locked]
     public Supplier $supplier;
+
+    public $searchable;
+    public $item_searchable;
+    public $list = [];
 
     public function mount($id = null){
         try{
@@ -43,11 +52,22 @@ class ProductForm extends Component
         }
     }
 
+    public function updatedItemSearchable(){
+        $this->nit = $this->item_searchable;
+    }
+
+    public function updatedSearchable(){
+        $this->list = Supplier::where('organization','like','%'.$this->searchable.'%')->orWhereHas('person',function(Builder $query){
+            $query->where('name','like','%'.$this->searchable.'%');
+        })->get();
+    }
+
     public function updatedNit(){
         $this->code = Supplier::where('nit', $this->nit)->exists() ? 'nf-fa-circle_check text-success' :'nf-oct-x_circle text-danger';
     }
 
     public function save(){
+        $this->validate();
         $this->product->name = $this->name;
         $this->product->price = $this->price;
         $this->product->description = $this->description;

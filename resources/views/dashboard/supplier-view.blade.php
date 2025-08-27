@@ -15,11 +15,12 @@
             <x-adminlte.tool.datatable id="table1" :heads="$heads" :config="$config">
                 @foreach ($data as $item)
                     <tr>
-                        <td class="simpleline"><strong>{{ $item->nit }}</strong></td>
+                        <td class="simpleline"><strong>{{ $item->nit == null ? $item->person->ci : $item->nit }}</strong></td>
                         <td><strong>{{ $item->person->name }}</strong><br>{{ $item->organization }}</td>
-                        <td><strong>{{ $item->email }}</strong><br>{{ $item->phone }}</td>
+                        <td><strong>{{ $item->email == null ? $item->person->email : $item->email }}</strong><br>{{ $item->phone == null ? $item->person->phone : $item->phone }}
+                        </td>
                         <!-- <td class="simpleline"><strong>Social</strong></td> -->
-                        <td class="simpleline"><a href="{{ route('dashboard.supplier.form', $item->nit) }}"
+                        <td class="simpleline"><a href="{{ route('dashboard.supplier.form', $item->id) }}"
                                 class="btn btn-primary"><i class="fa fa-ellipsis-v"></i></a>
                         </td>
                     </tr>

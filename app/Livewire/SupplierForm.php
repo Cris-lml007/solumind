@@ -20,7 +20,7 @@ class SupplierForm extends Component
     #[Validate('required|integer|min_digits:7|max_digits:8')]
     public $cellular;
 
-    #[Validate('integer')]
+    #[Validate('required|integer')]
     public $nit;
     public $business_name;
     public $business_email;
@@ -35,9 +35,9 @@ class SupplierForm extends Component
     #[Locked]
     public Person $person;
 
-    public function mount($nit = null){
+    public function mount($id = null){
         try {
-            $this->supplier = Supplier::where('nit', $nit)->firstOrFail();
+            $this->supplier = Supplier::where('id', $id)->firstOrFail();
             $this->person = Person::where('id', $this->supplier->person_id)->firstOrFail();
             $this->ci = $this->supplier->person->ci;
             $this->name = $this->supplier->person->name;
