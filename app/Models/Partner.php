@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Partner extends Model
 {
     use SoftDeletes;
+
+    public function person(){
+        return $this->belongsTo(Person::class);
+    }
 }

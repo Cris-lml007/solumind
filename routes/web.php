@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Livewire\AssemblyForm;
+use App\Livewire\PartnerForm;
 use App\Livewire\ProductForm;
 use App\Livewire\SupplierForm;
 use Illuminate\Support\Facades\Auth;
@@ -20,8 +21,10 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         Route::get('supplier','supplier')->name('dashboard.supplier');
         Route::get('product','product')->name('dashboard.product');
         Route::get('assembly','assembly')->name('dashboard.assembly');
+        Route::get('partner','partner')->name('dashboard.partner');
     });
     Route::get('supplier/{nit}',SupplierForm::class)->name('dashboard.supplier.form');
     Route::get('product/{id}',ProductForm::class)->name('dashboard.product.form');
     Route::get('assembly/{code}',AssemblyForm::class)->name('dashboard.assembly.form');
+    Route::get('partner/{id}',PartnerForm::class)->name('dashboard.partner.form');
 });

@@ -338,6 +338,11 @@ return [
             'icon' => 'fas fa-fw fa-users',
         ],
         [
+            'text' => 'Socios',
+            'route' => 'dashboard.partner',
+            'icon' => 'fas fa-fw fa-user-tie',
+        ],
+        [
             'text' => 'Entregas',
             'url' => 'admin/settings',
             'icon' => 'fas fa-fw fa-truck',

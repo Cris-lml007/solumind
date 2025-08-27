@@ -6,21 +6,29 @@ use App\Models\Person;
 use App\Models\Supplier;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 #[Title('Detalle Proveedor')]
 class SupplierForm extends Component
 {
+    #[Validate('required|integer|min_digits:6|max_digits:10')]
     public $ci = '';
+    #[Validate('required|string')]
     public $name;
     public $email;
+    #[Validate('required|integer|min_digits:7|max_digits:8')]
     public $cellular;
 
+    #[Validate('integer')]
     public $nit;
     public $business_name;
     public $business_email;
     public $business_cellular;
     public $category;
+
+    #[Locked]
+    public $is_update = false;
 
     #[Locked]
     public Supplier $supplier;
@@ -40,6 +48,8 @@ class SupplierForm extends Component
             $this->business_name = $this->supplier->organization;
             $this->business_email = $this->supplier->email;
             $this->business_cellular = $this->supplier->phone;
+
+            $this->is_update = true;
         } catch (\Exception $e) {
             $this->ci = '';
             $this->name = '';
@@ -51,6 +61,7 @@ class SupplierForm extends Component
             $this->business_email = '';
             $this->business_cellular = '';
             $this->category = '';
+            $this->is_update = false;
 
             $this->supplier = new Supplier();
             $this->person = new Person();
@@ -72,6 +83,7 @@ class SupplierForm extends Component
     }
 
     public function save(){
+        $this->validate();
         $this->person->ci = $this->ci;
         $this->person->name = $this->name;
         $this->person->email = $this->email;

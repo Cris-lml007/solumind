@@ -1,7 +1,7 @@
-<x-slot name="path_dir">Dashboard > Proveedores > {{ $nit }}</x-slot>
+<x-slot name="path_dir">Dashboard > Proveedores > {{ $ci }}</x-slot>
 
 <div>
-    <div class="{{$is_update ? 'container' : 'modal-body'}}">
+    <div class="modal-body">
         <h6><strong>Información Personal</strong></h6>
         <div class="d-flex">
             <div style="width: 50%;">
@@ -17,6 +17,14 @@
                     wire:model="email">
                 <div class="text-danger" style="height: 20px;">
                     @error('email')
+                        {{ $message }}
+                    @enderror
+                </div>
+                <label for="organization">Organización</label>
+                <input type="text" name="organization" class="form-control mb-1"
+                    placeholder="Ingrese nombre de la organización perteneciente" wire:model="organization">
+                <div class="text-danger" style="height: 20px;">
+                    @error('organization')
                         {{ $message }}
                     @enderror
                 </div>
@@ -38,49 +46,27 @@
                         {{ $message }}
                     @enderror
                 </div>
-            </div>
-        </div>
-        <h6><strong>Información de Empresa</strong></h6>
-        <div class="d-flex">
-            <div style="width: 50%;">
-                <label for="nit">NIT</label>
-                <input type="number" name="nit" class="form-control mb-1" placeholder="Ingrese NIT"
-                    wire:model="nit">
+                <label for="organization">Cargo</label>
+                <input type="text" name="post" class="form-control mb-1" placeholder="Ingrese cargo que ocupa"
+                    wire:model="post">
                 <div class="text-danger" style="height: 20px;">
-                    @error('nit')
-                        {{ $message }}
-                    @enderror
-                </div>
-                <label for="email-corporation">Correo</label>
-                <input type="email" name="email-corporation" class="form-control mb-1" placeholder="Ingrese correo"
-                    wire:model="business_email">
-                <div class="text-danger" style="height: 20px;">
-                    @error('business_email')
-                        {{ $message }}
-                    @enderror
-                </div>
-            </div>
-            <div style="width: 50%; margin-left: 10px;">
-                <label for="organization">Organización</label>
-                <input type="text" name="nit" class="form-control mb-1"
-                    placeholder="Ingrese numbre de organización" wire:model="business_name">
-                <div class="text-danger" style="height: 20px;">
-                    @error('business_name')
-                        {{ $message }}
-                    @enderror
-                </div>
-                <label for="cellular-corporation">Celular</label>
-                <input type="tel" name="cellular-corporation" class="form-control mb-1"
-                    placeholder="Ingrese número de celular" wire:model="business_cellular">
-                <div class="text-danger" style="height: 20px;">
-                    @error('business_cellular')
+                    @error('post')
                         {{ $message }}
                     @enderror
                 </div>
             </div>
         </div>
     </div>
-    @if ($is_update)
+    @if (!empty($partner->id))
+        <h6><strong>Tabla de Inversión</strong></h6>
+        <div>
+            <x-adminlte.tool.datatable id="inversions" :heads="$heads_t" :config="$config_t">
+                @foreach ($data_t as $item)
+                    <tr>
+                    </tr>
+                @endforeach
+            </x-adminlte.tool.datatable>
+        </div>
         <hr class="w-100">
         <div class="d-flex justify-content-end my-3">
             <button class="btn btn-primary me-1" wire:click="save">Modificar</button>
@@ -93,3 +79,11 @@
         </div>
     @endif
 </div>
+
+@script
+    <script>
+        $wire.on('alerta', () => {
+            alert("ad");
+        });
+    </script>
+@endscript

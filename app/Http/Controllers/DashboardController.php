@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -31,5 +32,12 @@ class DashboardController extends Controller
         $config = ['columns' => [null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = Item::all();
         return view('dashboard.assembly-view',compact(['heads','config','data']));
+    }
+
+    public function partner(){
+        $heads = ['CI','Nombre Completo','Contacto Principal','Acciones'];
+        $config = ['columns' => [null, null, null, ['orderable' => false, 'searchable' => false]]];
+        $data = Partner::all();
+        return view('dashboard.partner-view',compact(['heads','config','data']));
     }
 }
