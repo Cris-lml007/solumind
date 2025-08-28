@@ -23,14 +23,18 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         Route::get('product','product')->name('dashboard.product');
         Route::get('assembly','assembly')->name('dashboard.assembly');
         Route::get('partner','partner')->name('dashboard.partner');
+
+        Route::get('client','client')->name('dashboard.client');
     });
     Route::get('supplier/{id}',SupplierForm::class)->name('dashboard.supplier.form');
     Route::get('product/{id}',ProductForm::class)->name('dashboard.product.form');
     Route::get('assembly/{code}',AssemblyForm::class)->name('dashboard.assembly.form');
     Route::get('partner/{id}',PartnerForm::class)->name('dashboard.partner.form');
+    Route::get('client/{id}',ClientForm::class)->name('dashboard.client.form'); // Añadido '?' por si acaso
 
 
-    Route::get('client','client')->name('dashboard.client');
+
+
 
     /* Ejemplo para datos en la pestaña de comprobante xD */
 
@@ -79,5 +83,4 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         return view('livewire.voucher-cont-form');
     })->name('dashboard.contrato.form.design');
 
-    Route::get('client/{id?}',ClientForm::class)->name('dashboard.client.form'); // Añadido '?' por si acaso
 });

@@ -39,12 +39,13 @@ class DashboardController extends Controller
         $heads = ['CI','Nombre Completo','Contacto Principal','Acciones'];
         $config = ['columns' => [null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = Partner::all();
-	return view('dashboard.partner-view',compact(['heads','config','data']));
+        return view('dashboard.partner-view',compact(['heads','config','data']));
+    }
 
-     public function client(){
-        $heads = ['ID', 'Nombre Cliente', 'Correo Electrónico', 'Teléfono', 'CI', 'Acciones'];
+    public function client(){
+        $heads = ['CI', 'NIT', 'Nombre Cliente', 'Contacto Principal', 'Acciones'];
         $config = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
-        $data = Client::with('person')->get(); 
+        $data = Client::all();
         return view('dashboard.client-view', compact(['heads', 'config','data']));
     }
 }
