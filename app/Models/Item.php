@@ -12,4 +12,8 @@ class Item extends Model
     public function detail_items(){
         return $this->hasMany(DetailItem::class);
     }
+
+    public function detail_contracts(){
+        return $this->morphMany(DetailContract::class, 'detailable');
+    }
 }
