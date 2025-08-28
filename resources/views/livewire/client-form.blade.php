@@ -1,38 +1,54 @@
 <div>
     <div class="modal-body">
-        <form>
-            <h6><strong>Información Personal</strong></h6>
-            <div class="d-flex">
-                <div style="width: 50%;">
-                    <label for="ci">CI</label>
-                    <input type="number" name="ci" class="form-control mb-3" placeholder="Ingrese CI"
-                        wire:model.live="ci">
-                    <label for="email">Correo</label>
-                    <input type="email" name="email" class="form-control mb-3" placeholder="Ingrese correo"
-                        wire:model="email">
-                </div>
-                <div style="width: 50%; margin-left: 10px;">
-                    <label for="name">Nombre Completo</label>
-                    <input type="text" name="name" class="form-control mb-3" placeholder="Ingrese nombre completo"
-                        wire:model="name">
-                    <label for="phone">Celular</label>
-                    <input type="tel" name="phone" class="form-control mb-3"
-                        placeholder="Ingrese número de celular" wire:model="phone">
-                </div>
+        <h6><strong>Información Personal</strong></h6>
+        <div class="d-flex">
+            <div style="width: 50%;">
+                <label for="ci">CI</label>
+                <input type="number" name="ci" class="form-control mb-3" placeholder="Ingrese CI" wire:model.live="ci">
+                <label for="email">Correo</label>
+                <input type="email" name="email" class="form-control mb-3" placeholder="Ingrese correo"
+                    wire:model="email">
             </div>
-           
-        </form>
-    </div>
-    <div class="row">
+            <div style="width: 50%; margin-left: 10px;">
+                <label for="name">Nombre Completo</label>
+                <input type="text" name="name" class="form-control mb-3" placeholder="Ingrese nombre completo"
+                    wire:model="name">
+                <label for="phone">Celular</label>
+                <input type="tel" name="phone" class="form-control mb-3" placeholder="Ingrese número de celular"
+                    wire:model="phone">
+            </div>
+        </div>
         <h5 class="col-12">Información de Empresa (Opcional)</h5>
-        <div class="form-group col-md-12">
-            <input wire:model.defer="organization" type="text" class="form-control" placeholder="Ingrese nombre de organización">
-            @error('organization') <span class="text-danger">{{ $message }}</span> @enderror
+        <div class="d-flex">
+            <div class="w-50">
+                <label for="nit">NIT</label>
+                <input type="text" class="form-control" wire:model="nit" name="nit">
+            </div>
+            <div class="w-50 ms-1">
+                <label for="organization">Nombre de Organización</label>
+                <input wire:model.defer="organization" type="text" class="form-control"
+                    placeholder="Ingrese nombre de organización" name="organization">
+                @error('organization')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+        </div>
+        <div class="d-flex">
+            <div class="w-50">
+                <label for="email">Correo</label>
+                <input type="email" name="email" class="form-control mb-3" placeholder="Ingrese correo"
+                    wire:model="bussiness_email">
+            </div>
+            <div class="w-50 ms-1">
+                <label for="phone">Celular</label>
+                <input type="tel" name="phone" class="form-control mb-3" placeholder="Ingrese número de celular"
+                    wire:model="bussiness_phone">
+            </div>
         </div>
     </div>
-    
 
-    @if (!empty($person->ci))
+
+    @if (!empty($client->id))
         <hr class="w-100">
         <div class="d-flex justify-content-end my-3">
             <button class="btn btn-primary me-1" wire:click="save">Modificar</button>
@@ -45,3 +61,4 @@
         </div>
     @endif
 </div>
+
