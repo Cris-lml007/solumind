@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Supplier;
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -38,6 +39,12 @@ class DashboardController extends Controller
         $heads = ['CI','Nombre Completo','Contacto Principal','Acciones'];
         $config = ['columns' => [null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = Partner::all();
-        return view('dashboard.partner-view',compact(['heads','config','data']));
+	return view('dashboard.partner-view',compact(['heads','config','data']));
+
+     public function client(){
+        $heads = ['ID', 'Nombre Cliente', 'Correo Electrónico', 'Teléfono', 'CI', 'Acciones'];
+        $config = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
+        $data = Client::with('person')->get(); 
+        return view('dashboard.client-view', compact(['heads', 'config','data']));
     }
 }

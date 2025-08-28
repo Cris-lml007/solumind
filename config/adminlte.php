@@ -333,9 +333,9 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
-            'text' => 'Clientes',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-users',
+            'text'    => 'Clientes',
+            'route'   => 'dashboard.client',
+            'icon'    => 'fas fa-fw fa-users',
         ],
         [
             'text' => 'Socios',
@@ -355,8 +355,8 @@ return [
         ],
         [
             'text' => 'Comprobantes',
-            'icon' => 'fas fa-fw fa-file-invoice',
-            'url' => '#',
+            'route'  => 'dashboard.comprobante.design', 
+            'icon' => 'fas fa-fw fa-file-invoice-dollar',
         ],
         [
             'text' => 'Libro Diario',

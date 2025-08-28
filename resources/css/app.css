@@ -12,9 +12,26 @@
 }
 
 /* 2. ESTILOS GENERALES Y LAYOUT */
-body, .wrapper, .content-wrapper {
-    background-color: var(--color-fondo-principal);
+
+body, .wrapper {
     color: var(--color-texto-principal);
+}
+
+body {
+  
+    background-image: url('/vendor/adminlte/dist/img/ondasdoradas.jpg'); 
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+
+.wrapper {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+}
+.content-wrapper, .content-header {
+    background-color: transparent !important;
 }
 
 /* 3. BARRA DE NAVEGACIÓN (HEADER) */
@@ -249,4 +266,57 @@ body.register-page {
 .login-page p a:hover,
 .register-page p a:hover {
     color: var(--color-texto-principal);
+}
+
+/* MODALES*/
+
+.modal-content {
+    background-color: var(--color-fondo-principal) !important; /* Fondo gris oscuro */
+    border: 1px solid var(--color-bordes);
+    color: var(--color-texto-principal);
+}
+
+/* Cabecera */
+.modal-header {
+    border-bottom: 1px solid var(--color-bordes);
+}
+
+/* Pie de página (botones) */
+.modal-footer {
+    border-top: 1px solid var(--color-bordes);
+}
+
+.modal .form-control {
+    background-color: var(--color-fondo-widgets); 
+    border-color: var(--color-bordes);
+    color: var(--color-texto-principal);
+}
+
+.modal .form-control:focus {
+    border-color: var(--color-acento-dorado);
+    color: var(--color-texto-principal);
+}
+
+/* Botón X*/
+.modal-header .close, .modal-header .btn-close {
+    color: var(--color-texto-principal) !important;
+    text-shadow: none !important;
+    opacity: 0.75;
+}
+.modal-header .close:hover, .modal-header .btn-close:hover {
+    color: white !important;
+    opacity: 1;
+}
+
+.card-body .table > thead {
+    color: var(--color-texto-principal) !important;
+    border-bottom: 2px solid var(--color-bordes) !important;
+
+}
+
+
+.card-body .table > thead > tr > th {
+    color: #ffca2c !important; 
+    font-weight: bold;
+    border-bottom-width: 2px; 
 }

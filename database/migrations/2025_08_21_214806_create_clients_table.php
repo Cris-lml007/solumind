@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('person_id');
-            $table->string('organization')->nullable();
-            $table->string('nit')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('organization');
+            $table->string('email')->nullable();
+            $table->integer('phone')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
