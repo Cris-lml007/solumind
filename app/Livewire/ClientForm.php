@@ -6,15 +6,21 @@ use App\Models\Client;
 use App\Models\Person;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 #[Title('Detalle Cliente')]
 class ClientForm extends Component
 {
 
+    public $listeners = ['remove' => 'remove'];
+
+    #[Validate('required|integer|min_digits:6|max_digits:10')]
     public $ci = '';
+    #[Validate('required|string')]
     public $name;
     public $email;
+    #[Validate('required|integer|min_digits:7|:max_digits:8')]
     public $phone;
 
 
@@ -81,6 +87,7 @@ class ClientForm extends Component
 
     public function save()
     {
+        $this->validate();
         $this->person->ci = $this->ci;
         $this->person->name = $this->name;
         $this->person->email = $this->email;
