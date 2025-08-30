@@ -16,4 +16,8 @@ class Product extends Model
     public function detail_contracts(){
         return $this->morphMany(DetailContract::class, 'detailable');
     }
+
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 }

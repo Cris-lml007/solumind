@@ -2,19 +2,26 @@
 
 namespace App\Livewire;
 
+use App\Models\Category;
 use App\Models\DetailItem;
 use App\Models\Item;
 use App\Models\Product;
 use Livewire\Attributes\Locked;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class AssemblyForm extends Component
 {
+    #[Validate('required|unique:items,cod|unique:products,cod')]
     public $code;
+    #[Validate('required')]
     public $name;
     public $description;
     public $price = 0;
     public $extra = 0;
+    #[Validate('required')]
+    public $category;
+    public $alias;
 
     public $search;
     public $list;
@@ -41,10 +48,12 @@ class AssemblyForm extends Component
         try{
             $this->item = Item::where('cod',$code)->firstOrFail();
             $this->code = $code;
+            $this->alias = $this->category->alias;
             $this->name = $this->item->name;
             $this->description = $this->item->description;
             $this->price = $this->item->price;
             $this->extra = $this->item->extra;
+            $this->category = $this->item->category_id;
             foreach ($this->item->detail_items as $value) {
                 $this->products [] = [
                     'ipd' => $value->id,
@@ -69,6 +78,10 @@ class AssemblyForm extends Component
         $this->s = null;
         $this->na = null;
         //$this->dispatch('openModal');
+    }
+
+    public function updatedCategory(){
+        $this->alias = Category::find($this->category)->alias ?? '';
     }
 
     public function updatedNa(){
@@ -149,14 +162,17 @@ class AssemblyForm extends Component
     }
 
     public function create(){
+        $this->validate();
         $this->item = new Item();
         $this->item->cod = $this->code;
         $this->item->name = $this->name;
+        $this->item->category_id = $this->category;
         $this->item->save();
         $this->redirect(route('dashboard.assembly'));
     }
 
     public function save(){
+        $this->validate();
         $this->item->cod = $this->code;
         $this->item->name = $this->name;
         $this->item->price = $this->price;
@@ -186,6 +202,7 @@ class AssemblyForm extends Component
 
     public function render()
     {
-        return view('livewire.assembly-form');
+        $categories = Category::all();
+        return view('livewire.assembly-form',compact(['categories']));
     }
 }

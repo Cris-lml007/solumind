@@ -5,10 +5,42 @@
 <div>
     @if (empty($code))
         <div class="modal-body">
-            <label for="code">Codigo</label>
-            <input type="text" name="code" class="form-control" wire:model="code">
+            <div class="d-flex">
+                <div class="w-50">
+                    <label for="category">Categoria</label>
+                    <select class="form-select" wire:model.live="category">
+                        <option>Seleccione una categoria</option>
+                        @foreach ($categories as $item)
+                            <option value="{{ $item->id }}">{{ $item->name . ' (' . $item->alias . ')' }}</option>
+                        @endforeach
+                    </select>
+                    <div class="text-danger" style="height: 20px;">
+                        @error('category')
+                            {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+                <div class="w-50 ms-1">
+                    <label for="code">Codigo</label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="height: 38px;">{{ $alias ?? '' }}</span>
+                        <input type="text" name="code" class="form-control" wire:model="code">
+                    </div>
+                    <div class="text-danger" style="height: 20px;">
+                        @error('code')
+                            {{ $message }}
+                        @enderror
+                    </div>
+                </div>
+            </div>
+
             <label for="name">Nombre</label>
             <input type="text" name="name" class="form-control" wire:model="name">
+            <div class="text-danger" style="height: 20px;">
+                @error('name')
+                    {{ $message }}
+                @enderror
+            </div>
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" wire:click="create">Guardar</button>
@@ -97,8 +129,8 @@
             </div>
 
 
-            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
-                wire:ignore.self>
+            <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true" wire:ignore.self>
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">

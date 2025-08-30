@@ -52,12 +52,22 @@
                         {{ $message }}
                     @enderror
                 </div>
-                <label for="category">Categoria</label>
-                <select class="form-select mb-1" name="category" wire:model="category">
-                    <option>Seleccione una categoria</option>
-                </select>
+                <label for="category">Categoria/Codigo</label>
+                <div class="input-group">
+                    <select class="form-select mb-1" name="category" wire:model.live="category" style="width: 40%;">
+                        <option>Seleccione una categoria</option>
+                        @foreach ($categories as $item)
+                        <option value="{{ $item->id }}">{{ $item->name . ' ('. $item->alias .')' }}</option>
+                        @endforeach
+                    </select>
+                    <span class="input-group-text" style="height: 38px;">{{ $alias }}</span>
+                    <input type="text" class="form-control" wire:model="cod">
+                </div>
                 <div class="text-danger" style="height: 20px;">
                     @error('category')
+                        {{ $message .'; '}}
+                    @enderror
+                    @error('cod')
                         {{ $message }}
                     @enderror
                 </div>

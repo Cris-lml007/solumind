@@ -51,7 +51,7 @@
             </div>
             <div class="w-50 ms-1">
                 <label for="organization">Nombre de Organización</label>
-                <input wire:model.defer="organization mb-1" type="text" class="form-control"
+                <input wire:model.defer="organization" type="text" class="form-control mb-1"
                     placeholder="Ingrese nombre de organización" name="organization">
                 <div class="text-danger" style="height: 20px;">
                     @error('organization')

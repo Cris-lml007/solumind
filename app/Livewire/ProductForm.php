@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,8 +28,13 @@ class ProductForm extends Component
     public $description;
     #[Validate('required|integer|exists:suppliers')]
     public $nit;
+    #[Validate('required')]
     public $category;
     public $img;
+
+    #[Validate('required|unique:products,cod|unique:items,cod')]
+    public $cod;
+    public $alias;
 
     #[Locked]
     public Product $product;
@@ -48,7 +54,9 @@ class ProductForm extends Component
             $this->nit = $this->product->supplier->nit;
             $data = Storage::disk('imgProduct')->get($id);
             $this->img = 'data:image/png;base64,'.base64_encode($data);
-            // $this->category = $this->product->category;
+            $this->category = $this->product->category_id;
+            $this->alias = $this->product->category->alias;
+            $this->cod = $this->product->cod;
         }catch(\Exception $e){
             $this->product = new Product();
         }
@@ -68,12 +76,17 @@ class ProductForm extends Component
         $this->code = Supplier::where('nit', $this->nit)->exists() ? 'nf-fa-circle_check text-success' :'nf-oct-x_circle text-danger';
     }
 
+    public function updatedCategory(){
+        $this->alias = Category::find($this->category)->alias ?? '';
+    }
+
     public function save(){
         $this->validate();
+        $this->product->cod = $this->cod;
         $this->product->name = $this->name;
         $this->product->price = $this->price;
         $this->product->description = $this->description;
-        // $this->product->category = $this->category;
+        $this->product->category_id = $this->category;
         $this->product->supplier_id = Supplier::where('nit', $this->nit)->first()->id; // Assuming nit is the supplier_id
         if($this->product->save() && $this->img != null){
             $this->img->storeAs(path: '.', name: $this->product->id,options: 'imgProduct');
@@ -89,6 +102,7 @@ class ProductForm extends Component
 
     public function render()
     {
-        return view('livewire.product-form');
+        $categories = Category::all();
+        return view('livewire.product-form',compact(['categories']));
     }
 }
