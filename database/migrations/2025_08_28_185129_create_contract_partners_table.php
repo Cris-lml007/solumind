@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('partner_id');
             $table->decimal('amount');
             $table->string('type');
-            $table->string('currency');
             $table->decimal('interest');
 
             $table->string('description');

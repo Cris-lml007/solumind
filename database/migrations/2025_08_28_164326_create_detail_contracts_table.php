@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('detail_contracts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contract_id');
-            $table->unsignedBigInteger('detailable_id');
-            $table->string('detailable_type');
+            $table->unsignedBigInteger('detailable_id')->nullable();
+            $table->string('detailable_type')->nullable();
             $table->string('description');
             $table->integer('quantity');
             $table->decimal('purchase_price');

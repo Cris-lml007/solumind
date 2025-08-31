@@ -37,7 +37,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('assembly/{code}',AssemblyForm::class)->name('dashboard.assembly.form');
     Route::get('partner/{id}',PartnerForm::class)->name('dashboard.partner.form');
     Route::get('client/{id}',ClientForm::class)->name('dashboard.client.form'); // Añadido '?' por si acaso
-    Route::get('proof/{code}',ContractForm::class)->name('dashboard.proof.form');
+    Route::get('proof/{id}',ContractForm::class)->name('dashboard.proof.form');
     Route::get('settings/category/{id}',CategoryForm::class)->name('dashboard.settings.category');
 
 

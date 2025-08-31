@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Contract;
 use App\Models\Partner;
 use App\Models\Person;
 use Livewire\Attributes\Validate;
@@ -78,7 +79,7 @@ class PartnerForm extends Component
 
     public function render()
     {
-        $data_t = [];
+        $data_t = $this->partner->contracts;
         $config_t = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $heads_t = ['Contrato', 'Inversión (Bs)', 'Utilidad (%)', 'Retirado (Bs)', 'Saldo (Bs)','Acciones'];
         return view('livewire.partner-form',compact(['heads_t','config_t','data_t']));

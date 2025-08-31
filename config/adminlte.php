@@ -355,7 +355,7 @@ return [
         ],
         [
             'text' => 'Comprobantes',
-            'route'  => 'dashboard.comprobante.design', 
+            'route'  => 'dashboard.proof',
             'icon' => 'fas fa-fw fa-file-invoice-dollar',
         ],
         [
@@ -383,7 +383,7 @@ return [
         [
             'text' => 'Configuración',
             'icon' => 'fas fa-fw fa-cog',
-            'url' => '#',
+            'route' => 'dashboard.settings',
         ],
         [
             'text' => 'Soporte',

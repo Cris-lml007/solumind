@@ -13,6 +13,10 @@ class Contract extends Model
         return $this->hasMany(DetailContract::class);
     }
 
+    public function client(){
+        return $this->belongsTo(Client::class);
+    }
+
     public function partners(){
         return $this->belongsToMany(ContractPartner::class)->withPivot([
             'amount',
@@ -21,5 +25,9 @@ class Contract extends Model
             'interest',
             'description'
         ]);
+    }
+
+    public function inversions(){
+        return $this->hasMany(ContractPartner::class);
     }
 }

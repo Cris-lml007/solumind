@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Item;
 use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Client;
+use App\Models\Contract;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -47,5 +49,50 @@ class DashboardController extends Controller
         $config = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = Client::all();
         return view('dashboard.client-view', compact(['heads', 'config','data']));
+    }
+
+    public function proof(){
+        $config = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
+        $data = [
+            'comprobantes' => [
+                (object)['id' => 1,
+                'fecha' => '2025-08-27',
+                'tipo' => 'Ingreso',
+                'descripcion' => 'Venta de 10 unidades del producto X',
+                'monto' => 1250.50
+                ],
+                (object)['id' => 2,
+                'fecha' => '2025-08-26',
+                'tipo' => 'Egreso',
+                'descripcion' => 'Pago de factura de servicios de internet y luz',
+                'monto' => 450.00
+                ],
+            ],
+            'proformas' => Contract::all(),
+            'contratos' => [
+                (object)['id' => 'C-2025-01',
+                'nombre' => 'Contrato de Desarrollo Web',
+                'cliente' => 'Cliente Ejemplo B',
+                'fecha_inicio' => '2025-09-01',
+                'estado' => 'Activo'
+                ],
+            ]
+        ];
+
+        $heads = [
+            'comprobantes' => ['ID', 'Fecha', 'Tipo', 'Descripción', 'Monto (Bs)', 'Acciones'],
+            'proformas' => ['Codigo.', 'Cliente', 'Fecha Emisión', 'Estado', 'Acciones'],
+            'contratos' => ['Codigo.', 'Nombre Contrato', 'Cliente', 'Fecha Inicio', 'Estado', 'Acciones']
+        ];
+
+
+        return view('dashboard.voucher-view', compact('heads', 'config', 'data'));
+    }
+
+    public function settings(){
+        $data = [
+            'categories' => Category::all()
+        ];
+        return view('dashboard.settings',compact(['data']));
     }
 }
