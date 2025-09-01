@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('ci');
             $table->string('name');
-            $table->string('email')->unique();
+            $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->timestamps();
             $table->softDeletes();
