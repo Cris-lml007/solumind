@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('contract_id');
             $table->unsignedBigInteger('detailable_id')->nullable();
             $table->string('detailable_type')->nullable();
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->integer('quantity');
             $table->decimal('purchase_price');
             $table->decimal('sale_price');

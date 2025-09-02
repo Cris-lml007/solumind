@@ -15,7 +15,7 @@ class ClientForm extends Component
 
     public $listeners = ['remove' => 'remove'];
 
-    #[Validate('required|integer|min_digits:6|max_digits:10')]
+    #[Validate('required|integer|max_digits:10')]
     public $ci = '';
     #[Validate('required|string')]
     public $name;
