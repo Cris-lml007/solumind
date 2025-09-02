@@ -10,7 +10,7 @@ use App\Models\Item;
 use App\Models\Partner;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -19,6 +19,9 @@ use Livewire\Component;
 #[Title('Proforma')]
 class ContractForm extends Component
 {
+
+    public $listeners = ['saveInversion'=> 'saveInversion'];
+
 
     public $searchable;
     public $clients = [];
@@ -124,6 +127,16 @@ class ContractForm extends Component
     }
 
     public function saveInversion(){
+        Validator::make(
+            [
+                'partner_ci' => $this->partner_ci,
+                'partner_id' => $this->partner_id
+            ],
+            [
+                'partner_ci' => 'required|exists:people,ci'
+            ]
+        )->validate();
+
         if($this->contract_partner->id == null)
             $this->contract_partner = new ContractPartner();
         $this->contract_partner = new ContractPartner();
@@ -134,6 +147,18 @@ class ContractForm extends Component
         $this->contract_partner->contract_id = $this->contract->id;
         $this->contract_partner->partner_id = $this->partner->id;
         $this->contract_partner->save();
+        $this->reset('partner_ci',
+            'partner_type',
+            'partner_id',
+            'partner_interest',
+            'partner_amount',
+            'partner_description'
+        );
+        $this->js("$('#modal-partner').modal('hide')");
+    }
+
+    public function deleteInversion($id){
+        ContractPartner::find($id)->delete();
     }
 
     public function updatedSearchableProduct(){
@@ -212,12 +237,21 @@ class ContractForm extends Component
         $this->sale_price = $this->detail->sale_price;
         $this->quantity = $this->detail->quantity;
         $this->description_product = $this->detail->description;
-        $this->code_product = $this->detail->detailable->cod;
-        $this->name_product = $this->detail->detailable->name;
-        $this->product = $this->detail->detailable;
+        $this->code_product = $this->detail->detailable()->withTrashed()->first()->cod;
+        $this->name_product = $this->detail->detailable()->withTrashed()->first()->name;
+        $this->product = $this->detail->detailable()->withTrashed()->first();
     }
 
     public function add(){
+        Validator::make(
+            [
+                'code_product' => $this->code_product,
+                'purchase_price' => $this->purchase_price,
+                'sale_price' => $this->sale_price,
+                'quantity' => $this->quantity
+            ],
+            []
+        )->validate();
         if($this->detail->id == null){
             $this->detail = DetailContract::create([
                 'contract_id' => $this->contract->id,
@@ -246,6 +280,12 @@ class ContractForm extends Component
         }
         $this->detail->detailable()->associate($this->product);
         $this->detail->save();
+        $this->contract->refresh();
+        $this->list = $this->contract->detail_contract;
+    }
+
+    public function delete($id){
+        DetailContract::find($id)->delete();
         $this->contract->refresh();
         $this->list = $this->contract->detail_contract;
     }
