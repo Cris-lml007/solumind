@@ -1,9 +1,9 @@
 <x-slot name="path_dir">
-    <strong>Dashboard > Ensamblaje ></strong>
+    <strong>Dashboard > Ensamblaje > {{ $alias . $code }}</strong>
 </x-slot>
 
 <div>
-    @if (empty($code))
+    @if ($item->id == null)
         <div class="modal-body">
             <div class="d-flex">
                 <div class="w-50">
@@ -35,7 +35,7 @@
             </div>
 
             <label for="name">Nombre</label>
-            <input type="text" name="name" class="form-control" wire:model="name">
+            <input type="text" name="name" class="form-control" wire:model.live="name">
             <div class="text-danger" style="height: 20px;">
                 @error('name')
                     {{ $message }}
@@ -51,8 +51,11 @@
             <div class="d-flex">
                 <div style="width: 50%;">
                     <label for="code">Codigo</label>
-                    <input type="text" name="code" class="form-control mb-3"
-                        placeholder="Ingrese codigo del producto" wire:model="code">
+                    <div class="input-group">
+                        <span class="input-group-text" style="height: 38px;">{{ $alias }}</span>
+                        <input type="text" name="code" class="form-control mb-3"
+                            placeholder="Ingrese codigo del producto" wire:model="code">
+                    </div>
                 </div>
                 <div style="width: 50%; margin-left: 10px;">
                     <label for="category">Nombre</label>
@@ -125,7 +128,7 @@
             <hr>
             <div class="d-flex justify-content-end mb-3">
                 <button class="btn btn-primary me-1" wire:click="save">Guardar</button>
-                <button class="btn btn-danger" wire:click="remove">Eliminar</button>
+                <button class="btn btn-danger" id="btn-remove">Eliminar</button>
             </div>
 
 
@@ -190,6 +193,22 @@
                 // p.value = null;
                 // n.value = null;
                 // q.value = null;
+            });
+
+
+            document.getElementById('btn-remove').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Esta Seguro?...',
+                    text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#F7B924",
+                    cancelButtonColor: "red",
+                    confirmButtonText: "Si, deseo borrar!",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) $wire.dispatch('remove');
+                })
             });
         </script>
     @endscript

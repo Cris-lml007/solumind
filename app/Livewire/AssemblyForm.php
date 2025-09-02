@@ -41,14 +41,14 @@ class AssemblyForm extends Component
     #[Locked]
     public Item $item;
 
-    public $listeners = ['add' => 'add'];
+    public $listeners = ['add' => 'add','remove' => 'remove'];
 
     public function mount($code = null){
         $this->list = Product::all();
         try{
             $this->item = Item::where('cod',$code)->firstOrFail();
             $this->code = $code;
-            $this->alias = $this->category->alias;
+            $this->alias = $this->item->category->alias;
             $this->name = $this->item->name;
             $this->description = $this->item->description;
             $this->price = $this->item->price;
@@ -65,6 +65,15 @@ class AssemblyForm extends Component
             }
         }catch(\Exception $e){
             $this->item = new Item();
+        }
+    }
+
+    public function updatedName(){
+        $words = explode(' ', $this->name);
+        $this->code = "";
+        foreach ($words as $word) {
+            if(strlen($word) > 2)
+                $this->code = $this->code . substr($word,0,3);
         }
     }
 
@@ -197,6 +206,7 @@ class AssemblyForm extends Component
 
     public function remove(){
         $this->item->delete();
+        $this->redirect(route('dashboard.assembly'));
     }
 
 

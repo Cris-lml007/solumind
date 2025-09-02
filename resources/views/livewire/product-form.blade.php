@@ -8,7 +8,7 @@
             <div style="width: 50%;">
                 <label for="name">Nombre de Producto</label>
                 <input type="text" name="name" class="form-control mb-1" placeholder="Ingrese nombre del producto"
-                    wire:model="name">
+                    wire:model.live="name">
                 <div class="text-danger" style="height: 20px;">
                     @error('name')
                         {{ $message }}

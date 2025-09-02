@@ -80,6 +80,15 @@ class ProductForm extends Component
         $this->alias = Category::find($this->category)->alias ?? '';
     }
 
+    public function updatedName(){
+        $words = explode(' ', $this->name);
+        $this->cod = "";
+        foreach ($words as $word) {
+            if(strlen($word) > 2)
+                $this->cod = $this->cod . substr($word,0,3);
+        }
+    }
+
     public function save(){
         $this->validate();
         $this->product->cod = $this->cod;
