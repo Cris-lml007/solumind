@@ -81,6 +81,7 @@ class ContractForm extends Component
             $this->searchable_item = $this->contract->client_id;
             $this->description = $this->contract->description;
             $this->list = $this->contract->detail_contract;
+            // dd($this->list[0]->detailable()->withTrashed()->get());
             $this->detail = new DetailContract();
             $this->contract_partner = new ContractPartner();
         }catch(\Exception){

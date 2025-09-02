@@ -52,7 +52,7 @@
                 <x-adminlte.tool.datatable id="detail" :heads="$heads">
                     @foreach ($list ?? [] as $item)
                         <tr>
-                            <td>{{ $item->detailable->name }}</td>
+                            <td>{{ $item->detailable()->withTrashed()->first()->name }}</td>
                             <td>{{ $item->sale_price }}</td>
                             <td>{{ $item->quantity }}</td>
                             <td>{{ (float) $item->sale_price * (int) $item->quantity }}</td>

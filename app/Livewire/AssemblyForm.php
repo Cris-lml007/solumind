@@ -54,7 +54,7 @@ class AssemblyForm extends Component
             $this->price = $this->item->price;
             $this->extra = $this->item->extra;
             $this->category = $this->item->category_id;
-            foreach ($this->item->detail_items as $value) {
+            foreach ($this->item->detail_items()->withTrashed()->get() as $value) {
                 $this->products [] = [
                     'ipd' => $value->id,
                     'id' => $value->product_id,
