@@ -89,6 +89,11 @@ class DashboardController extends Controller
         return view('dashboard.voucher-view', compact('heads', 'config', 'data'));
     }
 
+    public function diaryBook(){
+        $heads = ['Fecha','Ingreso','Egreso','Descripción', 'Contrato', 'Cuenta'];
+        return view('dashboard.diary-book',compact(['heads']));
+    }
+
     public function settings(){
         $data = [
             'categories' => Category::all()

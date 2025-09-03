@@ -31,6 +31,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         Route::get('proof', 'proof')->name('dashboard.proof');
 
         Route::get('settings','settings')->name('dashboard.settings');
+        Route::get('diary-book','diaryBook')->name('dashboard.diary_book');
     });
     Route::get('supplier/{id}',SupplierForm::class)->name('dashboard.supplier.form');
     Route::get('product/{id}',ProductForm::class)->name('dashboard.product.form');
