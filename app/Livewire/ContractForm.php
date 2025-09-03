@@ -40,6 +40,8 @@ class ContractForm extends Component
     public $sale_price;
     public $quantity;
 
+    public $subtotal = 0;
+
     public $searchable_product;
     public $searchable_product_item;
 
@@ -90,6 +92,10 @@ class ContractForm extends Component
         }catch(\Exception){
             $this->contract = new Contract();
         }
+    }
+
+    public function updated(){
+        $this->subtotal = (((float) $this->sale_price ?? 0) * (float) ($this->bill ?? 0)) / 100 + (((float) $this->sale_price ?? 0) * (float) ($this->interest ?? 0)) / 100 + (((float) $this->sale_price ?? 0) * (float) ($this->operating ?? 0)) / 100 + (((float) $this->sale_price ?? 0) * (float) ($this->comission ?? 0)) / 100 + (((float) $this->sale_price ?? 0) * (float) ($this->bank ?? 0)) / 100 + (((float) $this->sale_price ?? 0) * (float) ($this->unexpected ?? 0)) / 100 + (float) $this->purchase_price ?? 0;
     }
 
     public function updatedPartnerId(){
@@ -240,6 +246,7 @@ class ContractForm extends Component
         $this->code_product = $this->detail->detailable()->withTrashed()->first()->cod;
         $this->name_product = $this->detail->detailable()->withTrashed()->first()->name;
         $this->product = $this->detail->detailable()->withTrashed()->first();
+        $this->updated();
     }
 
     public function add(){
@@ -264,7 +271,8 @@ class ContractForm extends Component
                 'unexpected' => $this->unexpected,
                 'purchase_price' => $this->purchase_price,
                 'quantity' => $this->quantity,
-                'sale_price' => $this->sale_price
+                'sale_price' => $this->sale_price,
+                'purchase_total' => (float)$this->subtotal * (float)$this->quantity
             ]);
         }else{
             $this->detail->bill = $this->bill;
@@ -277,11 +285,13 @@ class ContractForm extends Component
             $this->detail->sale_price = $this->sale_price;
             $this->detail->quantity = $this->quantity;
             $this->detail->description = $this->description_product;
+            $this->detail->purchase_total = (float)$this->subtotal * (float)$this->quantity;
         }
         $this->detail->detailable()->associate($this->product);
         $this->detail->save();
         $this->contract->refresh();
         $this->list = $this->contract->detail_contract;
+        $this->reset(['code_product','name_product','description_product','bill','interest','operating','comission','bank','unexpected','purchase_price','quantity','sale_price','subtotal']);
     }
 
     public function delete($id){

@@ -26,6 +26,7 @@ return new class extends Migration
             $table->decimal('comission');
             $table->decimal('bank');
             $table->decimal('unexpected');
+            $table->decimal('purchase_total');
             $table->timestamps();
             $table->softDeletes();
         });

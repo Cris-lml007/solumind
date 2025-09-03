@@ -18,13 +18,14 @@ class Contract extends Model
     }
 
     public function partners(){
-        return $this->belongsToMany(ContractPartner::class)->withPivot([
-            'amount',
-            'type',
-            'currency',
-            'interest',
-            'description'
-        ]);
+        return $this->belongsToMany(Partner::class,'contract_partners')->wherePivotNull('deleted_at')->withPivot(['amount','type','interest','description']);
+        //             ->withPivot([
+        //     'amount',
+        //     'type',
+        //     'currency',
+        //     'interest',
+        //     'description'
+        // ]);
     }
 
     public function inversions(){

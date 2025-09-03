@@ -57,14 +57,62 @@
                         wire:model.live="searchable">
                 </div>
                 <label for="description">Descripción</label>
-                <textarea id="description" class="form-control mb-3" wire:model="description"></textarea>
+                <textarea id="description" class="form-control mb-1" wire:model="description"></textarea>
                 <div class="text-danger" style="height: 20px;">
                     @error('description')
                         {{ $message }}
                     @enderror
                 </div>
+                <div class="row mt-0 mb-3">
+                    <div class="col">
+                        <label>Presupuesto</label>
+                        @php
+                            #dd($contract->partners()->sum('amount'));
+                        @endphp
+                        <div class="input-group">
+                            <input type="number" class="form-control"
+                                value="{{ $contract->partners()->sum('amount') }}" disabled>
+                            <span class="input-group-text">Bs</span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label>Saldo</label>
+                        <div class="input-group">
+                            <input type="number"
+                                class="form-control {{ $contract->partners()->sum('amount') - $contract->detail_contract()->sum('purchase_total') >= 0 ? 'bg-success' : 'bg-danger' }}"
+                                value="{{ $contract->partners()->sum('amount') - $contract->detail_contract()->sum('purchase_total') }}"
+                                disabled>
+                            <span class="input-group-text">Bs</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h5><strong>Utilidades</strong></h5>
+                    <x-adminlte.tool.datatable id="table-utilities" :heads="['CI', 'Nombre Completo', '%', 'Utilidad (Bs)']">
+                        @php
+                            $utotal = $contract->detail_contract()->sum('sale_price') - $contract->detail_contract()->sum('purchase_total');
+                            $ptotal = 0;
+                        @endphp
+                        @foreach ($contract->partners as $item)
+                            <tr>
+                                <td>{{ $item->person->ci }}</td>
+                                <td>{{ $item->person->name }}</td>
+                                <td>{{ $item->pivot->interest }}</td>
+                                <td>{{ $utotal * ($item->pivot->interest / 100) }}</td>
+                            </tr>
+                            @php
+                                $ptotal += $utotal * ($item->pivot->interest / 100);
+                            @endphp
+                        @endforeach
+                        <tfoot>
+                            <th colspan="3">TOTAL UTILIDAD</th>
+                            <th>{{ $ptotal }} Bs</th>
+                        </tfoot>
+                    </x-adminlte.tool.datatable>
+                </div>
                 <hr>
                 <div class="d-flex justify-content-end my-3">
+                    <button class="btn btn-success">Aprobar</button>
                     <button class="btn btn-primary" wire:click="create">Guardar</button>
                     <button class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
                 </div>
@@ -298,7 +346,7 @@
                         </div>
                         <label for="operating">Gastos de Funcionamiento</label>
                         <div class="input-group mb-3">
-                            <input class="form-control" type="number" name="operating" wire:model.lazy="operating">
+                            <input class="form-control" type="number" name="operating" wire:model.live="operating">
                             <span class="input-group-text">%</span>
                             <input class="form-control" type="number" name="operating-value" disabled
                                 value="{{ (((float) $sale_price ?? 0) * (float) ($operating ?? 0)) / 100 }}"
@@ -307,7 +355,7 @@
                         </div>
                         <label for="bank">Banco</label>
                         <div class="input-group mb-3">
-                            <input class="form-control" type="number" name="bank" wire:model.lazy="bank">
+                            <input class="form-control" type="number" name="bank" wire:model.live="bank">
                             <span class="input-group-text">%</span>
                             <input class="form-control" type="number" name="bank-value" disabled
                                 value="{{ (((float) $sale_price ?? 0) * (float) ($bank ?? 0)) / 100 }}"
@@ -317,7 +365,7 @@
 
 
                         @php
-                            $subtotal = (((float) $sale_price ?? 0) * (float) ($bill ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($interest ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($operating ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($comission ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($bank ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($unexpected ?? 0)) / 100 + (float) $purchase_price ?? 0;
+                            #$subtotal = (((float) $sale_price ?? 0) * (float) ($bill ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($interest ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($operating ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($comission ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($bank ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($unexpected ?? 0)) / 100 + (float) $purchase_price ?? 0;
                         @endphp
                         <label for="bill">Costo Subtotal</label>
                         <div class="input-group mb-3">
@@ -335,7 +383,7 @@
                     <div class="w-50 ms-1">
                         <label for="interest">Interes</label>
                         <div class="input-group mb-3">
-                            <input class="form-control" type="number" name="interest" wire:model.lazy="interest">
+                            <input class="form-control" type="number" name="interest" wire:model.live="interest">
                             <span class="input-group-text">%</span>
                             <input class="form-control" type="number" name="interest-value" disabled
                                 value="{{ (((float) $sale_price ?? 0) * (float) ($interest ?? 0)) / 100 }}"
@@ -344,7 +392,7 @@
                         </div>
                         <label for="comission">Comisión</label>
                         <div class="input-group mb-3">
-                            <input class="form-control" type="number" name="comission" wire:model.lazy="comission">
+                            <input class="form-control" type="number" name="comission" wire:model.live="comission">
                             <span class="input-group-text">%</span>
                             <input class="form-control" type="number" name="comission-value" disabled
                                 value="{{ (((float) $sale_price ?? 0) * (float) ($comission ?? 0)) / 100 }}"
@@ -354,7 +402,7 @@
                         <label for="unexpected">Imprevistos</label>
                         <div class="input-group mb-3">
                             <input class="form-control" type="number" name="unexpected"
-                                wire:model.lazy="unexpected">
+                                wire:model.live="unexpected">
                             <span class="input-group-text">%</span>
                             <input class="form-control" type="number" name="unexpected-value" disabled
                                 value="{{ (((float) $sale_price ?? 0) * (float) ($unexpected ?? 0)) / 100 }}"
@@ -440,6 +488,12 @@
             component
         }) => {
             $('#partner').DataTable({
+                destroy: true
+            })
+            $('#table-utilities').DataTable({
+                destroy: true
+            })
+            $('#detail').DataTable({
                 destroy: true
             })
         })

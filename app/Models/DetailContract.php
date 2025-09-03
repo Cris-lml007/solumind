@@ -20,7 +20,8 @@ class DetailContract extends Model
         'operating',
         'comission',
         'bank',
-        'unexpected'
+        'unexpected',
+        'purchase_total'
     ];
 
     public function detailable(){
