@@ -28,6 +28,7 @@ class AccountForm extends Component
                 return $this->dispatch('active');
             }
         }
+        if($t->id == 9999) return redirect()->route('dashboard.settings');
         $this->validate([
             'name' => 'required|string|max:255|unique:accounts,name,' . ($this->account->id ?? 'null'),
         ]);
@@ -39,6 +40,7 @@ class AccountForm extends Component
     }
 
     public function remove(){
+        if($this->account->id == 9999) return redirect()->route('dashboard.settings');
         $this->account->delete();
         return redirect()->route('dashboard.settings');
     }

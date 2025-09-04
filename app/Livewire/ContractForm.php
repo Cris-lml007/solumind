@@ -11,6 +11,7 @@ use App\Models\Partner;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -139,7 +140,8 @@ class ContractForm extends Component
                 'partner_id' => $this->partner_id
             ],
             [
-                'partner_ci' => 'required|exists:people,ci'
+                'partner_ci' => 'required|exists:people,ci',
+                // 'partner_id' => Rule::unique('contract_partners')->where(fn($query) => $query->where('contract_id',$this->contract->id))
             ]
         )->validate();
 

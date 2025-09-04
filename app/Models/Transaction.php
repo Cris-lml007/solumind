@@ -9,11 +9,25 @@ class Transaction extends Model
 {
     use SoftDeletes;
 
+    public $fillable = [
+        'contract_id',
+        'contract_partner_id',
+        'type',
+        'description',
+        'account_id',
+        'amount',
+        'date'
+    ];
+
     public function contract(){
         return $this->belongsTo(Contract::class);
     }
 
     public function account(){
         return $this->belongsTo(Account::class);
+    }
+
+    public function contract_partner(){
+        return $this->belongsTo(ContractPartner::class);
     }
 }

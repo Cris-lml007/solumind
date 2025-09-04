@@ -62,7 +62,17 @@
         <div>
             <x-adminlte.tool.datatable id="inversions" :heads="$heads_t" :config="$config_t">
                 @foreach ($data_t as $item)
+                    @php
+                        $utotal = $item->detail_contract()->sum(DB::raw('sale_price * quantity')) - $item->detail_contract()->sum('purchase_total');
+                    @endphp
                     <tr>
+                        <td>{{ $item->cod }}</td>
+                        <td>{{ $item->pivot->amount }}</td>
+                        <td>{{ $item->pivot->interest }}</td>
+                        <td>{{ App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount') }}</td>
+                        <td>{{ ($utotal * ($item->pivot->interest / 100)) - App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount') }}</td>
+                        <td><button data-bs-toggle="modal" data-bs-target="#modal-pay" class="btn btn-primary" x-on:click="$wire.contractPartner = '{{ $item->pivot->id }}'"><i
+                                    class="fa fa-money-bill"></i></button></td>
                     </tr>
                 @endforeach
             </x-adminlte.tool.datatable>
@@ -78,6 +88,32 @@
             <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         </div>
     @endif
+
+    <x-modal id="modal-pay" title="Pagar Utilidad" class="">
+        <div class="modal-body">
+            <label for="">Importe</label>
+            <div class="input-group">
+                <input type="number" class="form-control" wire:model="pay_amount">
+                <span class="input-group-text">Bs</span>
+            </div>
+                <div class="text-danger" style="height: 20px;">
+                    @error('amount')
+                        {{ $message }}
+                    @enderror
+                </div>
+            <label for="">Descripción</label>
+            <textarea class="form-control" wire:model="pay_description"></textarea>
+                <div class="text-danger" style="height: 20px;">
+                    @error('description')
+                        {{ $message }}
+                    @enderror
+                </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" wire:click="payUtility">Pagar</button>
+            <button class="btn btn-secondary">Cancelar</button>
+        </div>
+    </x-modal>
 </div>
 
 @script
@@ -92,8 +128,8 @@
                 cancelButtonColor: "red",
                 confirmButtonText: "Si, deseo borrar!",
                 cancelButtonText: "Cancelar"
-            }).then((result)=>{
-                if( result.isConfirmed ) $wire.dispatch('remove');
+            }).then((result) => {
+                if (result.isConfirmed) $wire.dispatch('remove');
             })
         });
     </script>

@@ -31,4 +31,8 @@ class Contract extends Model
     public function inversions(){
         return $this->hasMany(ContractPartner::class);
     }
+
+    public function transactions(){
+        return $this->hasMany(Transaction::class);
+    }
 }

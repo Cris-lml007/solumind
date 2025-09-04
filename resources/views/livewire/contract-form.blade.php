@@ -90,7 +90,7 @@
                     <h5><strong>Utilidades</strong></h5>
                     <x-adminlte.tool.datatable id="table-utilities" :heads="['CI', 'Nombre Completo', '%', 'Utilidad (Bs)']">
                         @php
-                            $utotal = $contract->detail_contract()->sum('sale_price') - $contract->detail_contract()->sum('purchase_total');
+                            $utotal = $contract->detail_contract()->sum(DB::raw('sale_price * quantity')) - $contract->detail_contract()->sum('purchase_total');
                             $ptotal = 0;
                         @endphp
                         @foreach ($contract->partners as $item)
@@ -101,7 +101,8 @@
                                 <td>{{ $utotal * ($item->pivot->interest / 100) }}</td>
                             </tr>
                             @php
-                                $ptotal += $utotal * ($item->pivot->interest / 100);
+                            $ptotal += $utotal * ($item->pivot->interest / 100);
+                            #dd($utotal);
                             @endphp
                         @endforeach
                         <tfoot>
