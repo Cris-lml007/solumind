@@ -6,29 +6,42 @@
             <h1 class="m-0">Libro Diario</h1>
             <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Libro Diario</strong></h6>
         </div>
-        <button data-bs-target="#modal-transaction" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
+        <button data-bs-target="#modal-transaction" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i>
+            Añadir Nuevo
             Asiento</button>
     </div>
     <div class="card">
         <div class="card-body">
-            <div class="mb-3 d-flex justify-content-center">
-                <div style="width: 30%;">
-                    <div class="input-group">
-                        <span class="input-group-text">Fecha</span>
-                        <input type="date" class="form-control">
-                        <button class="btn btn-primary"><i class="fa fa-search"></i></button>
-                    </div>
-                </div>
-            </div>
             <x-adminlte.tool.datatable id="table-diary" :heads="$heads">
-                <tr>
-                    <td>2025/09/03</td>
-                    <td></td>
-                    <td>1000</td>
-                    <td>inversion de Cristian</td>
-                    <td>ALM-9/25</td>
-                    <td>Inversión</td>
-                </tr>
+                @php
+                    $t_income = 0;
+                    $t_expense = 0;
+                @endphp
+                @foreach ($data as $item)
+                    @php
+                    $t_income += ($item->type == 1 ? $item->amount : 0);
+                    $t_expense += ($item->type == 2 ? $item->amount : 0);
+                    @endphp
+                    <tr onclick="edit({{ $item->id }})" class="item-table">
+                        <td>{{ $item->date }}</td>
+                        <td>{{ $item->type == 1 ? $item->amount : '' }}</td>
+                        <td>{{ $item->type == 2 ? $item->amount : '' }}</td>
+                        <td>{{ $item->description }}</td>
+                        <td>{{ $item->contract->cod ?? '' }}</td>
+                        <td>{{ $item->account->name }}</td>
+                    </tr>
+                @endforeach
+                <tfoot>
+                    <tr>
+                        <th>TOTAL</th>
+                        <td class="bg-primary"><strong>{{ $t_income }} Bs</strong></td>
+                        <td class="bg-secondary"><strong>{{ $t_expense }} Bs</strong></td>
+                    </tr>
+                    <tr>
+                        <th>SALDO EFECTIVO</th>
+                        <td colspan="2" style="text-align: center;" class="{{ $t_income - $t_expense >= 0 ? 'bg-success' : 'bg-danger'}}"><strong>{{ $t_income - $t_expense }} Bs</strong></td>
+                    </tr>
+                </tfoot>
             </x-adminlte.tool.datatable>
         </div>
     </div>
@@ -37,4 +50,21 @@
         <livewire:diary-book-form>
         </livewire:diary-book-form>
     </x-modal>
+@endsection
+
+@section('css')
+    <style>
+        .item-table {
+            cursor: pointer;
+        }
+    </style>
+@endsection
+
+@section('js')
+    <script>
+        function edit($id) {
+            window.location.replace("{{ route('dashboard.diary_book.form', 'q') }}".slice(0, -1) + $id)
+            {{-- console.log("{{ route('dashboard.diary_book.form','q') }}".slice(0,-1)) --}}
+        }
+    </script>
 @endsection

@@ -9,6 +9,7 @@ use App\Livewire\ProductForm;
 use App\Livewire\SupplierForm;
 use App\Livewire\ClientForm;
 use App\Livewire\ContractForm;
+use App\Livewire\DiaryBookForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('partner/{id}',PartnerForm::class)->name('dashboard.partner.form');
     Route::get('client/{id}',ClientForm::class)->name('dashboard.client.form'); // Añadido '?' por si acaso
     Route::get('proof/{id}',ContractForm::class)->name('dashboard.proof.form');
+    Route::get('diary-book/{id}',DiaryBookForm::class)->name('dashboard.diary_book.form');
     Route::get('settings/category/{id}',CategoryForm::class)->name('dashboard.settings.category');
     Route::get('settings/account/{id}',AccountForm::class)->name('dashboard.settings.account');
 

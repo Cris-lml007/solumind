@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Client;
 use App\Models\Contract;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -92,8 +93,9 @@ class DashboardController extends Controller
     }
 
     public function diaryBook(){
-        $heads = ['Fecha','Ingreso','Egreso','Descripción', 'Contrato', 'Cuenta'];
-        return view('dashboard.diary-book',compact(['heads']));
+        $heads = ['Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato', 'Cuenta'];
+        $data = Transaction::orderBy('date','asc')->get();
+        return view('dashboard.diary-book',compact(['heads','data']));
     }
 
     public function settings(){
