@@ -112,6 +112,9 @@
                 </div>
                 <hr>
                 <div class="d-flex justify-content-end my-3">
+                    <a href="{{ route('contracts.pdf', $contract) }}" target="_blank" class="btn btn-warning me-2">
+                         <i class="fa fa-file-pdf"></i> Generar PDF
+                    </a>
                     <button class="btn btn-success">Aprobar</button>
                     <button class="btn btn-primary" wire:click="create">Guardar</button>
                     <button class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
