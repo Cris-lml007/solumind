@@ -113,7 +113,7 @@
                 </div>
                 <hr>
                 <div class="d-flex justify-content-end my-3">
-                    <button class="btn btn-success">Aprobar</button>
+                    <button class="btn btn-success" wire:click="aprove">Aprobar</button>
                     <button class="btn btn-primary" wire:click="create">Guardar</button>
                     <button class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
                 </div>

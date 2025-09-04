@@ -72,7 +72,7 @@
                                 <td>{{ $item->cod }}</td>
                                 <td>{{ $item->client->person->name }}<br>{{ $item->client->organization }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->create_at) }}</td>
-                                <td><span class="badge badge-warning">{{ __(\App\StatusContract::PROFORMA->name) }}</span>
+                                <td><span class="badge {{ $item->status == 1 ? 'badge-success' : 'badge-danger' }}">{{ $item->status == 1 ? 'Activo' : 'Fallido' }}</span>
                                 </td>
                                 {{-- <td class="text-right"><strong>{{ number_format($item->total, 2, ',', '.') }}</strong></td> --}}
                                 <td><a href="{{ route('dashboard.proof.form',$item->id) }}" class="btn btn-primary"><i
@@ -93,11 +93,10 @@
                     <x-adminlte.tool.datatable id="table-contratos" :heads="$heads['contratos']" :config="$config">
                         @foreach ($data['contratos'] as $item)
                             <tr>
-                                <td>{{ $item->id }}</td>
-                                <td>{{ $item->nombre }}</td>
-                                <td>{{ $item->cliente }}</td>
-                                <td>{{ \Carbon\Carbon::parse($item->fecha_inicio)->format('d/m/Y') }}</td>
-                                <td><span class="badge badge-success">{{ $item->estado }}</span></td>
+                                <td>{{ $item->cod }}</td>
+                                <td>{{ $item->client->person->name }}</td>
+                                <td>{{ $item->time_delivery }} Dias</td>
+                                <td><span class="badge badge-success">{{ __($item->status->name) }}</span></td>
                                 <td><a href="{{ route('dashboard.contrato.form.design') }}" class="btn btn-primary"><i
                                             class="fa fa-ellipsis-v"></i></a></td>
                             </tr>

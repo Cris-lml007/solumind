@@ -12,6 +12,7 @@ use App\Models\Client;
 use App\Models\Contract;
 use App\Models\Transaction;
 use App\Models\User;
+use App\StatusContract;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -71,21 +72,14 @@ class DashboardController extends Controller
                 'monto' => 450.00
                 ],
             ],
-            'proformas' => Contract::all(),
-            'contratos' => [
-                (object)['id' => 'C-2025-01',
-                'nombre' => 'Contrato de Desarrollo Web',
-                'cliente' => 'Cliente Ejemplo B',
-                'fecha_inicio' => '2025-09-01',
-                'estado' => 'Activo'
-                ],
-            ]
+            'proformas' => Contract::Where('status','<',StatusContract::CONTRACT->value)->get(),
+            'contratos' => Contract::where('status','>=',StatusContract::CONTRACT->value)->get()
         ];
 
         $heads = [
             'comprobantes' => ['ID', 'Fecha', 'Tipo', 'Descripción', 'Monto (Bs)', 'Acciones'],
             'proformas' => ['Codigo.', 'Cliente', 'Fecha Emisión', 'Estado', 'Acciones'],
-            'contratos' => ['Codigo.', 'Nombre Contrato', 'Cliente', 'Fecha Inicio', 'Estado', 'Acciones']
+            'contratos' => ['Codigo.', 'Cliente', 'Plazo de Entrega', 'Estado', 'Acciones']
         ];
 
 

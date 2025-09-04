@@ -113,7 +113,7 @@ class PartnerForm extends Component
 
     public function render()
     {
-        $data_t = $this->partner->contracts;
+        $data_t = $this->partner->contracts()->where('status',3)->get();
         $config_t = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $heads_t = ['Contrato', 'Inversión (Bs)', 'Utilidad (%)', 'Retirado (Bs)', 'Saldo (Bs)','Acciones'];
         return view('livewire.partner-form',compact(['heads_t','config_t','data_t']));

@@ -9,6 +9,7 @@ use App\Models\DetailContract;
 use App\Models\Item;
 use App\Models\Partner;
 use App\Models\Product;
+use App\StatusContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -294,6 +295,12 @@ class ContractForm extends Component
         $this->contract->refresh();
         $this->list = $this->contract->detail_contract;
         $this->reset(['code_product','name_product','description_product','bill','interest','operating','comission','bank','unexpected','purchase_price','quantity','sale_price','subtotal']);
+    }
+
+    public function aprove(){
+        $this->contract->status = StatusContract::CONTRACT->value;
+        $this->contract->save();
+        $this->redirect(route('dashboard.proof'));
     }
 
     public function delete($id){
