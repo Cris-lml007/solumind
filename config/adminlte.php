@@ -361,7 +361,7 @@ return [
         [
             'text' => 'Libro Diario',
             'icon' => 'fas fa-fw fa-book',
-            'url' => '#',
+            'route' => 'dashboard.diary_book',
         ],
         [
             'text' => 'Libro Mayor',

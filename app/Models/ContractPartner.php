@@ -16,4 +16,8 @@ class ContractPartner extends Model
     public function contract(){
         return $this->belongsTo(Contract::class);
     }
+
+    public function transactions(){
+        return $this->hasMany(Transaction::class);
+    }
 }

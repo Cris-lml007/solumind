@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Partner;
@@ -9,6 +10,9 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Client;
 use App\Models\Contract;
+use App\Models\Transaction;
+use App\Models\User;
+use App\StatusContract;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -54,44 +58,32 @@ class DashboardController extends Controller
     public function proof(){
         $config = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = [
-            'comprobantes' => [
-                (object)['id' => 1,
-                'fecha' => '2025-08-27',
-                'tipo' => 'Ingreso',
-                'descripcion' => 'Venta de 10 unidades del producto X',
-                'monto' => 1250.50
-                ],
-                (object)['id' => 2,
-                'fecha' => '2025-08-26',
-                'tipo' => 'Egreso',
-                'descripcion' => 'Pago de factura de servicios de internet y luz',
-                'monto' => 450.00
-                ],
-            ],
-            'proformas' => Contract::all(),
-            'contratos' => [
-                (object)['id' => 'C-2025-01',
-                'nombre' => 'Contrato de Desarrollo Web',
-                'cliente' => 'Cliente Ejemplo B',
-                'fecha_inicio' => '2025-09-01',
-                'estado' => 'Activo'
-                ],
-            ]
+            'comprobantes' => Transaction::all(),
+            'proformas' => Contract::Where('status','<',StatusContract::CONTRACT->value)->get(),
+            'contratos' => Contract::where('status','>=',StatusContract::CONTRACT->value)->get()
         ];
 
         $heads = [
             'comprobantes' => ['ID', 'Fecha', 'Tipo', 'Descripción', 'Monto (Bs)', 'Acciones'],
             'proformas' => ['Codigo.', 'Cliente', 'Fecha Emisión', 'Estado', 'Acciones'],
-            'contratos' => ['Codigo.', 'Nombre Contrato', 'Cliente', 'Fecha Inicio', 'Estado', 'Acciones']
+            'contratos' => ['Codigo.', 'Cliente', 'Plazo de Entrega', 'Estado', 'Acciones']
         ];
 
 
         return view('dashboard.voucher-view', compact('heads', 'config', 'data'));
     }
 
+    public function diaryBook(){
+        $heads = ['Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato', 'Cuenta'];
+        $data = Transaction::orderBy('date','asc')->get();
+        return view('dashboard.diary-book',compact(['heads','data']));
+    }
+
     public function settings(){
         $data = [
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'accounts' => Account::all(),
+            'users' => User::all()
         ];
         return view('dashboard.settings',compact(['data']));
     }

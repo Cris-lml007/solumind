@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\StatusContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -30,5 +31,17 @@ class Contract extends Model
 
     public function inversions(){
         return $this->hasMany(ContractPartner::class);
+    }
+
+    public function transactions(){
+        return $this->hasMany(Transaction::class);
+    }
+
+
+    protected function casts(): array
+    {
+        return [
+            'status' => StatusContract::class,
+        ];
     }
 }

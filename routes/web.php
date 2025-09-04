@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PdfController;
+use App\Livewire\AccountForm;
 use App\Livewire\AssemblyForm;
 use App\Livewire\CategoryForm;
 use App\Livewire\PartnerForm;
@@ -8,7 +10,7 @@ use App\Livewire\ProductForm;
 use App\Livewire\SupplierForm;
 use App\Livewire\ClientForm;
 use App\Livewire\ContractForm;
-use App\Http\Controllers\ContractController;
+use App\Livewire\DiaryBookForm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +34,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         Route::get('proof', 'proof')->name('dashboard.proof');
 
         Route::get('settings','settings')->name('dashboard.settings');
-        
+        Route::get('diary-book','diaryBook')->name('dashboard.diary_book');
     });
     Route::get('supplier/{id}',SupplierForm::class)->name('dashboard.supplier.form');
     Route::get('product/{id}',ProductForm::class)->name('dashboard.product.form');
@@ -40,8 +42,11 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('partner/{id}',PartnerForm::class)->name('dashboard.partner.form');
     Route::get('client/{id}',ClientForm::class)->name('dashboard.client.form');
     Route::get('proof/{id}',ContractForm::class)->name('dashboard.proof.form');
+    Route::get('diary-book/{id}',DiaryBookForm::class)->name('dashboard.diary_book.form');
     Route::get('settings/category/{id}',CategoryForm::class)->name('dashboard.settings.category');
-    Route::get('/contracts/{contract}/pdf', [ContractController::class, 'generarPDF'])->name('contracts.pdf');
+    Route::get('settings/account/{id}',AccountForm::class)->name('dashboard.settings.account');
+
+    Route::get('proof/pdf/{id}',[PdfController::class,'generateVoucher'])->name('dashboard.proof.pdf');
 
 
 

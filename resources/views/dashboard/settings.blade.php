@@ -38,6 +38,15 @@
             <div class="card">
                 <div class="card-body">
                     <x-adminlte.tool.datatable id="accounts" :heads="['Id', 'Nombre', 'Accciones']">
+                        @foreach ($data['accounts'] as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>
+                                    <a href="{{route('dashboard.settings.account',$item->id)}}" class="btn btn-primary"><i class="fa fa-pen"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
                     </x-adminlte.tool.datatable>
                 </div>
             </div>
@@ -50,7 +59,9 @@
                             <tr>
                                 <td>{{ $item->alias }}</td>
                                 <td>{{ $item->name }}</td>
-                                <td><a class="btn btn-primary" href="{{ route('dashboard.settings.category',$item->id) }}"><i class="fa fa-ellipsis-v"></i></a></td>
+                                <td><a class="btn btn-primary"
+                                        href="{{ route('dashboard.settings.category', $item->id) }}"><i
+                                            class="fa fa-ellipsis-v"></i></a></td>
                             </tr>
                         @endforeach
                     </x-adminlte.tool.datatable>
@@ -193,14 +204,7 @@
         </div>
 
         <div id="modal-account" class="d-none">
-            <div class="modal-body">
-                <label for="alias">Nombre</label>
-                <input type="text" class="form-control">
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary">Guardar</button>
-                <button class="btn btn-sencodary" data-bs-dismiss="modal">Cancelar</button>
-            </div>
+            <livewire:account-form></livewire:account-form>
         </div>
     </x-modal>
 @endsection

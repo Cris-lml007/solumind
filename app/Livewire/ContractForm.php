@@ -9,8 +9,10 @@ use App\Models\DetailContract;
 use App\Models\Item;
 use App\Models\Partner;
 use App\Models\Product;
+use App\StatusContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -139,7 +141,8 @@ class ContractForm extends Component
                 'partner_id' => $this->partner_id
             ],
             [
-                'partner_ci' => 'required|exists:people,ci'
+                'partner_ci' => 'required|exists:people,ci',
+                // 'partner_id' => Rule::unique('contract_partners')->where(fn($query) => $query->where('contract_id',$this->contract->id))
             ]
         )->validate();
 
@@ -292,6 +295,12 @@ class ContractForm extends Component
         $this->contract->refresh();
         $this->list = $this->contract->detail_contract;
         $this->reset(['code_product','name_product','description_product','bill','interest','operating','comission','bank','unexpected','purchase_price','quantity','sale_price','subtotal']);
+    }
+
+    public function aprove(){
+        $this->contract->status = StatusContract::CONTRACT->value;
+        $this->contract->save();
+        $this->redirect(route('dashboard.proof'));
     }
 
     public function delete($id){
