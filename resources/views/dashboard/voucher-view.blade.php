@@ -97,7 +97,7 @@
                                 <td>{{ $item->client->person->name }}</td>
                                 <td>{{ $item->time_delivery }} Dias</td>
                                 <td><span class="badge badge-success">{{ __($item->status->name) }}</span></td>
-                                <td><a href="{{ route('dashboard.contrato.form.design') }}" class="btn btn-primary"><i
+                                <td><a href="{{ route('dashboard.proof.form',$item->id) }}" class="btn btn-primary"><i
                                             class="fa fa-ellipsis-v"></i></a></td>
                             </tr>
                         @endforeach
