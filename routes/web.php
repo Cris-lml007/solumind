@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Livewire\AccountForm;
 use App\Livewire\AssemblyForm;
 use App\Livewire\CategoryForm;
 use App\Livewire\PartnerForm;
@@ -40,6 +41,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('client/{id}',ClientForm::class)->name('dashboard.client.form'); // Añadido '?' por si acaso
     Route::get('proof/{id}',ContractForm::class)->name('dashboard.proof.form');
     Route::get('settings/category/{id}',CategoryForm::class)->name('dashboard.settings.category');
+    Route::get('settings/account/{id}',AccountForm::class)->name('dashboard.settings.account');
 
 
 

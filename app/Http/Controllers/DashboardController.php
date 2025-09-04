@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Partner;
@@ -9,6 +10,7 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Client;
 use App\Models\Contract;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -96,7 +98,9 @@ class DashboardController extends Controller
 
     public function settings(){
         $data = [
-            'categories' => Category::all()
+            'categories' => Category::all(),
+            'accounts' => Account::all(),
+            'users' => User::all()
         ];
         return view('dashboard.settings',compact(['data']));
     }
