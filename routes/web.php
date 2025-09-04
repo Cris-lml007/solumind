@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PdfController;
 use App\Livewire\AccountForm;
 use App\Livewire\AssemblyForm;
 use App\Livewire\CategoryForm;
@@ -44,6 +45,8 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('diary-book/{id}',DiaryBookForm::class)->name('dashboard.diary_book.form');
     Route::get('settings/category/{id}',CategoryForm::class)->name('dashboard.settings.category');
     Route::get('settings/account/{id}',AccountForm::class)->name('dashboard.settings.account');
+
+    Route::get('proof/pdf/{id}',[PdfController::class,'generateVoucher'])->name('dashboard.proof.pdf');
 
 
 

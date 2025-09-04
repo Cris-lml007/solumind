@@ -58,20 +58,7 @@ class DashboardController extends Controller
     public function proof(){
         $config = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = [
-            'comprobantes' => [
-                (object)['id' => 1,
-                'fecha' => '2025-08-27',
-                'tipo' => 'Ingreso',
-                'descripcion' => 'Venta de 10 unidades del producto X',
-                'monto' => 1250.50
-                ],
-                (object)['id' => 2,
-                'fecha' => '2025-08-26',
-                'tipo' => 'Egreso',
-                'descripcion' => 'Pago de factura de servicios de internet y luz',
-                'monto' => 450.00
-                ],
-            ],
+            'comprobantes' => Transaction::all(),
             'proformas' => Contract::Where('status','<',StatusContract::CONTRACT->value)->get(),
             'contratos' => Contract::where('status','>=',StatusContract::CONTRACT->value)->get()
         ];

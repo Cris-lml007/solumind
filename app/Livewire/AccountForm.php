@@ -27,11 +27,11 @@ class AccountForm extends Component
             if($t->trashed()){
                 return $this->dispatch('active');
             }
+            if($t->id == 9999) return redirect()->route('dashboard.settings');
+            $this->validate([
+                'name' => 'required|string|max:255|unique:accounts,name,' . ($this->account->id ?? 'null'),
+            ]);
         }
-        if($t->id == 9999) return redirect()->route('dashboard.settings');
-        $this->validate([
-            'name' => 'required|string|max:255|unique:accounts,name,' . ($this->account->id ?? 'null'),
-        ]);
 
         $this->account->name = $this->name;
         $this->account->save();
