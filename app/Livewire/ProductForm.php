@@ -35,6 +35,7 @@ class ProductForm extends Component
     #[Validate('required|unique:products,cod|unique:items,cod')]
     public $cod;
     public $alias;
+    public $size;
 
     #[Locked]
     public Product $product;
@@ -47,6 +48,7 @@ class ProductForm extends Component
 
     public function mount($id = null){
         try{
+            $this->list = Supplier::all();
             $this->product = Product::findOrFail($id);
             $this->name = $this->product->name;
             $this->price = $this->product->price;
@@ -64,6 +66,7 @@ class ProductForm extends Component
 
     public function updatedItemSearchable(){
         $this->nit = $this->item_searchable;
+        $this->updatedNit();
     }
 
     public function updatedSearchable(){
@@ -87,6 +90,11 @@ class ProductForm extends Component
             if(strlen($word) > 2)
                 $this->cod = $this->cod . substr($word,0,3);
         }
+    }
+
+    public function updatedSize(){
+        $this->updatedName();
+        $this->cod = $this->cod . $this->size;
     }
 
     public function save(){
