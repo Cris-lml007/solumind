@@ -349,11 +349,6 @@ return [
         ],
         ['header' => 'Operaciones'],
         [
-            'text' => 'Historial de Movimientos',
-            'icon' => 'fas fa-fw fa-history',
-            'url' => '#',
-        ],
-        [
             'text' => 'Comprobantes',
             'route'  => 'dashboard.proof',
             'icon' => 'fas fa-fw fa-file-invoice-dollar',
@@ -366,6 +361,11 @@ return [
         [
             'text' => 'Libro Mayor',
             'icon' => 'fas fa-fw fa-book-open',
+            'url' => '#',
+        ],
+        [
+            'text' => 'Historial de Movimientos',
+            'icon' => 'fas fa-fw fa-history',
             'url' => '#',
         ],
         ['header' => 'Reportes'],
