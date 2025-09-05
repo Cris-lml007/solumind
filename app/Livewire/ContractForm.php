@@ -303,6 +303,11 @@ class ContractForm extends Component
         $this->redirect(route('dashboard.proof'));
     }
 
+    public function remove(){
+        $this->contract->delete();
+        $this->redirect(route('dashboard.proof'));
+    }
+
     public function delete($id){
         DetailContract::find($id)->delete();
         $this->contract->refresh();

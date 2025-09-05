@@ -76,7 +76,7 @@
                                 <td>{{ $item->client->person->name }}<br>{{ $item->client->organization }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->create_at) }}</td>
                                 <td><span
-                                        class="badge {{ $item->status == 1 ? 'badge-success' : 'badge-danger' }}">{{ $item->status == 1 ? 'Activo' : 'Fallido' }}</span>
+                                            class="badge {{ $item->status->value == 1 ? 'badge-success' : 'badge-danger' }}">{{ $item->status->value == 1 ? 'Activo' : 'Fallido' }}</span>
                                 </td>
                                 {{-- <td class="text-right"><strong>{{ number_format($item->total, 2, ',', '.') }}</strong></td> --}}
                                 <td><a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i

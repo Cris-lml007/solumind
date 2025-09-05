@@ -26,7 +26,8 @@
                 tabindex="0" wire:ignore.self>
                 <h5 class="mt-3"><strong>Información General</strong></h5>
                 <label for="code">Codigo</label>
-                <input type="text" wire:model="code" class="form-control" {{$contract->status->value > 2 ? 'disabled' : ''}}>
+                <input type="text" wire:model="code" class="form-control"
+                    {{ $contract->status->value > 2 ? 'disabled' : '' }}>
                 <div class="text-danger" style="height: 20px;">
                     @error('code')
                         {{ $message }}
@@ -35,7 +36,7 @@
                 <label>Cliente</label>
                 <div class="input-group">
                     <select name="searchable-item" id="searchable-item" class="form-select"
-                        wire:model.live="searchable_item" {{$contract->status->value > 2 ? 'disabled' : ''}}>
+                        wire:model.live="searchable_item" {{ $contract->status->value > 2 ? 'disabled' : '' }}>
                         <option>selecione un cliente</option>
                         @foreach ($clients as $item)
                             <option value="{{ $item->id }}">
@@ -43,8 +44,8 @@
                             </option>
                         @endforeach
                     </select>
-                    <button {{$contract->status->value > 2 ? 'disabled' : ''}} id="btn-searchable" class="btn btn-primary" style="height: 38px;"><i
-                            class="fa fa-search"></i></button>
+                    <button {{ $contract->status->value > 2 ? 'disabled' : '' }} id="btn-searchable"
+                        class="btn btn-primary" style="height: 38px;"><i class="fa fa-search"></i></button>
                 </div>
                 <div class="text-danger" style="height: 20px;">
                     @error('searchable_item')
@@ -57,7 +58,8 @@
                         wire:model.live="searchable">
                 </div>
                 <label for="description">Descripción</label>
-                <textarea id="description" class="form-control mb-1" wire:model="description" {{$contract->status->value > 2 ? 'disabled' : ''}}></textarea>
+                <textarea id="description" class="form-control mb-1" wire:model="description"
+                    {{ $contract->status->value > 2 ? 'disabled' : '' }}></textarea>
                 <div class="text-danger" style="height: 20px;">
                     @error('description')
                         {{ $message }}
@@ -112,11 +114,11 @@
                     </x-adminlte.tool.datatable>
                 </div>
                 <hr>
-                @if ($contract->status < 3)
+                @if ($contract->status->value < 3)
                     <div class="d-flex justify-content-end my-3">
-                        <button class="btn btn-success" wire:click="aprove">Aprobar</button>
-                        <button class="btn btn-primary" wire:click="create">Guardar</button>
-                        <button class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+                        <button class="btn btn-success me-1" wire:click="aprove">Aprobar</button>
+                        <button class="btn btn-primary me-1" wire:click="create">Guardar</button>
+                        <button class="btn btn-danger" id="btn-remove">Eliminar</button>
                     </div>
                 @endif
             </div>
@@ -125,8 +127,9 @@
                 <div>
                     <div class="my-3 d-flex justify-content-between py-0">
                         <h5 class="m-0 p-0" style="align-self: center;"><strong>Detalle de Contrato</strong></h5>
-                        <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary" {{$contract->status->value > 2 ? 'disabled' : ''}}><i
-                                class="fa fa-plus"></i> Añadir Producto</button>
+                        <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"
+                            {{ $contract->status->value > 2 ? 'disabled' : '' }}><i class="fa fa-plus"></i> Añadir
+                            Producto</button>
                     </div>
                     <x-adminlte.tool.datatable id="detail" :heads="$heads">
                         @foreach ($list ?? [] as $item)
@@ -137,9 +140,11 @@
                                 <td>{{ (float) $item->sale_price * (int) $item->quantity }}</td>
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#modal"
-                                        wire:click="loadProduct({{ $item->id }})" class="btn btn-primary" {{$contract->status->value > 2 ? 'disabled' : ''}}><i
+                                        wire:click="loadProduct({{ $item->id }})" class="btn btn-primary"
+                                        {{ $contract->status->value > 2 ? 'disabled' : '' }}><i
                                             class="fa fa-pen"></i></button>
-                                    <button class="btn btn-danger" wire:click="delete({{ $item->id }})" {{$contract->status->value > 2 ? 'disabled' : ''}}><i
+                                    <button class="btn btn-danger" wire:click="delete({{ $item->id }})"
+                                        {{ $contract->status->value > 2 ? 'disabled' : '' }}><i
                                             class="fa fa-trash"></i></button>
                                 </td>
                                 @php
@@ -510,6 +515,22 @@
 
         document.getElementById('btn-save-inversion').addEventListener('click', () => {
             $wire.dispatch('saveInversion');
+        });
+
+
+        document.getElementById('btn-remove').addEventListener('click', () => {
+            Swal.fire({
+                title: 'Esta Seguro?...',
+                text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: "#F7B924",
+                cancelButtonColor: "red",
+                confirmButtonText: "Si, deseo borrar!",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) $wire.dispatch('remove');
+            })
         });
     </script>
 @endscript
