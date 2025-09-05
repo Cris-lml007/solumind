@@ -6,7 +6,7 @@
     <div class="modal-body">
         <div class="d-flex">
             <div style="width: 50%;">
-                <label for="name">Nombre de Producto</label>
+                <label for="name">Nombre de Producto/Medida</label>
                 <div class="input-group">
                     <input type="text" name="name" class="form-control mb-1" placeholder="Nombre del producto"
                         wire:model.live="name" style="width: 40%;">

@@ -59,6 +59,16 @@ class ProductForm extends Component
             $this->category = $this->product->category_id;
             $this->alias = $this->product->category->alias;
             $this->cod = $this->product->cod;
+
+
+            $words = explode(' ', $this->name);
+            $s = 0;
+            foreach ($words as $word) {
+                if(strlen($word) > 2)
+                    $s += 3;
+            }
+            $this->size = substr($this->cod,$s,strlen($this->cod));
+            // $this->size ="adas";
         }catch(\Exception $e){
             $this->product = new Product();
         }
