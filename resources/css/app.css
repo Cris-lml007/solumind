@@ -18,8 +18,8 @@ body, .wrapper {
 }
 
 body {
-  
-    background-image: url('/vendor/adminlte/dist/img/ondasdoradas.jpg'); 
+
+    background-image: url('/vendor/adminlte/dist/img/ondasdoradas.jpg');
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -287,7 +287,7 @@ body.register-page {
 }
 
 .modal .form-control {
-    background-color: var(--color-fondo-widgets); 
+    background-color: var(--color-fondo-widgets);
     border-color: var(--color-bordes);
     color: var(--color-texto-principal);
 }
@@ -316,7 +316,32 @@ body.register-page {
 
 
 .card-body .table > thead > tr > th {
-    color: #ffca2c !important; 
+    color: #ffca2c !important;
     font-weight: bold;
-    border-bottom-width: 2px; 
+    border-bottom-width: 2px;
+}
+
+
+.glow-border {
+    border: 2px solid #ffca2c;
+    border-radius: 5px;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0% {
+        box-shadow: 0 0 5px #ffca2c, 0 0 10px #ffca2c;
+    }
+
+    50% {
+        box-shadow: 0 0 0px #ffca2c;
+    }
+
+    100% {
+        box-shadow: 0 0 5px #ffca2c, 0 0 10px #ffca2c;
+    }
+}
+
+* {
+    color-scheme: dark;
 }
