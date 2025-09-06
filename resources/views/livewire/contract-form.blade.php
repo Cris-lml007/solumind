@@ -52,7 +52,7 @@
                         {{ $message }}
                     @enderror
                 </div>
-                <div id="search" class="border rounded p-1 d-none">
+                <div id="search" class="glow-border p-1 d-none" wire:ignore.self>
                     <label>Buscar</label>
                     <input type="text" class="form-control mb-3" placeholder="Ingrese cliente a buscar"
                         wire:model.live="searchable">
@@ -277,7 +277,7 @@
                             wire:model="name_product">
                     </div>
                 </div>
-                <div id="search1" class="border rounded p-1 d-none mb-3" wire:ignore.self>
+                <div id="search1" class="glow-border p-1 d-none mb-3" wire:ignore.self>
                     <label>Buscar</label>
                     <input type="text" class="form-control mb-3" placeholder="Ingrese producto a buscar"
                         wire:model.live="searchable_product">

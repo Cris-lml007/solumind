@@ -111,7 +111,7 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-primary" wire:click="payUtility">Pagar</button>
-            <button class="btn btn-secondary">Cancelar</button>
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         </div>
     </x-modal>
 </div>

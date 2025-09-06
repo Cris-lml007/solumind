@@ -9,6 +9,7 @@ use App\Models\Partner;
 use App\Models\Person;
 use App\Models\Transaction;
 use App\TypeTransaction;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -97,10 +98,10 @@ class PartnerForm extends Component
             'amount' => $this->pay_amount
         ],[
             'description' => 'required',
-            'amount' => 'required|integer|min:1|max:'. (($utotal * ($contractPartner->interest / 100)) - $contractPartner->transactions()->sum('amount'))
+            'amount' => 'required|decimal:0,1000000|min:1|max:'. (($utotal * ($contractPartner->interest / 100)) - $contractPartner->transactions()->sum('amount'))
         ])->validate();
         Transaction::create([
-            'date' => now(),
+            'date' => Carbon::now()->format('Y-m-d'),
             'contract_id' => $contractPartner->contract_id,
             'contract_partner_id' => $contractPartner->id,
             'type' => TypeTransaction::EXPENSE->value,

@@ -46,6 +46,7 @@ class DiaryBookForm extends Component
 
     public function mount($id = null){
         try{
+            $this->contracts = Contract::where('status',3)->orWhere('status',1)->get();
             $this->transaction = Transaction::findOrFail($id);
             $this->date =  Carbon::parse($this->transaction->date)->toDateString();
             $this->description = $this->transaction->description;

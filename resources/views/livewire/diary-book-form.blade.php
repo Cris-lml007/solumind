@@ -48,8 +48,7 @@
                         {{ $message }}
                     @enderror
                 </div>
-                <div id="search-contract" class="d-none p-1" style="border: solid 1px gray;border-radius: 5px;"
-                    wire:ignore.self>
+                <div id="search-contract" class="d-none p-1 glow-border" wire:ignore.self>
                     <label for="search">Buscar</label>
                     <input type="text" name="search" class="form-control mb-3" wire:model.live="search_contract"
                         placeholder="Buscar codigo">
