@@ -6,12 +6,18 @@ use App\Models\Category;
 use App\Models\DetailItem;
 use App\Models\Item;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class AssemblyForm extends Component
 {
+    use WithFileUploads;
+
     #[Validate('required|unique:items,cod|unique:products,cod')]
     public $code;
     #[Validate('required')]
@@ -22,6 +28,7 @@ class AssemblyForm extends Component
     #[Validate('required')]
     public $category;
     public $alias;
+    public $img;
 
     public $search;
     public $list;
@@ -54,6 +61,8 @@ class AssemblyForm extends Component
             $this->price = $this->item->price;
             $this->extra = $this->item->extra;
             $this->category = $this->item->category_id;
+            $data = Storage::disk('imgProduct')->get($this->item->cod);
+            $this->img = 'data:image/png;base64,'.base64_encode($data);
             foreach ($this->item->detail_items()->withTrashed()->get() as $value) {
                 $this->products [] = [
                     'ipd' => $value->id,
@@ -181,13 +190,22 @@ class AssemblyForm extends Component
     }
 
     public function save(){
-        $this->validate();
+        Validator::make([
+            'code' => $this->code,
+            'name' => $this->name
+        ],[
+            'code' => ['required',Rule::unique('items','cod')->ignore($this->item->id),Rule::unique('products','cod')],
+            'name' => 'required'
+        ])->validate();
         $this->item->cod = $this->code;
         $this->item->name = $this->name;
         $this->item->price = $this->price;
         $this->item->extra = empty($this->extra) ? 0 : $this->extra;
         $this->item->description = $this->description;
-        $this->item->save();
+        // $this->item->save();
+        if($this->item->save() && $this->img != null && gettype($this->img) != 'string'){
+            $this->img->storeAs(path: '.', name: $this->item->cod,options: 'imgProduct');
+        }
 
         foreach ($this->deletes as $key => $value) {
             if($value['ipd'] != null) $this->item->detail_items()->where('id',$value['ipd'])->delete();
@@ -205,6 +223,7 @@ class AssemblyForm extends Component
     }
 
     public function remove(){
+        Storage::disk('imgProduct')->delete($this->item->cod);
         $this->item->delete();
         $this->redirect(route('dashboard.assembly'));
     }

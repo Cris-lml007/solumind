@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -32,7 +33,6 @@ class ProductForm extends Component
     public $category;
     public $img;
 
-    #[Validate('required|unique:products,cod|unique:items,cod')]
     public $cod;
     public $alias;
     public $size;
@@ -46,6 +46,12 @@ class ProductForm extends Component
     public $item_searchable;
     public $list = [];
 
+    protected function rules(){
+        return [
+            'cod' => ['required', Rule::unique('products','cod')->ignore($this->product->id),Rule::unique('items','cod')]
+        ];
+    }
+
     public function mount($id = null){
         try{
             $this->list = Supplier::all();
@@ -54,7 +60,7 @@ class ProductForm extends Component
             $this->price = $this->product->price;
             $this->description = $this->product->description;
             $this->nit = $this->product->supplier->nit;
-            $data = Storage::disk('imgProduct')->get($id);
+            $data = Storage::disk('imgProduct')->get($this->product->cod);
             $this->img = 'data:image/png;base64,'.base64_encode($data);
             $this->category = $this->product->category_id;
             $this->alias = $this->product->category->alias;
@@ -115,14 +121,15 @@ class ProductForm extends Component
         $this->product->description = $this->description;
         $this->product->category_id = $this->category;
         $this->product->supplier_id = Supplier::where('nit', $this->nit)->first()->id; // Assuming nit is the supplier_id
-        if($this->product->save() && $this->img != null){
-            $this->img->storeAs(path: '.', name: $this->product->id,options: 'imgProduct');
+        if($this->product->save() && $this->img != null && gettype($this->img) != 'string'){
+            $this->img->storeAs(path: '.', name: $this->product->cod,options: 'imgProduct');
         }
         session()->flash('message', 'Producto guardado exitosamente.');
         return redirect()->route('dashboard.product');
     }
 
     public function remove(){
+        Storage::disk('imgProduct')->delete($this->product->cod);
         $this->product->delete();
         $this->redirect(route('dashboard.product'));
     }

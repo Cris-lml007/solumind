@@ -53,20 +53,35 @@
                     <label for="code">Codigo</label>
                     <div class="input-group">
                         <span class="input-group-text" style="height: 38px;">{{ $alias }}</span>
-                        <input type="text" name="code" class="form-control mb-3"
+                        <input type="text" name="code" class="form-control mb-1"
                             placeholder="Ingrese codigo del producto" wire:model="code">
+                    </div>
+                    <div class="text-danger" style="height: 20px;">
+                        @error('code')
+                            {{ $message }}
+                        @enderror
                     </div>
                 </div>
                 <div style="width: 50%; margin-left: 10px;">
                     <label for="category">Nombre</label>
-                    <input type="text" name="name" class="form-control mb-3"
+                    <input type="text" name="name" class="form-control mb-1"
                         placeholder="Ingrese nombre del ensamblaje" wire:model="name">
+                    <div class="text-danger" style="height: 20px;">
+                        @error('name')
+                            {{ $message }}
+                        @enderror
+                    </div>
                 </div>
             </div>
             <div>
                 <label for="description">Descripción</label>
-                <textarea class="form-control mb-3" name="description" rows="3" placeholder="Ingrese descripción del producto"
+                <textarea class="form-control mb-1" name="description" rows="3" placeholder="Ingrese descripción del producto"
                     wire:model="description"></textarea>
+                <div class="text-danger" style="height: 20px;">
+                    @error('description')
+                        {{ $message }}
+                    @enderror
+                </div>
             </div>
             <h6><strong>Imagen del Producto</strong></h6>
             <div class="d-flex">
@@ -74,6 +89,12 @@
                     <input type="file" name="image1" class="form-control mb-3" wire:model="img">
                 </div>
             </div>
+            @if (!empty($item->id))
+                <div class="d-flex justify-content-center">
+                    <img src="{{ $img }}" class="img-fluid" alt="Sin Imagen"
+                        style="width: auto;height: 300px;">
+                </div>
+            @endif
             <div class="d-flex justify-content-between mb-3">
                 <h5 class="align-self-center m-0 p-0"><strong>Lista de Materiales</strong></h5>
                 <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"><i
