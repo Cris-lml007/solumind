@@ -131,7 +131,9 @@ class ContractForm extends Component
         $this->partner_interest = $this->contract_partner->interest;
         $this->partner_description = $this->contract_partner->description;
         $this->partner_amount = $this->contract_partner->amount;
-        $this->partner->id = $this->contract_partner->partner->id;
+        $this->partner_id = $this->contract_partner->partner->id;
+        $this->partner_ci = $this->contract_partner->partner->person->ci;
+        $this->partner = $this->contract_partner->partner;
     }
 
     public function saveInversion(){
@@ -148,7 +150,7 @@ class ContractForm extends Component
 
         if($this->contract_partner->id == null)
             $this->contract_partner = new ContractPartner();
-        $this->contract_partner = new ContractPartner();
+        // $this->contract_partner = new ContractPartner();
         $this->contract_partner->type = $this->partner_type;
         $this->contract_partner->interest = $this->partner_interest;
         $this->contract_partner->description = $this->partner_description;
@@ -164,6 +166,7 @@ class ContractForm extends Component
             'partner_description'
         );
         $this->js("$('#modal-partner').modal('hide')");
+        // $this->redirect(route('dashboard.proof.form',$this->contract->id));
     }
 
     public function deleteInversion($id){

@@ -177,7 +177,9 @@
                                 <td>{{ $item->amount }}</td>
                                 <td>{{ $item->interest }}</td>
                                 <td>
-                                    <button class="btn btn-primary"><i class="fa fa-pen"></i></button>
+                                    <button data-bs-toggle="modal" data-bs-target="#modal-partner"
+                                        class="btn btn-primary" wire:click="loadInversion({{ $item->id }})"><i
+                                            class="fa fa-pen"></i></button>
                                     <button wire:click="deleteInversion({{ $item->id }})"
                                         class="btn btn-danger"><i class="fa fa-trash"></i></button>
                                 </td>
