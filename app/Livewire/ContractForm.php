@@ -297,7 +297,9 @@ class ContractForm extends Component
         $this->detail->save();
         $this->contract->refresh();
         $this->list = $this->contract->detail_contract;
-        $this->reset(['code_product','name_product','description_product','bill','interest','operating','comission','bank','unexpected','purchase_price','quantity','sale_price','subtotal']);
+        $this->detail = new DetailContract();
+        // $this->reset(['code_product','name_product','description_product','bill','interest','operating','comission','bank','unexpected','purchase_price','quantity','sale_price','subtotal']);
+        $this->reset(['code_product','name_product','description_product','purchase_price','quantity','sale_price','subtotal']);
     }
 
     public function aprove(){

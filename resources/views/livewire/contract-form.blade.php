@@ -133,8 +133,36 @@
                     </div>
                     <x-adminlte.tool.datatable id="detail" :heads="$heads">
                         @foreach ($list ?? [] as $item)
+                            @php
+                                $words = explode(
+                                    ' ',
+                                    $item
+                                        ->detailable()
+                                        ->withTrashed()
+                                        ->first()?->cod,
+                                );
+                                $s = 0;
+                                foreach ($words as $word) {
+                                    if (strlen($word) > 2) {
+                                        $s += 3;
+                                    }
+                                }
+                                $size = substr(
+                                    $item
+                                        ->detailable()
+                                        ->withTrashed()
+                                        ->first()?->cod,
+                                    $s,
+                                    strlen(
+                                        $item
+                                            ->detailable()
+                                            ->withTrashed()
+                                            ->first()?->cod,
+                                    ),
+                                );
+                            @endphp
                             <tr>
-                                <td>{{ $item->detailable()->withTrashed()->first()->name }}</td>
+                                <td>{{ $item->detailable()->withTrashed()->first()?->name . ' ' . $size }}</td>
                                 <td>{{ $item->sale_price }}</td>
                                 <td>{{ $item->quantity }}</td>
                                 <td>{{ (float) $item->sale_price * (int) $item->quantity }}</td>
