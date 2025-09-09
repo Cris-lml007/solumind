@@ -27,4 +27,8 @@ class DetailContract extends Model
     public function detailable(){
         return $this->morphTo();
     }
+
+    public function deliveries(){
+        return $this->belongsToMany(Delivery::class,'delivery_detail_contracts');
+    }
 }
