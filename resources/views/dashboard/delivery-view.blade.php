@@ -27,6 +27,7 @@
                         <td>{{ $item->contract->cod }}</td>
                         <td>{{ $item->amount }}</td>
                         <td>{{ $balance }}</td>
+                        <td><a href="{{route('dashboard.delivery.pdf',$item->id)}}" class="btn btn-primary"><i class="fa fa-file"></i></a></td>
                     </tr>
                 @endforeach
             </x-adminlte.tool.datatable>

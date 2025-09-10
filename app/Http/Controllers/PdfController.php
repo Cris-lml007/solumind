@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Delivery;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PdfController extends Controller
 {
@@ -24,6 +26,25 @@ class PdfController extends Controller
             'date' => Carbon::parse($data->date)->format('d/m/Y'),
             'description' => $data->description,
             'contract' => $data->contract?->cod ?? ''
+        ]);
+        $pdf->setPaper('letter');
+        $pdf->render();
+        return $pdf->stream();
+    }
+    public function generateDelivery($id){
+        $data = Delivery::find($id);
+        $pdf = Pdf::setOptions([
+            'isHtmlParseEnabled' => true,
+            'isRemoteEnabled' => true
+        ])->loadView('pdf.delivery',[
+            'id' => $data->id,
+            'date' => $data->date,
+            'received' => $data->received_by,
+            'name' => $data->contract->client->name ?? $data->contract->client->person->name,
+            'nit' => $data->contract->client->nit ?? $data->contract->client->person->ci,
+            'amount' => $data->amount,
+            'balance' => $data->contract?->detail_contract()?->sum(DB::raw('sale_price*quantity')) - $data->contract->transactions()->where('account_id',2)->sum('amount') + $data->amount,
+            'data' => $data->detail_contract,
         ]);
         $pdf->setPaper('letter');
         $pdf->render();

@@ -49,6 +49,12 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('settings/account/{id}',AccountForm::class)->name('dashboard.settings.account');
 
     Route::get('proof/pdf/{id}',[PdfController::class,'generateVoucher'])->name('dashboard.proof.pdf');
+    Route::get('delivery/pdf/{id}',[PdfController::class,'generateDelivery'])->name('dashboard.delivery.pdf');
+
+
+    Route::get('pdf',function(){
+        return view('pdf.delivery');
+    });
 
 
 

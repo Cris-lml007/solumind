@@ -140,6 +140,7 @@ class DeliveryForm extends Component
                 'amount' => $this->amount
             ]);
         }
+        return $this->redirect(route('dashboard.delivery'));
     }
 
 
