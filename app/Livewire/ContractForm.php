@@ -9,6 +9,7 @@ use App\Models\DetailContract;
 use App\Models\Item;
 use App\Models\Partner;
 use App\Models\Product;
+use App\Models\Transaction;
 use App\StatusContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
@@ -140,10 +141,12 @@ class ContractForm extends Component
         Validator::make(
             [
                 'partner_ci' => $this->partner_ci,
-                'partner_id' => $this->partner_id
+                'partner_id' => $this->partner_id,
+                'partner_interest' => $this->partner_interest
             ],
             [
                 'partner_ci' => 'required|exists:people,ci',
+                'partner_interest' => 'integer|max:'.(100 - $this->contract->inversions()->sum('interest'))
                 // 'partner_id' => Rule::unique('contract_partners')->where(fn($query) => $query->where('contract_id',$this->contract->id))
             ]
         )->validate();
@@ -151,10 +154,9 @@ class ContractForm extends Component
         if($this->contract_partner->id == null)
             $this->contract_partner = new ContractPartner();
         // $this->contract_partner = new ContractPartner();
-        $this->contract_partner->type = $this->partner_type;
+        // $this->contract_partner->type = $this->partner_type;
         $this->contract_partner->interest = $this->partner_interest;
-        $this->contract_partner->description = $this->partner_description;
-        $this->contract_partner->amount = $this->partner_amount;
+        // $this->contract_partner->description = $this->partner_description;
         $this->contract_partner->contract_id = $this->contract->id;
         $this->contract_partner->partner_id = $this->partner->id;
         $this->contract_partner->save();
@@ -162,7 +164,6 @@ class ContractForm extends Component
             'partner_type',
             'partner_id',
             'partner_interest',
-            'partner_amount',
             'partner_description'
         );
         $this->js("$('#modal-partner').modal('hide')");
@@ -322,6 +323,7 @@ class ContractForm extends Component
     public function render()
     {
         $heads = ['Producto', 'Precio (Bs)', 'Cantidad', 'Subtotal', 'Acciones'];
-        return view('livewire.contract-form',compact(['heads']));
+        $transactions = Transaction::where('contract_id',$this->contract->id)->get();
+        return view('livewire.contract-form',compact(['heads','transactions']));
     }
 }

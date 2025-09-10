@@ -15,11 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('contract_id');
             $table->unsignedBigInteger('partner_id');
-            $table->decimal('amount');
-            $table->string('type');
+            // $table->string('type');
             $table->decimal('interest');
 
-            $table->string('description');
+            // $table->string('description');
             $table->timestamps();
             $table->softDeletes();
         });

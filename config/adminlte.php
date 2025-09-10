@@ -344,7 +344,7 @@ return [
         ],
         [
             'text' => 'Entregas',
-            'url' => 'admin/settings',
+            'route' => 'dashboard.delivery',
             'icon' => 'fas fa-fw fa-truck',
         ],
         ['header' => 'Operaciones'],
@@ -361,7 +361,7 @@ return [
         [
             'text' => 'Libro Mayor',
             'icon' => 'fas fa-fw fa-book-open',
-            'url' => '#',
+            'route' => 'dashboard.ledger',
         ],
         [
             'text' => 'Historial de Movimientos',

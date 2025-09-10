@@ -1,4 +1,5 @@
-<x-slot name="path_dir">Dashboard > Comprobantes > Proformas > {{ $code }}</x-slot>
+<x-slot name="path_dir">
+    Dashboard > Comprobantes > Proformas > {{ $code }}</x-slot>
 <div>
     @if ($contract->id != null)
         @php
@@ -20,14 +21,18 @@
                     type="button" role="tab" aria-controls="partners-tab-pane"
                     aria-selected="false">Inversión</button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="detail-tab" data-bs-toggle="tab" data-bs-target="#detail-tab-pane"
+                    type="button" role="tab" aria-controls="detail-tab-pane" aria-selected="false"
+                    wire:click="$refresh">Detalles</button>
+            </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab"
                 tabindex="0" wire:ignore.self>
                 <h5 class="mt-3"><strong>Información General</strong></h5>
                 <label for="code">Codigo</label>
-                <input type="text" wire:model="code" class="form-control"
-                    {{ $contract->status->value > 2 ? 'disabled' : '' }}>
+                <input type="text" wire:model="code" class="form-control">
                 <div class="text-danger" style="height: 20px;">
                     @error('code')
                         {{ $message }}
@@ -36,7 +41,7 @@
                 <label>Cliente</label>
                 <div class="input-group">
                     <select name="searchable-item" id="searchable-item" class="form-select"
-                        wire:model.live="searchable_item" {{ $contract->status->value > 2 ? 'disabled' : '' }}>
+                        wire:model.live="searchable_item">
                         <option>selecione un cliente</option>
                         @foreach ($clients as $item)
                             <option value="{{ $item->id }}">
@@ -44,8 +49,8 @@
                             </option>
                         @endforeach
                     </select>
-                    <button {{ $contract->status->value > 2 ? 'disabled' : '' }} id="btn-searchable"
-                        class="btn btn-primary" style="height: 38px;"><i class="fa fa-search"></i></button>
+                    <button id="btn-searchable" class="btn btn-primary" style="height: 38px;"><i
+                            class="fa fa-search"></i></button>
                 </div>
                 <div class="text-danger" style="height: 20px;">
                     @error('searchable_item')
@@ -58,8 +63,7 @@
                         wire:model.live="searchable">
                 </div>
                 <label for="description">Descripción</label>
-                <textarea id="description" class="form-control mb-1" wire:model="description"
-                    {{ $contract->status->value > 2 ? 'disabled' : '' }}></textarea>
+                <textarea id="description" class="form-control mb-1" wire:model="description"></textarea>
                 <div class="text-danger" style="height: 20px;">
                     @error('description')
                         {{ $message }}
@@ -73,7 +77,7 @@
                         @endphp
                         <div class="input-group">
                             <input type="number" class="form-control"
-                                value="{{ $contract->partners()->sum('amount') }}" disabled>
+                                value="{{ $contract->detail_contract()->sum('purchase_total') }}" disabled>
                             <span class="input-group-text">Bs</span>
                         </div>
                     </div>
@@ -81,8 +85,8 @@
                         <label>Saldo</label>
                         <div class="input-group">
                             <input type="number"
-                                class="form-control {{ $contract->partners()->sum('amount') - $contract->detail_contract()->sum('purchase_total') >= 0 ? 'bg-success' : 'bg-danger' }}"
-                                value="{{ $contract->partners()->sum('amount') - $contract->detail_contract()->sum('purchase_total') }}"
+                                class="form-control {{ $contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('account_id', 2)->sum('amount') >=0? 'bg-success': 'bg-danger' }}"
+                                value="{{ $contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('account_id', 1)->sum('amount') }}"
                                 disabled>
                             <span class="input-group-text">Bs</span>
                         </div>
@@ -127,8 +131,8 @@
                 <div>
                     <div class="my-3 d-flex justify-content-between py-0">
                         <h5 class="m-0 p-0" style="align-self: center;"><strong>Detalle de Contrato</strong></h5>
-                        <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"
-                            {{ $contract->status->value > 2 ? 'disabled' : '' }}><i class="fa fa-plus"></i> Añadir
+                        <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"><i
+                                class="fa fa-plus"></i> Añadir
                             Producto</button>
                     </div>
                     <x-adminlte.tool.datatable id="detail" :heads="$heads">
@@ -162,14 +166,13 @@
                                 );
                             @endphp
                             <tr>
-                                <td>{{ $item->detailable()->withTrashed()->first()?->name . ' ' . $size }}</td>
+                                <td>{{ $item->detailable()->withTrashed()->first()?->name .' ' .$size }}</td>
                                 <td>{{ $item->sale_price }}</td>
                                 <td>{{ $item->quantity }}</td>
                                 <td>{{ (float) $item->sale_price * (int) $item->quantity }}</td>
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#modal"
-                                        wire:click="loadProduct({{ $item->id }})" class="btn btn-primary"
-                                        {{ $contract->status->value > 2 ? 'disabled' : '' }}><i
+                                        wire:click="loadProduct({{ $item->id }})" class="btn btn-primary"><i
                                             class="fa fa-pen"></i></button>
                                     <button class="btn btn-danger" wire:click="delete({{ $item->id }})"
                                         {{ $contract->status->value > 2 ? 'disabled' : '' }}><i
@@ -197,12 +200,12 @@
                             class="fa fa-plus"></i> Añadir Inversión</button>
                 </div>
                 <div id="table-partner">
-                    <x-adminlte.tool.datatable id="partner" :heads="['CI', 'Nombre Completo', 'Inversión (Bs)', 'Interes (%)', 'Acciones']">
+                    <x-adminlte.tool.datatable id="partner" :heads="['CI', 'Nombre Completo', 'Interes (%)', 'Acciones']">
                         @foreach ($contract->inversions ?? [] as $item)
                             <tr>
                                 <td>{{ $item->partner->person->ci }}</td>
                                 <td>{{ $item->partner->person->name }}</td>
-                                <td>{{ $item->amount }}</td>
+                                <!-- <td>{{ $item->amount }}</td> -->
                                 <td>{{ $item->interest }}</td>
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#modal-partner"
@@ -216,61 +219,153 @@
                     </x-adminlte.tool.datatable>
                 </div>
             </div>
-        </div>
 
-        <x-modal id="modal-partner" title="Añadir Inversión" class="modal-lg">
-            <div class="modal-body">
-                <div class="d-flex">
-                    <div class="w-50">
-                        <label for="">CI</label>
-                        <input type="number" class="form-control" wire:model.live="partner_ci">
-                        <div class="text-danger" style="height: 20px;">
-                            @error('partner_ci')
-                                {{ $message }}
-                            @enderror
+            <div class="tab-pane fade show" id="detail-tab-pane" role="tabpanel" aria-labelledby="detail-tab"
+                tabindex="0" wire:ignore.self>
+                <div class="my-3">
+                    @php
+                        $tbill = $contract->detail_contract->sum(function ($item) {
+                            return $item->sale_price * ($item->bill / 100);
+                        });
+                        $toperating = $contract->detail_contract->sum(function ($item) {
+                            return $item->sale_price * ($item->operating / 100);
+                        });
+                        $tcomission = $contract->detail_contract->sum(function ($item) {
+                            return $item->sale_price * ($item->comission / 100);
+                        });
+                        $tbank = $contract->detail_contract->sum(function ($item) {
+                            return $item->sale_price * ($item->bank / 100);
+                        });
+                        $tunexpected = $contract->detail_contract->sum(function ($item) {
+                            return $item->sale_price * ($item->unexpected / 100);
+                        });
+                        $tinterest = $contract->detail_contract->sum(function ($item) {
+                            return $item->sale_price * ($item->binterest / 100);
+                        });
+                        $tutility = $contract->detail_contract->sum(function ($item) {
+                            return $item->sale_price * ($item->butility / 100);
+                        });
+                    @endphp
+                    <div class="row">
+                        <div class="col">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 style="text-align: end;"><i></i> Total Facturacion: {{ $tbill }} Bs</h6>
+                                </div>
+                            </div>
                         </div>
-                        <label for="">Tipo</label>
-                        <input type="text" class="form-control" wire:model="partner_type">
-                        <div class="text-danger" style="height: 20px;">
-                            @error('partner_type')
-                                {{ $message }}
-                            @enderror
+                        <div class="col">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 style="text-align: end;">Total Funcionamiento: {{ $toperating }} Bs</h6>
+                                </div>
+                            </div>
                         </div>
-                        <label for="">Inversión (Bs)</label>
-                        <input type="number" class="form-control" wire:model="partner_amount">
-                        <div class="text-danger" style="height: 20px;">
-                            @error('partner_amount')
-                                {{ $message }}
-                            @enderror
+                        <div class="col">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 style="text-align: end;">Total Comisión: {{ $tcomission }} Bs</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 style="text-align: end;">Total Banco: {{ $tbank }} Bs</h6>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="w-50 ms-1">
-                        <label for="">Nombre Completo</label>
-                        <select type="number" class="form-select" wire:model.live="partner_id">
-                            <option value="0">Seleccione a un socio</option>
-                            @foreach ($partners as $item)
-                                <option value="{{ $item->id }}">
-                                    {{ $item->person->name . ' (' . $item->organization . ')' }}</option>
-                            @endforeach
-                        </select>
-                        <div class="text-danger" style="height: 20px;">
-                            @error('partner_id')
-                                {{ $message }}
-                            @enderror
+                    <div class="row">
+                        <div class="col">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 style="text-align: end;">Total Interes: {{ $tinterest }} Bs</h6>
+                                </div>
+                            </div>
                         </div>
-                        <label for="">Interes (%)</label>
-                        <input type="number" class="form-control" wire:model="partner_interest">
-                        <div class="text-danger" style="height: 20px;">
-                            @error('partner_interest')
-                                {{ $message }}
-                            @enderror
+                        <div class="col">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 style="text-align: end;">Total Interes: {{ $tinterest }} Bs</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 style="text-align: end;">Total Utilidad: {{ $utotal }} Bs</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        @php
+                        $ti = 0;
+                        $te = 0;
+                        @endphp
+                    <x-adminlte.tool.datatable id="table-transactions" :heads="['ID', 'Fecha', 'Ingreso (Bs)', 'Egreso (Bs)', 'Descripctión', 'Cuenta']">
+                        @foreach ($transactions as $item)
+                        @php
+                        $ti += $item->type == 1 ? $item->amount : 0;
+                        $te += $item->type == 2 ? $item->amount : 0;
+                        @endphp
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->date }}</td>
+                                <td>{{ $item->type == 1 ? $item->amount : '' }}</td>
+                                <td>{{ $item->type == 2 ? $item->amount : '' }}</td>
+                                <td>{{ $item->description }}</td>
+                                <td>{{ $item->account->name }}</td>
+                            </tr>
+                        @endforeach
+                        <tfoot>
+                            <tr>
+                                <th colspan="2" style="text-align:right">Totales:</th>
+                                <th></th> {{-- total ingresos --}}
+                                <th></th> {{-- total egresos --}}
+                                <th colspan="2"></th>
+                            </tr>
+                        </tfoot>
+                    </x-adminlte.tool.datatable>
+                    <div class="card">
+                        <div class="card-body  {{ ($ti - $te) > 0 ? 'bg-success' : 'bg-danger' }}">
+                            <div><strong>Total Ganancia:</strong> {{ $ti - $te }} Bs</div>
                         </div>
                     </div>
                 </div>
-                <label for="">Descripción</label>
-                <textarea class="form-control" wire:model="partner_description"></textarea>
+            </div>
+        </div>
+
+        <x-modal id="modal-partner" title="Añadir Inversión" class="">
+            <div class="modal-body">
+                <label for="">CI</label>
+                <input type="number" class="form-control" wire:model.live="partner_ci">
                 <div class="text-danger" style="height: 20px;">
-                    @error('partner_description')
+                    @error('partner_ci')
+                        {{ $message }}
+                    @enderror
+                </div>
+                <label for="">Nombre Completo</label>
+                <select type="number" class="form-select" wire:model.live="partner_id">
+                    <option value="0">Seleccione a un socio</option>
+                    @foreach ($partners as $item)
+                        <option value="{{ $item->id }}">
+                            {{ $item->person->name . ' (' . $item->organization . ')' }}</option>
+                    @endforeach
+                </select>
+                <div class="text-danger" style="height: 20px;">
+                    @error('partner_id')
+                        {{ $message }}
+                    @enderror
+                </div>
+                <label for="">Interes</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" wire:model="partner_interest"
+                        placeholder="Disponible: {{ 100 - $contract->inversions()->sum('interest') }} %">
+                    <span class="input-group-text">%</span>
+                </div>
+                <div class="text-danger" style="height: 20px;">
+                    @error('partner_interest')
                         {{ $message }}
                     @enderror
                 </div>
@@ -534,6 +629,47 @@
             $('#detail').DataTable({
                 destroy: true
             })
+
+            $(document).ready(function() {
+                $('#table-transactions').DataTable({
+                    footerCallback: function(row, data, start, end, display) {
+                        var api = this.api();
+
+                        // Función para parsear a número
+                        var intVal = function(i) {
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '') * 1 :
+                                typeof i === 'number' ?
+                                i : 0;
+                        };
+
+                        // Total ingresos
+                        var totalIngresos = api
+                            .column(2, {
+                                page: 'current'
+                            })
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                        // Total egresos
+                        var totalEgresos = api
+                            .column(3, {
+                                page: 'current'
+                            })
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                        // Actualizar footer
+                        $(api.column(2).footer()).html(totalIngresos.toFixed(
+                            2)) //html(totalIngresos.toFixed(2));
+                        $(api.column(3).footer()).html(totalEgresos.toFixed(2));
+                    }
+                });
+            });
         })
 
         document.getElementById('btn-searchable').addEventListener('click', () => {
