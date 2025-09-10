@@ -107,7 +107,7 @@ class PartnerForm extends Component
             'type' => TypeTransaction::EXPENSE->value,
             'description' => $this->pay_description,
             'amount' => $this->pay_amount,
-            'account_id' => 9999
+            'account_id' => 1
         ]);
         return $this->redirect(route('dashboard.partner.form',$this->partner->id));
     }

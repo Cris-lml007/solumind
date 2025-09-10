@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Client;
 use App\Models\Contract;
+use App\Models\Delivery;
 use App\Models\Transaction;
 use App\Models\User;
 use App\StatusContract;
@@ -77,6 +78,16 @@ class DashboardController extends Controller
         $heads = ['Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato', 'Cuenta'];
         $data = Transaction::orderBy('date','asc')->get();
         return view('dashboard.diary-book',compact(['heads','data']));
+    }
+
+    public function ledger(){
+        return view('dashboard.ledger-view');
+    }
+
+    public function delivery(){
+        $heads = ['Fecha','ID','Codigo de Contrato','Importe (Bs)','Saldo (Bs)'];
+        $data = Delivery::all();
+        return view('dashboard.delivery-view',compact(['heads','data']));
     }
 
     public function settings(){

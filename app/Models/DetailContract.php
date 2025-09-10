@@ -29,6 +29,6 @@ class DetailContract extends Model
     }
 
     public function deliveries(){
-        return $this->belongsToMany(Delivery::class,'delivery_detail_contracts');
+        return $this->belongsToMany(Delivery::class,'delivery_detail_contracts')->withPivot(['quantity']);
     }
 }

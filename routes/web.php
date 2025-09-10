@@ -28,6 +28,8 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         Route::get('product','product')->name('dashboard.product');
         Route::get('assembly','assembly')->name('dashboard.assembly');
         Route::get('partner','partner')->name('dashboard.partner');
+        Route::get('ledger','ledger')->name('dashboard.ledger');
+        Route::get('delivery','delivery')->name('dashboard.delivery');
 
         Route::get('client','client')->name('dashboard.client');
 

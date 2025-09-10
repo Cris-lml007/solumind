@@ -12,6 +12,7 @@ class Transaction extends Model
     public $fillable = [
         'contract_id',
         'contract_partner_id',
+        'delivery_id',
         'type',
         'description',
         'account_id',
@@ -29,5 +30,9 @@ class Transaction extends Model
 
     public function contract_partner(){
         return $this->belongsTo(ContractPartner::class);
+    }
+
+    public function delivery(){
+        return $this->belongsTo(Delivery::class);
     }
 }

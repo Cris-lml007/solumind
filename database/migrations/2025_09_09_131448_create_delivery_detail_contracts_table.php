@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('delivery_detail_contracts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('detail_contract_id');
+            $table->unsignedBigInteger('delivery_id');
+            $table->integer('quantity');
             $table->timestamps();
             $table->softDeletes();
         });

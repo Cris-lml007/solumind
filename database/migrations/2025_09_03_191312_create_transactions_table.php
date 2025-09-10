@@ -17,6 +17,7 @@ return new class extends Migration
             $table->date('date');
             $table->unsignedBigInteger('contract_partner_id')->nullable();
             $table->unsignedBigInteger('account_id')->nullable();
+            $table->unsignedInteger('delivery_id')->nullable();
             $table->string('description');
             $table->decimal('amount',10,2);
             $table->integer('type');

@@ -23,8 +23,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $a = new Account();
-        $a->name = 'Utilidad';
-        $a->id = 9999;
+        $a->name = 'Cuentas por Pagar';
+        $a->id = 1;
         $a->save();
+
+        $b = new Account();
+        $b->name = 'Cuentas por Cobrar';
+        $b->id = 2;
+        $b->save();
     }
 }
