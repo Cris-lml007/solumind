@@ -118,13 +118,13 @@
                     </x-adminlte.tool.datatable>
                 </div>
                 <hr>
-                @if ($contract->status->value < 3)
-                    <div class="d-flex justify-content-end my-3">
+                <div class="d-flex justify-content-end my-3">
+                    @if ($contract->status->value < 3)
                         <button class="btn btn-success me-1" wire:click="aprove">Aprobar</button>
-                        <button class="btn btn-primary me-1" wire:click="create">Guardar</button>
-                        <button class="btn btn-danger" id="btn-remove">Eliminar</button>
-                    </div>
-                @endif
+                    @endif
+                    <button class="btn btn-primary me-1" wire:click="create">Guardar</button>
+                    <button class="btn btn-danger" id="btn-remove">Eliminar</button>
+                </div>
             </div>
             <div class="tab-pane fade" id="products-tab-pane" role="tabpanel" aria-labelledby="products-tab"
                 tabindex="0" wire:ignore.self>
@@ -250,28 +250,24 @@
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;"><i></i> Total Facturacion: {{ $tbill }} Bs</h6>
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-money_bill"></i> Facturacion:
+                                        {{ $tbill }} Bs</h6>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;">Total Funcionamiento: {{ $toperating }} Bs</h6>
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-truck"></i> Funcionamiento:
+                                        {{ $toperating }} Bs</h6>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;">Total Comisión: {{ $tcomission }} Bs</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="card border-primary">
-                                <div class="card-body">
-                                    <h6 style="text-align: end;">Total Banco: {{ $tbank }} Bs</h6>
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-bookmark"></i>Comisión:
+                                        {{ $tcomission }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -280,35 +276,38 @@
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;">Total Interes: {{ $tinterest }} Bs</h6>
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-bank"></i> Banco:
+                                        {{ $tbank }} Bs</h6>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;">Total Interes: {{ $tinterest }} Bs</h6>
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-percent"></i> Interes:
+                                        {{ $tinterest }} Bs</h6>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;">Total Utilidad: {{ $utotal }} Bs</h6>
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-angles_up"></i> Utilidad:
+                                        {{ $utotal }} Bs</h6>
                                 </div>
                             </div>
                         </div>
                     </div>
-                        @php
+                    @php
                         $ti = 0;
                         $te = 0;
-                        @endphp
+                    @endphp
                     <x-adminlte.tool.datatable id="table-transactions" :heads="['ID', 'Fecha', 'Ingreso (Bs)', 'Egreso (Bs)', 'Descripctión', 'Cuenta']">
                         @foreach ($transactions as $item)
-                        @php
-                        $ti += $item->type == 1 ? $item->amount : 0;
-                        $te += $item->type == 2 ? $item->amount : 0;
-                        @endphp
+                            @php
+                                $ti += $item->type == 1 ? $item->amount : 0;
+                                $te += $item->type == 2 ? $item->amount : 0;
+                            @endphp
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->date }}</td>
@@ -328,7 +327,7 @@
                         </tfoot>
                     </x-adminlte.tool.datatable>
                     <div class="card">
-                        <div class="card-body  {{ ($ti - $te) > 0 ? 'bg-success' : 'bg-danger' }}">
+                        <div class="card-body  {{ $ti - $te > 0 ? 'bg-success' : 'bg-danger' }}">
                             <div><strong>Total Ganancia:</strong> {{ $ti - $te }} Bs</div>
                         </div>
                     </div>
