@@ -15,6 +15,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\StatusContract;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -81,11 +82,24 @@ class DashboardController extends Controller
     }
 
     public function ledger(){
-        return view('dashboard.ledger-view');
+        $heads = ['Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato', 'Cuenta'];
+        $data = Transaction::orderBy('date','asc')->get();
+        $data1 = DB::table('transactions')
+            ->join('accounts','accounts.id','=','transactions.account_id')
+            ->select(
+                'account_id',
+                'accounts.name',
+                DB::raw("SUM(CASE WHEN transactions.type = 1 THEN amount ELSE 0 END) -
+                SUM(CASE WHEN transactions.type = 2 THEN amount ELSE 0 END) as balance")
+            )
+            ->groupBy('account_id', 'accounts.name')
+            ->get();
+        // dd($data1[0]);
+        return view('dashboard.ledger-view',compact(['heads','data','data1']));
     }
 
     public function delivery(){
-        $heads = ['Fecha','ID','Codigo de Contrato','Importe (Bs)','Saldo (Bs)'];
+        $heads = ['Fecha','ID','Codigo de Contrato','Importe (Bs)','Saldo (Bs)','Generar'];
         $data = Delivery::all();
         return view('dashboard.delivery-view',compact(['heads','data']));
     }
