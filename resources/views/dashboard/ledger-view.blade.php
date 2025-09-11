@@ -1,6 +1,10 @@
 @extends('adminlte::page')
 
 @section('content')
+        <div class="my-3">
+            <h1 class="m-0">Libro Mayor</h1>
+            <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Libro Mayor</strong></h6>
+        </div>
     <div class="card">
         <div class="card-body">
             <x-adminlte.tool.datatable id="table" :heads="$heads">
