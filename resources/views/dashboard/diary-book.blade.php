@@ -24,8 +24,8 @@
                     @endphp
                     <tr onclick="edit({{ $item->id }})" class="item-table">
                         <td>{{ $item->date }}</td>
-                        <td>{{ $item->type == 1 ? $item->amount : '' }}</td>
-                        <td>{{ $item->type == 2 ? $item->amount : '' }}</td>
+                        <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount,precision:2) : '' }}</td>
+                        <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount,precision:2) : '' }}</td>
                         <td>{{ $item->description }}</td>
                         <td>{{ $item->contract->cod ?? '' }}</td>
                         <td>{{ $item->account->name }}</td>
@@ -34,12 +34,12 @@
                 <tfoot>
                     <tr>
                         <th>TOTAL</th>
-                        <td class="bg-primary"><strong>{{ $t_income }} Bs</strong></td>
-                        <td class="bg-secondary"><strong>{{ $t_expense }} Bs</strong></td>
+                        <td class="bg-primary"><strong>{{ Illuminate\Support\Number::format($t_income,precision:2) }} Bs</strong></td>
+                        <td class="bg-secondary"><strong>{{ Illuminate\Support\Number::format($t_expense,precision:2) }} Bs</strong></td>
                     </tr>
                     <tr>
                         <th>SALDO EFECTIVO</th>
-                        <td colspan="2" style="text-align: center;" class="{{ $t_income - $t_expense >= 0 ? 'bg-success' : 'bg-danger'}}"><strong>{{ $t_income - $t_expense }} Bs</strong></td>
+                        <td colspan="2" style="text-align: center;" class="{{ $t_income - $t_expense >= 0 ? 'bg-success' : 'bg-danger'}}"><strong>{{ Illuminate\Support\Number::format(($t_income - $t_expense),precision:2) }} Bs</strong></td>
                     </tr>
                 </tfoot>
             </x-adminlte.tool.datatable>

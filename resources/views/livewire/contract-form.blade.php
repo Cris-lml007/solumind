@@ -77,7 +77,7 @@
                         @endphp
                         <div class="input-group">
                             <input type="number" class="form-control"
-                                value="{{ $contract->detail_contract()->sum('purchase_total') }}" disabled>
+                                value="{{Illuminate\Support\Number::format($contract->detail_contract()->sum('purchase_total'),precision:2) }}" disabled>
                             <span class="input-group-text">Bs</span>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                         <div class="input-group">
                             <input type="number"
                                 class="form-control {{ $contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('account_id', 2)->sum('amount') >=0? 'bg-success': 'bg-danger' }}"
-                                value="{{ $contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('account_id', 1)->sum('amount') }}"
+                                value="{{ Illuminate\Support\Number::format($contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('account_id', 1)->sum('amount'),precision: 2) }}"
                                 disabled>
                             <span class="input-group-text">Bs</span>
                         </div>
@@ -104,7 +104,7 @@
                                 <td>{{ $item->person->ci }}</td>
                                 <td>{{ $item->person->name }}</td>
                                 <td>{{ $item->pivot->interest }}</td>
-                                <td>{{ $utotal * ($item->pivot->interest / 100) }}</td>
+                                <td>{{  Illuminate\Support\Number::format($utotal * ($item->pivot->interest / 100),precision:2)}}</td>
                             </tr>
                             @php
                                 $ptotal += $utotal * ($item->pivot->interest / 100);
@@ -113,7 +113,7 @@
                         @endforeach
                         <tfoot>
                             <th colspan="3">TOTAL UTILIDAD</th>
-                            <th>{{ $ptotal }} Bs</th>
+                            <th>{{ Illuminate\Support\Number::format($ptotal,precision:2) }} Bs</th>
                         </tfoot>
                     </x-adminlte.tool.datatable>
                 </div>
@@ -167,9 +167,9 @@
                             @endphp
                             <tr>
                                 <td>{{ $item->detailable()->withTrashed()->first()?->name .' ' .$size }}</td>
-                                <td>{{ $item->sale_price }}</td>
+                                <td>{{ Illuminate\Support\Number::format($item->sale_price,precision:2)}}</td>
                                 <td>{{ $item->quantity }}</td>
-                                <td>{{ (float) $item->sale_price * (int) $item->quantity }}</td>
+                                <td>{{ Illuminate\Support\Number::format((float) $item->sale_price * (int) $item->quantity,precision:2)  }}</td>
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#modal"
                                         wire:click="loadProduct({{ $item->id }})" class="btn btn-primary"><i
@@ -186,7 +186,7 @@
                         <tfoot>
                             <th colspan="2"></th>
                             <th>Total</th>
-                            <th>{{ $total }}</th>
+                            <th>{{ Illuminate\Support\Number::format($total,precision:2) }}</th>
                             <th></th>
                         </tfoot>
                     </x-adminlte.tool.datatable>
@@ -251,7 +251,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-money_bill"></i> Facturacion:
-                                        {{ $tbill }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($tbill,precision:2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -259,7 +259,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-truck"></i> Funcionamiento:
-                                        {{ $toperating }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($toperating,precision:2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -267,7 +267,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-bookmark"></i>Comisión:
-                                        {{ $tcomission }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($tcomission,precision:2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -277,7 +277,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-bank"></i> Banco:
-                                        {{ $tbank }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($tbank,precision:2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -285,7 +285,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-percent"></i> Interes:
-                                        {{ $tinterest }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($tinterest,precision:2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -293,7 +293,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-angles_up"></i> Utilidad:
-                                        {{ $utotal }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($utotal,precision:2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -311,8 +311,8 @@
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->date }}</td>
-                                <td>{{ $item->type == 1 ? $item->amount : '' }}</td>
-                                <td>{{ $item->type == 2 ? $item->amount : '' }}</td>
+                                <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount,precision:2) : '' }}</td>
+                                <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount,precision:2) : '' }}</td>
                                 <td>{{ $item->description }}</td>
                                 <td>{{ $item->account->name }}</td>
                             </tr>
@@ -328,7 +328,7 @@
                     </x-adminlte.tool.datatable>
                     <div class="card">
                         <div class="card-body  {{ $ti - $te > 0 ? 'bg-success' : 'bg-danger' }}">
-                            <div><strong>Total Ganancia:</strong> {{ $ti - $te }} Bs</div>
+                            <div><strong>Total Ganancia:</strong> {{ Illuminate\Support\Number::format($ti -$te,precision:2) }} Bs</div>
                         </div>
                     </div>
                 </div>

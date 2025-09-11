@@ -126,7 +126,7 @@
         </tr>
         <tr>
             <td><strong>Contrato:</strong> {{ $contract ?? '' }}</td>
-            <td><strong>Cantidad:</strong> {{ number_format($amount ?? 0, 2) }} Bs</td>
+            <td><strong>Cantidad:</strong> {{ Illuminate\Support\Number::format($amount,precision:2) }} Bs</td>
         </tr>
     </table>
 

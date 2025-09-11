@@ -93,15 +93,15 @@
     <table>
         <tr>
             <td><strong>Saldo pendiente:</strong></td>
-            <td>{{$balance}} Bs</td>
+            <td>{{ Illuminate\Support\Number::format($balance,precision:2)}} Bs</td>
         </tr>
         <tr>
             <td><strong>Depósito:</strong></td>
-            <td>{{$amount}} Bs</td>
+            <td>{{ Illuminate\Support\Number::format($amount,precision:2)}} Bs</td>
         </tr>
         <tr>
             <td><strong>Saldo restante:</strong></td>
-            <td>{{$balance - $amount}} Bs</td>
+            <td>{{Illuminate\Support\Number::format($balance - $amount,precision:2)}} Bs</td>
         </tr>
     </table>
 

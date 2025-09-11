@@ -54,7 +54,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $item->description }}</td>
-                                <td><strong>{{ number_format($item->amount, 2, ',', '.') }}</strong></td>
+                                <td><strong>{{ Illuminate\Support\Number::format($item->amount,precision:2) }}</strong></td>
                                 <td><a href="{{ route('dashboard.proof.pdf',$item->id) }}" class="btn btn-primary"><i
                                             class="fa fa-file-pdf"></i> Exportar</a></td>
                             </tr>

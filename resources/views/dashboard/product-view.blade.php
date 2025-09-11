@@ -29,7 +29,7 @@
                         <td><strong>{{ $item->name . ' ' . $size }}</strong></td>
                         <td><strong>{{ $item->supplier->organization == null ? $item->supplier->person->name : $item->supplier->organization }}</strong>
                         </td>
-                        <td><strong>{{ $item->price }}</strong></td>
+                        <td><strong>{{ Illuminate\Support\Number::format($item->price,precision:2) }}</strong></td>
                         <td><a href="{{ route('dashboard.product.form', $item->id) }}" class="btn btn-primary"><i
                                     class="fa fa-ellipsis-v"></i></a>
                         </td>
