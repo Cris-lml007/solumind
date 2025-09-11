@@ -1,13 +1,13 @@
 @extends('adminlte::page')
-
+@section('title', 'Libro Mayor')
 @section('content')
-        <div class="my-3">
-            <h1 class="m-0">Libro Mayor</h1>
-            <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Libro Mayor</strong></h6>
-        </div>
+    <div class="my-3">
+        <h1 class="m-0">Libro Mayor</h1>
+        <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Libro Mayor</strong></h6>
+    </div>
     <div class="card">
         <div class="card-body">
-            <x-adminlte.tool.datatable id="table" :heads="$heads">
+            <x-adminlte.tool.datatable id="table" :heads="$heads" hoverable with-buttons>
                 @php
                     $t_income = 0;
                     $t_expense = 0;
@@ -73,6 +73,24 @@
     </div>
 @endsection
 
+@section('css')
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script> <!-- Or your preferred jQuery version -->
+    <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
+
+    <!-- DataTables Buttons Extension -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.5/css/buttons.dataTables.css">
+    <script src="https://cdn.datatables.net/buttons/3.2.5/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.5/js/buttons.html5.js"></script> <!-- For HTML5 export buttons -->
+    <script src="https://cdn.datatables.net/buttons/3.2.5/js/buttons.print.js"></script> <!-- For print button -->
+
+    <!-- Required for Excel export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+@endsection
+
 @section('js')
     <script>
         $(document).ready(function() {
@@ -86,6 +104,14 @@
             $('#table1').DataTable({
                 paging: false,
                 searching: false,
+                dom: '<"d-flex justify-content-end align-items-center"fB>rtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5',
+                    'print'
+                ],
                 footerCallback: function(row, data, start, end, display) {
                     var api = this.api();
 
@@ -120,6 +146,15 @@
 
 
             $('#table').DataTable({
+                // dom: '', // Required to display the buttons
+                dom: '<"d-flex justify-content-between align-items-center"fB>rtip',
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5',
+                    'print'
+                ],
                 paging: false,
                 footerCallback: function(row, data, start, end, display) {
                     var api = this.api();

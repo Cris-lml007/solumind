@@ -225,25 +225,25 @@
                 <div class="my-3">
                     @php
                         $tbill = $contract->detail_contract->sum(function ($item) {
-                            return $item->sale_price * ($item->bill / 100);
+                            return (int)($item->sale_price ?? 0) * ((int)($item->bill ?? 0) / 100);
                         });
                         $toperating = $contract->detail_contract->sum(function ($item) {
-                            return $item->sale_price * ($item->operating / 100);
+                            return (int)($item->sale_price ?? 0) * ((int)($item->operating ?? 0) / 100);
                         });
                         $tcomission = $contract->detail_contract->sum(function ($item) {
-                            return $item->sale_price * ($item->comission / 100);
+                            return (int)($item->sale_price ?? 0) * ((int)($item->comission ?? 0) / 100);
                         });
                         $tbank = $contract->detail_contract->sum(function ($item) {
-                            return $item->sale_price * ($item->bank / 100);
+                            return (int)($item->sale_price ?? 0) * ((int)($item->bank ?? 0) / 100);
                         });
                         $tunexpected = $contract->detail_contract->sum(function ($item) {
-                            return $item->sale_price * ($item->unexpected / 100);
+                            return (int)($item->sale_price ?? 0) * ((int)($item->unexpected ?? 0) / 100);
                         });
                         $tinterest = $contract->detail_contract->sum(function ($item) {
-                            return $item->sale_price * ($item->binterest / 100);
+                            return (int)($item->sale_price ?? 0) * ((int)($item->interest ?? 0) / 100);
                         });
                         $tutility = $contract->detail_contract->sum(function ($item) {
-                            return $item->sale_price * ($item->butility / 100);
+                            return (int)($item->sale_price ?? 0) * ((int)($item->utility ?? 0) / 100);
                         });
                     @endphp
                     <div class="row">

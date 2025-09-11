@@ -30,6 +30,14 @@
             <div class="card">
                 <div class="card-body">
                     <x-adminlte.tool.datatable id="users" :heads="['Id', 'Usuario', 'Correo', 'Acciones']">
+                        @foreach ($data['users'] as $item)
+                        <tr>
+                            <td>{{ $item->id }}</td>
+                            <td>{{ $item?->person->name ?? 'anonimo'}}</td>
+                            <td>{{ $item->email }}</td>
+                            <td><a class="btn btn-primary"><i class="fa fa-pen"></i></a></td>
+                        </tr>
+                        @endforeach
                     </x-adminlte.tool.datatable>
                 </div>
             </div>
@@ -72,131 +80,7 @@
 
     <x-modal id="modal" title="" class="modal-lg">
         <div id="modal-user">
-            <div class="modal-body">
-                <div class="d-flex">
-                    <div class="w-50">
-                        <label for="name">Nombre</label>
-                        <div class="input-group">
-                            <input type="email" name="name" class="form-control">
-                        </div>
-                        <label for="password">Contraseña</label>
-                        <div class="input-group">
-                            <input type="password" name="password" class="form-control">
-                        </div>
-                    </div>
-                    <div class="w-50 ms-1">
-                        <label for="email">Correo</label>
-                        <div class="input-group">
-                            <input type="email" name="email" class="form-control">
-                        </div>
-                        <label for="password-verify">Confimar Contraseña</label>
-                        <div class="input-group">
-                            <input type="password" name="password-verify" class="form-control">
-                        </div>
-                    </div>
-                </div>
-                <h6><strong>Permisos</strong></h6>
-                <div class="row">
-                    <div class="col border rounded">
-                        <label for="product">Gestión de Proveedores</label>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Ninguno</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura y Escritura</label>
-                        </div>
-                    </div>
-                    <div class="col border rounded">
-                        <label for="product">Gestión de Productos</label>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Ninguno</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura y Escritura</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col border rounded">
-                        <label for="product">Gestión de Ensamblajes</label>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Ninguno</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura y Escritura</label>
-                        </div>
-                    </div>
-                    <div class="col border rounded">
-                        <label for="product">Gestión de Entregas</label>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Ninguno</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura y Escritura</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col border rounded">
-                        <label for="product">Configuraciones</label>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Ninguno</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura y Escritura</label>
-                        </div>
-                    </div>
-                    <div class="col border rounded">
-                        <label for="product">Gestión de Libro Diario</label>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Ninguno</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="" value="" class="form-check-input">
-                            <label for="">Lectura y Escritura</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary">Guardar</button>
-                <button class="btn btn-sencodary" data-bs-dismiss="modal">Cancelar</button>
-            </div>
+            <livewire:userform></livewire:userform>
         </div>
 
         <div id="modal-category" class="d-none">

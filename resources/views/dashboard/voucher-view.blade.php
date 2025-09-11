@@ -1,4 +1,5 @@
 @extends('adminlte::page')
+@section('title', 'Comprobantes')
 @php
     $activeTab = request()->query('tab', 'comprobantes');
 @endphp

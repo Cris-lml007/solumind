@@ -11,16 +11,22 @@ use App\Models\Supplier;
 use App\Models\Client;
 use App\Models\Contract;
 use App\Models\Delivery;
+use App\Models\DetailContract;
 use App\Models\Transaction;
 use App\Models\User;
 use App\StatusContract;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index(){
-        return view('dashboard.index');
+        $data = Transaction::where('date',Carbon::now()->toDateString())->get();
+        $total = DetailContract::sum(DB::raw('sale_price*quantity'));
+        $utotal = DetailContract::sum(DB::raw('sale_price*quantity - purchase_total'));
+        $patrimony = Transaction::where('type',1)->sum('amount') - Transaction::where('type',2)->sum('amount');
+        return view('dashboard.index',compact(['data','utotal','total','patrimony']));
     }
     public function supplier(){
         $heads = ['NIT', 'Nombre Proveedor', 'Contacto Principal', 'Acciones'];

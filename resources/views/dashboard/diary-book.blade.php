@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-
+@section('title', 'Libro Diario')
 @section('content')
     <div class="d-flex justify-content-between mb-3 p-0" style="align-items: center;">
         <div>
@@ -12,7 +12,7 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <x-adminlte.tool.datatable id="table-diary" :heads="$heads">
+            <x-adminlte.tool.datatable id="table-diary" :heads="$heads" hoverable with-buttons>
                 @php
                     $t_income = 0;
                     $t_expense = 0;
