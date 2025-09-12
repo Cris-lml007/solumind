@@ -378,7 +378,7 @@ return [
         [
             'text' => 'Mi Perfil',
             'icon' => 'fas fa-fw fa-user',
-            'url' => '#',
+            'route' => 'dashboard.profile',
         ],
         [
             'text' => 'Configuración',

@@ -33,7 +33,8 @@
                 </div>
                 <label for="password-verify">Confimar Contraseña</label>
                 <div class="input-group">
-                    <input type="password" name="password-verify" class="form-control" wire:model="password_confirmation">
+                    <input type="password" name="password-verify" class="form-control"
+                        wire:model="password_confirmation">
                 </div>
                 <div class="text-danger" style="height: 20px;">
                     @error('password_confirmation')
@@ -42,138 +43,143 @@
                 </div>
             </div>
         </div>
-        <div class="mb-3">
-            <label for="">Enlazar con Persona</label>
-            <select wire:model="person_id" id="" class="form-select">
-                <option value="null">Seleccione una Persona</option>
-                @foreach ($persons as $item)
-                    <option value="{{ $item->id }}">{{ $item->name . ' (' . $item->ci . ')' }}</option>
-                @endforeach
-            </select>
+        @if (Auth::user()->id == 1)
+            <div class="mb-3">
+                <label for="">Enlazar con Persona</label>
+                <select wire:model="person_id" id="" class="form-select">
+                    <option value="null">Seleccione una Persona</option>
+                    @foreach ($persons as $item)
+                        <option value="{{ $item->id }}">{{ $item->name . ' (' . $item->ci . ')' }}</option>
+                    @endforeach
+                </select>
                 <div class="text-danger" style="height: 20px;">
                     @error('person_id')
                         {{ $message }}
                     @enderror
                 </div>
-        </div>
-        <h6><strong>Permisos</strong></h6>
-        <div class="row">
-            <div class="col border rounded">
-                <label for="product">Gestión de Proveedores</label>
-                <div class="form-check">
-                    <input type="radio" wire:model="p1" value="1" class="form-check-input">
-                    <label for="">Ninguno</label>
+            </div>
+            <h6><strong>Permisos</strong></h6>
+            <div class="row">
+                <div class="col border rounded">
+                    <label for="product">Gestión de Proveedores</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p1" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p1" value="2" class="form-check-input">
+                        <label for="">Lectura</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p1" value="3" class="form-check-input">
+                        <label for="">Lectura y Escritura</label>
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p1" value="2" class="form-check-input">
-                    <label for="">Lectura</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p1" value="3" class="form-check-input">
-                    <label for="">Lectura y Escritura</label>
+                <div class="col border rounded">
+                    <label for="product">Gestión de Productos</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p2" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p2" value="2" class="form-check-input">
+                        <label for="">Lectura</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p2" value="3" class="form-check-input">
+                        <label for="">Lectura y Escritura</label>
+                    </div>
                 </div>
             </div>
-            <div class="col border rounded">
-                <label for="product">Gestión de Productos</label>
-                <div class="form-check">
-                    <input type="radio" wire:model="p2" value="1" class="form-check-input">
-                    <label for="">Ninguno</label>
+            <div class="row">
+                <div class="col border rounded">
+                    <label for="product">Gestión de Ensamblajes</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p3" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p3" value="2" class="form-check-input">
+                        <label for="">Lectura</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p3" value="3" class="form-check-input">
+                        <label for="">Lectura y Escritura</label>
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p2" value="2" class="form-check-input">
-                    <label for="">Lectura</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p2" value="3" class="form-check-input">
-                    <label for="">Lectura y Escritura</label>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col border rounded">
-                <label for="product">Gestión de Ensamblajes</label>
-                <div class="form-check">
-                    <input type="radio" wire:model="p3" value="1" class="form-check-input">
-                    <label for="">Ninguno</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p3" value="2" class="form-check-input">
-                    <label for="">Lectura</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p3" value="3" class="form-check-input">
-                    <label for="">Lectura y Escritura</label>
-                </div>
-            </div>
-            <div class="col border rounded">
-                <label for="product">Gestión de Entregas</label>
-                <div class="form-check">
-                    <input type="radio" wire:model="p4" value="1" class="form-check-input">
-                    <label for="">Ninguno</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p4" value="2" class="form-check-input">
-                    <label for="">Lectura</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p4" value="3" class="form-check-input">
-                    <label for="">Lectura y Escritura</label>
+                <div class="col border rounded">
+                    <label for="product">Gestión de Entregas</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p4" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p4" value="2" class="form-check-input">
+                        <label for="">Lectura</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p4" value="3" class="form-check-input">
+                        <label for="">Lectura y Escritura</label>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col border rounded">
-                <label for="product">Gestión de Socios</label>
-                <div class="form-check">
-                    <input type="radio" wire:model="p5" value="1" class="form-check-input">
-                    <label for="">Ninguno</label>
+            <div class="row">
+                <div class="col border rounded">
+                    <label for="product">Gestión de Socios</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p5" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p5" value="2" class="form-check-input">
+                        <label for="">Lectura</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p5" value="3" class="form-check-input">
+                        <label for="">Lectura y Escritura</label>
+                    </div>
                 </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p5" value="2" class="form-check-input">
-                    <label for="">Lectura</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p5" value="3" class="form-check-input">
-                    <label for="">Lectura y Escritura</label>
+                <div class="col border rounded">
+                    <label for="product">Gestión de Libro Diario</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p6" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p6" value="2" class="form-check-input">
+                        <label for="">Lectura</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p6" value="3" class="form-check-input">
+                        <label for="">Lectura y Escritura</label>
+                    </div>
                 </div>
             </div>
-            <div class="col border rounded">
-                <label for="product">Gestión de Libro Diario</label>
-                <div class="form-check">
-                    <input type="radio" wire:model="p6" value="1" class="form-check-input">
-                    <label for="">Ninguno</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p6" value="2" class="form-check-input">
-                    <label for="">Lectura</label>
-                </div>
-                <div class="form-check">
-                    <input type="radio" wire:model="p6" value="3" class="form-check-input">
-                    <label for="">Lectura y Escritura</label>
-                </div>
-            </div>
-        </div>
+        @endif
     </div>
     @if ($user->id == null)
-    <div class="modal-footer">
-        <div class="">
-            <input type="checkbox" class="form-check-input" wire:model="is_active">
-            <label for="" class="form-check-label">Activo</label>
+        <div class="modal-footer">
+            <div class="">
+                <input type="checkbox" class="form-check-input" wire:model="is_active">
+                <label for="" class="form-check-label">Activo</label>
+            </div>
+            <button class="btn btn-primary" wire:click="save">Guardar</button>
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
         </div>
-        <button class="btn btn-primary" wire:click="save" >Guardar</button>
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-    </div>
-
     @else
-    <hr>
-    <div class="d-flex justify-content-end my-3">
-        <div class="m-0 pt-2">
-            <input type="checkbox" class="form-check-input" wire:model="is_active">
-            <label for="" class="form-check-label">Activo</label>
+        <hr>
+        <div class="d-flex justify-content-end my-3">
+            @if (Auth::user()->id == 1)
+                <div class="m-0 pt-2">
+                    <input type="checkbox" class="form-check-input" wire:model="is_active">
+                    <label for="" class="form-check-label">Activo</label>
+                </div>
+            @endif
+            <button class="btn btn-primary ms-1" wire:click="save">Guardar</button>
+            @if (Auth::user()->id == 1)
+                <button class="btn btn-danger ms-1" id="btn-remove" data-bs-dismiss="modal">Eliminar</button>
+            @endif
         </div>
-        <button class="btn btn-primary ms-1" wire:click="save" >Guardar</button>
-        <button class="btn btn-danger ms-1" id="btn-remove" data-bs-dismiss="modal">Eliminar</button>
-    </div>
     @endif
 </div>
 
