@@ -10,6 +10,7 @@ use App\Models\Transaction;
 use App\StatusContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class DeliveryForm extends Component
@@ -19,9 +20,12 @@ class DeliveryForm extends Component
     public $detail_id;
     public $quantity;
     public $amount;
+    #[Validate('required|date')]
     public $date;
     public $contract;
+    #[Validate('required')]
     public $contract_cod;
+    #[Validate('|required')]
     public $receiver_by;
 
     public $max_quantity;
@@ -117,6 +121,10 @@ class DeliveryForm extends Component
     }
 
     public function save(){
+        if(empty($this->list)){
+            return $this->js("Swal.fire({title: 'Lista Vacia',text: 'La lista de productos esta vacia.','icon':'warning'})");
+        }
+        $this->validate();
         $l = [];
         foreach ($this->list as $value) {
             $l[$value['id']] = ['quantity' => $value['quantity']];

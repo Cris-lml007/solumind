@@ -10,23 +10,43 @@
                         <option value="{{ $item->cod }}">{{ $item->cod }}</option>
                     @endforeach
                 </select>
+                <div class="contract_cod" style="height: 20px;">
+                    @error('email')
+                        {{ $message }}
+                    @enderror
+                </div>
             </div>
             <div class="w-50 ms-1">
                 <label for="">Fecha</label>
                 <input type="date" class="form-control" wire:model="date">
+                <div class="date" style="height: 20px;">
+                    @error('email')
+                        {{ $message }}
+                    @enderror
+                </div>
             </div>
         </div>
         <div class="d-flex">
             <div class="w-50">
                 <label for="">Recibido por</label>
                 <input type="text" class="form-control" wire:model="receiver_by">
+                <div class="text-danger" style="height: 20px;">
+                    @error('receiver_by')
+                        {{ $message }}
+                    @enderror
+                </div>
             </div>
             <div class="w-50 ms-1">
                 <label for="">Importe</label>
                 <div class="input-group">
-                    <input type="number" class="form-control"
-                        placeholder="saldo: {{ $balance ?? '' }} Bs" wire:model="amount">
+                    <input type="number" class="form-control" placeholder="saldo: {{ $balance ?? '' }} Bs"
+                        wire:model="amount">
                     <span class="input-group-text">Bs</span>
+                </div>
+                <div class="text-danger" style="height: 20px;">
+                    @error('amount')
+                        {{ $message }}
+                    @enderror
                 </div>
             </div>
         </div>
@@ -68,7 +88,8 @@
                                 );
                             @endphp
                             <option value="{{ $item?->id }}">
-                                {{ ($item?->detailable()?->withTrashed()?->first()?->name ?? ' ') . ' - ' . $size }}</option>
+                                {{ ($item?->detailable()?->withTrashed()?->first()?->name ??' ') .' - ' .$size }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -92,7 +113,8 @@
                         <tr>
                             <td>{{ $item['name'] }}</td>
                             <td>{{ $item['quantity'] }}</td>
-                            <td><button wire:click="delete({{ $item['id'] }})" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                            <td><button wire:click="delete({{ $item['id'] }})" class="btn btn-danger"><i
+                                        class="fa fa-trash"></i></button>
                             </td>
                         </tr>
                     @endforeach
@@ -151,6 +173,5 @@
                 $wire.$refresh();
             }
         }
-
     </script>
 @endscript
