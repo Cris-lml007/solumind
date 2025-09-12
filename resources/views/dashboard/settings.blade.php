@@ -18,6 +18,10 @@
                     type="button" role="tab" aria-controls="categories-tab-pane"
                     aria-selected="false">Categorias</button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="person-tab" data-bs-toggle="tab" data-bs-target="#person-tab-pane"
+                    type="button" role="tab" aria-controls="person-tab-pane" aria-selected="false">Personas</button>
+            </li>
         </div>
         <div class="d-flex justify-content-end w-50">
             <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"><i
@@ -31,12 +35,13 @@
                 <div class="card-body">
                     <x-adminlte.tool.datatable id="users" :heads="['Id', 'Usuario', 'Correo', 'Acciones']">
                         @foreach ($data['users'] as $item)
-                        <tr>
-                            <td>{{ $item->id }}</td>
-                            <td>{{ $item?->person->name ?? 'anonimo'}}</td>
-                            <td>{{ $item->email }}</td>
-                            <td><a class="btn btn-primary"><i class="fa fa-pen"></i></a></td>
-                        </tr>
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item?->person->name ?? 'anonimo' }}</td>
+                                <td>{{ $item->email }}</td>
+                                <td><a href="{{ route('dashboard.settings.user.form', $item->id) }}"
+                                        class="btn btn-primary"><i class="fa fa-pen"></i></a></td>
+                            </tr>
                         @endforeach
                     </x-adminlte.tool.datatable>
                 </div>
@@ -51,7 +56,8 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>
-                                    <a href="{{route('dashboard.settings.account',$item->id)}}" class="btn btn-primary"><i class="fa fa-pen"></i></a>
+                                    <a href="{{ route('dashboard.settings.account', $item->id) }}"
+                                        class="btn btn-primary"><i class="fa fa-pen"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -74,6 +80,21 @@
                         @endforeach
                     </x-adminlte.tool.datatable>
                 </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="person-tab-pane" role="tabpanel" aria-labelledby="person-tab" tabindex="0">
+            <div class="my-3">
+                <x-adminlte.tool.datatable id="table-person" :heads="['CI', 'Nombre Completo', 'Email', 'Celular', 'Acciones']">
+                    @foreach ($data['persons'] as $item)
+                        <tr>
+                            <td>{{ $item->ci }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->email }}</td>
+                            <td>{{ $item->phone }}</td>
+                            <td><a href="" class="btn btn-primary"><i class="fa fa-eyes"></i></a></td>
+                        </tr>
+                    @endforeach
+                </x-adminlte.tool.datatable>
             </div>
         </div>
     </div>

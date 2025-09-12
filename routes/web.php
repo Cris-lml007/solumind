@@ -11,6 +11,7 @@ use App\Livewire\SupplierForm;
 use App\Livewire\ClientForm;
 use App\Livewire\ContractForm;
 use App\Livewire\DiaryBookForm;
+use App\Livewire\Userform;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('diary-book/{id}',DiaryBookForm::class)->name('dashboard.diary_book.form');
     Route::get('settings/category/{id}',CategoryForm::class)->name('dashboard.settings.category');
     Route::get('settings/account/{id}',AccountForm::class)->name('dashboard.settings.account');
+    Route::get('settings/user/{id}',Userform::class)->name('dashboard.settings.user.form');
 
     Route::get('proof/pdf/{id}',[PdfController::class,'generateVoucher'])->name('dashboard.proof.pdf');
     Route::get('delivery/pdf/{id}',[PdfController::class,'generateDelivery'])->name('dashboard.delivery.pdf');
