@@ -33,12 +33,13 @@
             tabindex="0">
             <div class="card">
                 <div class="card-body">
-                    <x-adminlte.tool.datatable id="users" :heads="['Id', 'Usuario', 'Correo', 'Acciones']">
+                    <x-adminlte.tool.datatable id="users" :heads="['Id', 'Usuario', 'Correo', 'Activo','Acciones']">
                         @foreach ($data['users'] as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item?->person->name ?? 'anonimo' }}</td>
+                                <td>{{ $item?->name ?? 'anonimo' }}</td>
                                 <td>{{ $item->email }}</td>
+                                <td><i class="nf {{ $item->is_active == 1 ? 'nf-fa-check text-success' : 'nf-fa-xmark text-danger' }}"></i></td>
                                 <td><a href="{{ route('dashboard.settings.user.form', $item->id) }}"
                                         class="btn btn-primary"><i class="fa fa-pen"></i></a></td>
                             </tr>
