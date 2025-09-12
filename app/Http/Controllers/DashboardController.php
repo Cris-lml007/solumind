@@ -12,6 +12,7 @@ use App\Models\Client;
 use App\Models\Contract;
 use App\Models\Delivery;
 use App\Models\DetailContract;
+use App\Models\Person;
 use App\Models\Transaction;
 use App\Models\User;
 use App\StatusContract;
@@ -114,7 +115,8 @@ class DashboardController extends Controller
         $data = [
             'categories' => Category::all(),
             'accounts' => Account::all(),
-            'users' => User::all()
+            'users' => User::all(),
+            'persons' => Person::all()
         ];
         return view('dashboard.settings',compact(['data']));
     }

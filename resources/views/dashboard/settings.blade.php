@@ -91,7 +91,8 @@
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->phone }}</td>
-                            <td><a href="" class="btn btn-primary"><i class="fa fa-eyes"></i></a></td>
+                            <td><a href="{{ route('dashboard.settings.person.form', $item->id) }}"
+                                    class="btn btn-primary"><i class="fa fa-pen"></i></a></td>
                         </tr>
                     @endforeach
                 </x-adminlte.tool.datatable>
@@ -111,12 +112,17 @@
         <div id="modal-account" class="d-none">
             <livewire:account-form></livewire:account-form>
         </div>
+
+        <div id="modal-person" class="d-none">
+            <livewire:person-form></livewire:person-form>
+        </div>
     </x-modal>
 @endsection
 
 @section('js')
     <script>
         var modalUser = document.getElementById('modal-user');
+        var modalPerson = document.getElementById('modal-person');
         var modalCategory = document.getElementById('modal-category');
         var modalAccount = document.getElementById('modal-account');
         var modalTitle = document.getElementById('modal-title');
@@ -128,18 +134,28 @@
             modalUser.classList.remove('d-none');
             modalCategory.classList.add('d-none');
             modalAccount.classList.add('d-none');
+            modalPerson.classList.add('d-none');
         });
         var tabAccounts = document.getElementById('accounts-tab').addEventListener('click', () => {
             modalTitle.textContent = 'Añadir Cuenta';
             modalUser.classList.add('d-none');
             modalCategory.classList.add('d-none');
             modalAccount.classList.remove('d-none');
+            modalPerson.classList.add('d-none');
         });
         var tabCategories = document.getElementById('categories-tab').addEventListener('click', () => {
             modalTitle.textContent = 'Añadir Categoria';
             modalUser.classList.add('d-none');
             modalCategory.classList.remove('d-none');
             modalAccount.classList.add('d-none');
+            modalPerson.classList.add('d-none');
+        });
+        var tabPerson = document.getElementById('person-tab').addEventListener('click', () => {
+            modalTitle.textContent = 'Añadir Persona';
+            modalUser.classList.add('d-none');
+            modalCategory.classList.add('d-none');
+            modalAccount.classList.add('d-none');
+            modalPerson.classList.remove('d-none');
         });
     </script>
 @endsection
