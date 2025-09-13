@@ -75,18 +75,20 @@
             @enderror
         </div>
     </div>
-    @if ($transaction->id == null)
-        <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="save">Registrar</button>
-            <button data-bs-dismiss="modal" class="btn btn-secondary">Cancelar</button>
-        </div>
-    @else
-        <hr>
-        <div class="d-flex justify-content-end mt-3">
-            <button class="btn btn-primary me-1" id="btn-update">Actualizar</button>
-            <button class="btn btn-danger" id="btn-remove">Eliminar</button>
-        </div>
-    @endif
+    @can('transaction-permission', 3)
+        @if ($transaction->id == null)
+            <div class="modal-footer">
+                <button class="btn btn-primary" wire:click="save">Registrar</button>
+                <button data-bs-dismiss="modal" class="btn btn-secondary">Cancelar</button>
+            </div>
+        @else
+            <hr>
+            <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-primary me-1" id="btn-update">Actualizar</button>
+                <button class="btn btn-danger" id="btn-remove">Eliminar</button>
+            </div>
+        @endif
+    @endcan
 </div>
 
 @script

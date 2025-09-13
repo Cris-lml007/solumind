@@ -7,6 +7,7 @@ use App\Models\Contract;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -45,6 +46,8 @@ class DiaryBookForm extends Component
     }
 
     public function mount($id = null){
+        if(!Gate::allows('transaction-read'))
+            abort('404');
         try{
             $this->contracts = Contract::where('status',3)->orWhere('status',1)->get();
             $this->transaction = Transaction::findOrFail($id);
@@ -62,16 +65,20 @@ class DiaryBookForm extends Component
 
     public function updateWithPassword($password)
     {
+        if(!Gate::allows('transaction-permission',3))
+            abort('404');
         // Valida la contraseña (ejemplo: contra la del usuario actual)
         if (!Hash::check($password, Auth::user()->password)) {
             return ['success' => false, 'message' => 'Contraseña incorrecta'];
         }
 
-        $this->save();
+        $this->transaction->save();
         return ['success' => true];
     }
 
     public function remove(){
+        if(!Gate::allows('transaction-permission',3))
+            abort('404');
         $this->transaction->delete();
         $this->redirect(route('dashboard.diary_book'));
     }
@@ -79,6 +86,8 @@ class DiaryBookForm extends Component
 
 
     public function save(){
+        if(!Gate::allows('transaction-permission',3))
+            abort('404');
         $this->validate();
         $this->transaction->description = $this->description;
         $this->transaction->amount = $this->import;
@@ -92,6 +101,8 @@ class DiaryBookForm extends Component
 
     public function render()
     {
+        if(!Gate::allows('transaction-read'))
+            abort('404');
         $data = [
             'accounts' => Account::all()
         ];
