@@ -74,19 +74,20 @@
         </div>
     </div>
 
-
-    @if (!empty($client->id))
-        <hr class="w-100">
-        <div class="d-flex justify-content-end my-3">
-            <button class="btn btn-primary me-1" wire:click="save">Modificar</button>
-            <button class="btn btn-danger" id="btn-remove">Eliminar</button>
-        </div>
-    @else
-        <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="save">Guardar</button>
-            <button  class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
-    @endif
+    @can('client-permission', 3)
+        @if (!empty($client->id))
+            <hr class="w-100">
+            <div class="d-flex justify-content-end my-3">
+                <button class="btn btn-primary me-1" wire:click="save">Modificar</button>
+                <button class="btn btn-danger" id="btn-remove">Eliminar</button>
+            </div>
+        @else
+            <div class="modal-footer">
+                <button class="btn btn-primary" wire:click="save">Guardar</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        @endif
+    @endcan
 </div>
 
 @script
@@ -101,8 +102,8 @@
                 cancelButtonColor: "red",
                 confirmButtonText: "Si, deseo borrar!",
                 cancelButtonText: "Cancelar"
-            }).then((result)=>{
-                if( result.isConfirmed ) $wire.dispatch('remove');
+            }).then((result) => {
+                if (result.isConfirmed) $wire.dispatch('remove');
             })
         });
     </script>

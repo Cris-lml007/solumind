@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Client;
 use App\Models\Person;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -35,8 +36,9 @@ class ClientForm extends Component
     public Person $person;
 
 
-    public function mount($id = null)
-    {
+    public function mount($id = null){
+        if(!Gate::allows('client-read'))
+            abort('404');
         try {
 
             $this->client = Client::findOrFail($id);
@@ -87,6 +89,8 @@ class ClientForm extends Component
 
     public function save()
     {
+        if(!Gate::allows('client-permission',3))
+            abort('404');
         $this->validate();
         $this->person->ci = $this->ci;
         $this->person->name = $this->name;
@@ -106,6 +110,8 @@ class ClientForm extends Component
 
 
     public function remove(){
+        if(!Gate::allows('client-permission',3))
+            abort('404');
         $this->client->delete();
         $this->redirect(route('dashboard.client'));
 
@@ -113,6 +119,8 @@ class ClientForm extends Component
 
     public function render()
     {
+        if(!Gate::allows('client-read'))
+            abort('404');
         return view('livewire.client-form');
     }
 }
