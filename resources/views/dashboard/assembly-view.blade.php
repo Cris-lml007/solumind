@@ -6,8 +6,10 @@
             <h1 class="m-0">Lista de Ensamblajes</h1>
             <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Ensamblaje</strong></h6>
         </div>
-        <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
-            Ensamblaje</button>
+        @can('item-permission', 3)
+            <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
+                Ensamblaje</button>
+        @endcan
     </div>
 
     <div class="card">
@@ -17,9 +19,10 @@
                     <tr>
                         <td><strong>{{ $item->cod }}</strong></td>
                         <td><strong>{{ $item->name }}</strong><br></td>
-                        <td><strong>{{ Illuminate\Support\Number::format($item->price + $item->extra,precision:2) }}</strong></td>
-                        <td><a href="{{ route('dashboard.assembly.form', $item->cod) }}"
-                                class="btn btn-primary"><i class="fa fa-ellipsis-v"></i></a>
+                        <td><strong>{{ Illuminate\Support\Number::format($item->price + $item->extra, precision: 2) }}</strong>
+                        </td>
+                        <td><a href="{{ route('dashboard.assembly.form', $item->cod) }}" class="btn btn-primary"><i
+                                    class="fa fa-ellipsis-v"></i></a>
                         </td>
                     </tr>
                 @endforeach

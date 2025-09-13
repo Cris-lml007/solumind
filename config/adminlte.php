@@ -321,58 +321,69 @@ return [
             'text' => 'Ensamblaje',
             'route' => 'dashboard.assembly',
             'icon' => 'fas fa-fw fa-tools',
+            'can' => 'item-read'
         ],
         [
             'text' => 'Productos',
             'route' => 'dashboard.product',
             'icon' => 'fas fa-fw fa-box',
+            'can' => 'product-read'
         ],
         [
             'text' => 'Proveedores',
             'route' => 'dashboard.supplier',
             'icon' => 'fas fa-fw fa-lock',
+            'can' => 'supplier-read'
         ],
         [
             'text'    => 'Clientes',
             'route'   => 'dashboard.client',
             'icon'    => 'fas fa-fw fa-users',
+            'can' => 'client-read'
         ],
         [
             'text' => 'Socios',
             'route' => 'dashboard.partner',
             'icon' => 'fas fa-fw fa-user-tie',
+            'can' => 'partner-read'
         ],
         [
             'text' => 'Entregas',
             'route' => 'dashboard.delivery',
             'icon' => 'fas fa-fw fa-truck',
+            'can' => 'delivery-read'
         ],
         ['header' => 'Operaciones'],
         [
             'text' => 'Comprobantes',
             'route'  => 'dashboard.proof',
             'icon' => 'fas fa-fw fa-file-invoice-dollar',
+            'can' => 'voucher-read'
         ],
         [
             'text' => 'Libro Diario',
             'icon' => 'fas fa-fw fa-book',
             'route' => 'dashboard.diary_book',
+            'can' => 'transaction-read'
         ],
         [
             'text' => 'Libro Mayor',
             'icon' => 'fas fa-fw fa-book-open',
             'route' => 'dashboard.ledger',
+            'can' => 'ledger-read'
         ],
         [
             'text' => 'Historial de Movimientos',
             'icon' => 'fas fa-fw fa-history',
             'url' => '#',
+            'can' => 'history-read'
         ],
         ['header' => 'Reportes'],
         [
             'text' => 'Generar Reportes',
             'icon' => 'fas fa-fw fa-history',
             'url' => '#',
+            'can' => 'report-read'
         ],
         ['header' => 'Opciones Avanzadas'],
         [
@@ -384,6 +395,7 @@ return [
             'text' => 'Configuración',
             'icon' => 'fas fa-fw fa-cog',
             'route' => 'dashboard.settings',
+            'can' => 'config-read'
         ],
         [
             'text' => 'Soporte',

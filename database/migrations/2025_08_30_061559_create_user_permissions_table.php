@@ -20,7 +20,12 @@ return new class extends Migration
             $table->integer('item')->default(1);
             $table->integer('transaction')->default(1);
             $table->integer('delivery')->default(1);
+            $table->integer('client')->default(1);
+            $table->integer('voucher')->default(1);
+            $table->integer('ledger')->default(1);
             $table->integer('report')->default(1);
+            $table->integer('history')->default(1);
+            $table->integer('config')->default(1);
             $table->timestamps();
         });
     }

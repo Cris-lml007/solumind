@@ -43,8 +43,10 @@
             </div>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="create">Guardar</button>
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            @can('item-permission', 3)
+                <button class="btn btn-primary" wire:click="create">Guardar</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            @endcan
         </div>
     @else
         <div>
@@ -97,8 +99,10 @@
             @endif
             <div class="d-flex justify-content-between mb-3">
                 <h5 class="align-self-center m-0 p-0"><strong>Lista de Materiales</strong></h5>
-                <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"><i
-                        class="fa fa-plus"></i> Añadir Producto</button>
+                @can('item-permission', 3)
+                    <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"><i
+                            class="fa fa-plus"></i> Añadir Producto</button>
+                @endcan
             </div>
             <table class="table table-striped">
                 <thead>
@@ -147,11 +151,12 @@
                 </div>
             </div>
             <hr>
-            <div class="d-flex justify-content-end mb-3">
-                <button class="btn btn-primary me-1" wire:click="save">Guardar</button>
-                <button class="btn btn-danger" id="btn-remove">Eliminar</button>
-            </div>
-
+            @can('item-permission', 3)
+                <div class="d-flex justify-content-end mb-3">
+                    <button class="btn btn-primary me-1" wire:click="save">Guardar</button>
+                    <button class="btn btn-danger" id="btn-remove">Eliminar</button>
+                </div>
+            @endcan
 
             <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true" wire:ignore.self>

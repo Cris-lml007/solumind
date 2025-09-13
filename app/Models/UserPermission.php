@@ -14,6 +14,12 @@ class UserPermission extends Model
         'item',
         'transaction',
         'delivery',
+        'client',
+        'voucher',
+        'ledger',
+        'report',
+        'config',
+        'history'
     ];
 
     public function user()

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\DetailItem;
 use App\Models\Item;
 use App\Models\Product;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -51,6 +52,8 @@ class AssemblyForm extends Component
     public $listeners = ['add' => 'add','remove' => 'remove'];
 
     public function mount($code = null){
+        if(!Gate::allows('item-read'))
+            abort('404');
         $this->list = Product::all();
         try{
             $this->item = Item::where('cod',$code)->firstOrFail();
@@ -180,6 +183,8 @@ class AssemblyForm extends Component
     }
 
     public function create(){
+        if(!Gate::allows('item-permission',3))
+            abort('404');
         $this->validate();
         $this->item = new Item();
         $this->item->cod = $this->code;
@@ -190,6 +195,8 @@ class AssemblyForm extends Component
     }
 
     public function save(){
+        if(!Gate::allows('item-permission',3))
+            abort('404');
         Validator::make([
             'code' => $this->code,
             'name' => $this->name
@@ -223,6 +230,8 @@ class AssemblyForm extends Component
     }
 
     public function remove(){
+        if(!Gate::allows('item-permission',3))
+            abort('404');
         Storage::disk('imgProduct')->delete($this->item->cod);
         $this->item->delete();
         $this->redirect(route('dashboard.assembly'));
