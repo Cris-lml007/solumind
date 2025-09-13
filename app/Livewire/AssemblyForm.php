@@ -240,6 +240,8 @@ class AssemblyForm extends Component
 
     public function render()
     {
+        if(!Gate::allows('item-read'))
+            abort('404');
         $categories = Category::all();
         return view('livewire.assembly-form',compact(['categories']));
     }
