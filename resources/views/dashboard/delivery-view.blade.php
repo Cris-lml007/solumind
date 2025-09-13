@@ -6,8 +6,10 @@
             <h1 class="m-0">Lista de Entregas</h1>
             <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Entregas</strong></h6>
         </div>
-        <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Registrar
-            Entrega</button>
+        @can('delivery-permission', 3)
+            <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Registrar
+                Entrega</button>
+        @endcan
     </div>
     <div class="card">
         <div class="card-body">
@@ -25,9 +27,14 @@
                         <td>{{ $item->date }}</td>
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->contract->cod }}</td>
-                        <td>{{ Illuminate\Support\Number::format($item->amount,precision:2) }}</td>
-                        <td>{{ Illuminate\Support\Number::format($balance,precision:2) }}</td>
-                        <td><a href="{{route('dashboard.delivery.pdf',$item->id)}}" class="btn btn-primary"><i class="fa fa-file"></i></a></td>
+                        <td>{{ Illuminate\Support\Number::format($item->amount, precision: 2) }}</td>
+                        <td>{{ Illuminate\Support\Number::format($balance, precision: 2) }}</td>
+                        @can('delivery-permission', 3)
+                            <td><a href="{{ route('dashboard.delivery.pdf', $item->id) }}" class="btn btn-primary"><i
+                                        class="fa fa-file"></i></a></td>
+                        @else
+                            <td></td>
+                        @endcan
                     </tr>
                 @endforeach
             </x-adminlte.tool.datatable>

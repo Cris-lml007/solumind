@@ -123,7 +123,9 @@
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" wire:click="save">Guardar</button>
+        @can('delivery-permission', 3)
+            <button class="btn btn-primary" wire:click="save">Guardar</button>
+        @endcan
         <button data-bs-dismiss="modal" class="btn btn-secondary">Cancelar</button>
     </div>
 </div>
@@ -131,40 +133,6 @@
 @script
     <script>
         let products = [];
-
-        // document.getElementById('btn-add').addEventListener('click', () => {
-        //     cod = document.getElementById('detail_id').value;
-        //     quantity = document.getElementById('quantity').value;
-        //     const select = document.getElementById('detail_id');
-        //     const selectedText = select.options[select.selectedIndex].text
-        //     console.log(name)
-        //     if (cod == 0 || quantity <= 0) {
-        //         Swal.fire({
-        //             title: 'Campos Vacios?...',
-        //             text: ' Por favor seleccione un producto y una cantidad',
-        //             icon: 'warning'
-        //         })
-        //         return;
-        //     }
-        //     const index = products.findIndex(product => product.cod == cod);
-        //     if (index !== -1) {
-        //         Swal.fire({
-        //             title: 'Producto Existente',
-        //             text: ' Para cambiar la cantidad quite el producto de la lista y vuelva a agregarlo',
-        //             icon: 'warning'
-        //         })
-        //         return;
-        //     }
-        //     products.push({
-        //         'name': selectedText,
-        //         'cod': cod,
-        //         'quantity': quantity
-        //     })
-        //     $wire.list = products;
-        //     $wire.$refresh();
-        //
-        // });
-
         function deleteProduct(cod) {
             const index = products.findIndex(product => product.cod == cod);
             if (index !== -1) {

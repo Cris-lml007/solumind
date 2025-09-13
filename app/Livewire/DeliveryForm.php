@@ -5,11 +5,10 @@ namespace App\Livewire;
 use App\Models\Contract;
 use App\Models\Delivery;
 use App\Models\DetailContract;
-use App\Models\Product;
 use App\Models\Transaction;
 use App\StatusContract;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -36,6 +35,8 @@ class DeliveryForm extends Component
     public $balance;
 
     public function mount(){
+        if(!Gate::allows('delivery-read'))
+            abort('404');
         $this->contracts = Contract::where('status',StatusContract::CONTRACT)->get();
     }
 
@@ -121,6 +122,8 @@ class DeliveryForm extends Component
     }
 
     public function save(){
+        if(!Gate::allows('delivery-permission',3))
+            abort('404');
         if(empty($this->list)){
             return $this->js("Swal.fire({title: 'Lista Vacia',text: 'La lista de productos esta vacia.','icon':'warning'})");
         }
@@ -154,6 +157,8 @@ class DeliveryForm extends Component
 
     public function render()
     {
+        if(!Gate::allows('delivery-read'))
+            abort('404');
         return view('livewire.delivery-form');
     }
 }
