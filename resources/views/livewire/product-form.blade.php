@@ -94,39 +94,43 @@
             </div>
         @endif
     </div>
-    @if (empty($product->id))
-        <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="save">Guardar</button>
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
-    @else
-        <hr>
-        <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-primary me-1" wire:click="save">Guardar</button>
-            <button id="btn-remove" class="btn btn-danger">Eliminar</button>
-        </div>
-    @endif
+    @can('product-permission', 3)
+        @if (empty($product->id))
+            <div class="modal-footer">
+                <button class="btn btn-primary" wire:click="save">Guardar</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        @else
+            <hr>
+            <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-primary me-1" wire:click="save">Guardar</button>
+                <button id="btn-remove" class="btn btn-danger">Eliminar</button>
+            </div>
+        @endif
+    @endcan
 </div>
 
 @section('css')
     <style>
-.glow-border {
-    border: 2px solid #ffca2c;
-    border-radius: 5px;
-    animation: blink 1.5s infinite;
-}
+        .glow-border {
+            border: 2px solid #ffca2c;
+            border-radius: 5px;
+            animation: blink 1.5s infinite;
+        }
 
-@keyframes blink {
-    0% {
-        box-shadow: 0 0 5px #ffca2c, 0 0 10px #ffca2c;
-    }
-    50% {
-        box-shadow: 0 0 0px #ffca2c;
-    }
-    100% {
-        box-shadow: 0 0 5px #ffca2c, 0 0 10px #ffca2c;
-    }
-}
+        @keyframes blink {
+            0% {
+                box-shadow: 0 0 5px #ffca2c, 0 0 10px #ffca2c;
+            }
+
+            50% {
+                box-shadow: 0 0 0px #ffca2c;
+            }
+
+            100% {
+                box-shadow: 0 0 5px #ffca2c, 0 0 10px #ffca2c;
+            }
+        }
     </style>
 @endsection
 

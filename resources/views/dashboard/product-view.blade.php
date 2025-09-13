@@ -6,8 +6,10 @@
             <h1 class="m-0">Lista de Productos</h1>
             <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Productos</strong></h6>
         </div>
-        <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
-            Producto</button>
+        @can('product-permission', 3)
+            <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
+                Producto</button>
+        @endcan
     </div>
 
     <div class="card">
@@ -29,7 +31,7 @@
                         <td><strong>{{ $item->name . ' ' . $size }}</strong></td>
                         <td><strong>{{ $item->supplier->organization == null ? $item->supplier->person->name : $item->supplier->organization }}</strong>
                         </td>
-                        <td><strong>{{ Illuminate\Support\Number::format($item->price,precision:2) }}</strong></td>
+                        <td><strong>{{ Illuminate\Support\Number::format($item->price, precision: 2) }}</strong></td>
                         <td><a href="{{ route('dashboard.product.form', $item->id) }}" class="btn btn-primary"><i
                                     class="fa fa-ellipsis-v"></i></a>
                         </td>

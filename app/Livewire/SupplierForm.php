@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Person;
 use App\Models\Supplier;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -39,6 +40,8 @@ class SupplierForm extends Component
     public Person $person;
 
     public function mount($id = null){
+        if(!Gate::allows('supplier-read'))
+            abort('404');
         try {
             $this->supplier = Supplier::where('id', $id)->firstOrFail();
             $this->person = Person::where('id', $this->supplier->person_id)->firstOrFail();
@@ -86,6 +89,8 @@ class SupplierForm extends Component
     }
 
     public function save(){
+        if(!Gate::allows('supplier-permission',3))
+            abort('404');
         $this->validate();
         $this->person->ci = $this->ci;
         $this->person->name = $this->name;
@@ -103,12 +108,16 @@ class SupplierForm extends Component
     }
 
     public function remove(){
+        if(!Gate::allows('supplier-permission',3))
+            abort('404');
         $this->supplier->delete();
         $this->redirect(route('dashboard.supplier'));
     }
 
     public function render()
     {
+        if(!Gate::allows('supplier-read'))
+            abort('404');
         return view('livewire.supplier-form');
     }
 }

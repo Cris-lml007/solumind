@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
@@ -53,6 +54,8 @@ class ProductForm extends Component
     }
 
     public function mount($id = null){
+        if(!Gate::allows('product-read'))
+            abort('404');
         try{
             $this->list = Supplier::all();
             $this->product = Product::findOrFail($id);
@@ -114,6 +117,8 @@ class ProductForm extends Component
     }
 
     public function save(){
+        if(!Gate::allows('product-permission',3))
+            abort('404');
         $this->validate();
         $this->product->cod = $this->cod;
         $this->product->name = $this->name;
@@ -129,6 +134,8 @@ class ProductForm extends Component
     }
 
     public function remove(){
+        if(!Gate::allows('product-permission',3))
+            abort('404');
         Storage::disk('imgProduct')->delete($this->product->cod);
         $this->product->delete();
         $this->redirect(route('dashboard.product'));
@@ -136,6 +143,8 @@ class ProductForm extends Component
 
     public function render()
     {
+        if(!Gate::allows('product-read'))
+            abort('404');
         $categories = Category::all();
         return view('livewire.product-form',compact(['categories']));
     }
