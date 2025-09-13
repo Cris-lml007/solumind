@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\Person;
 use App\Models\User;
 use App\Models\UserPermission;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -43,8 +44,9 @@ class Userform extends Component
     public UserPermission $permissions;
 
     public function mount($id = null){
-        if(!Gate::allows('config-permission',3))
-            abort('404');
+        if(Auth::user()->id != $id)
+            if(!Gate::allows('config-permission',3))
+                abort('404');
         try {
             $this->user = User::findOrFail($id);
 
@@ -78,8 +80,9 @@ class Userform extends Component
     }
 
     public function save(){
-        if(!Gate::allows('config-permission',3))
-            abort('404');
+        if(Auth::user()->id != $this->user->id)
+            if(!Gate::allows('config-permission',3))
+                abort('404');
         Validator::make([
             'name' => $this->name,
             'email' => $this->email,
@@ -128,8 +131,6 @@ class Userform extends Component
 
     public function render()
     {
-        if(!Gate::allows('config-permission',3))
-            abort('404');
         $persons = Person::all();
         return view('livewire.userform',compact(['persons']));
     }

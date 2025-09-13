@@ -262,6 +262,13 @@
                 @endif
             </div>
         @endif
+    @else
+        @if (Auth::user()->id == $user->id)
+            <hr>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary ms-1" wire:click="save">Guardar</button>
+            </div>
+        @endif
     @endcan
 </div>
 
