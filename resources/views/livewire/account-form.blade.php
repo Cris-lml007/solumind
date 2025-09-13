@@ -6,18 +6,20 @@
             <span class="text-danger">{{ $message }}</span>
         @enderror
     </div>
-    @if ($account->id == null)
-        <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="save">Guardar</button>
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
-    @else
-        <hr>
-        <div class="d-flex justify-content-end mt-3">
-            <button class="btn btn-primary me-1" wire:click="save">Guardar</button>
-            <button class="btn btn-danger" wire:click="remove">Eliminar</button>
-        </div>
-    @endif
+    @can('config-permission', 3)
+        @if ($account->id == null)
+            <div class="modal-footer">
+                <button class="btn btn-primary" wire:click="save">Guardar</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        @else
+            <hr>
+            <div class="d-flex justify-content-end mt-3">
+                <button class="btn btn-primary me-1" wire:click="save">Guardar</button>
+                <button class="btn btn-danger" wire:click="remove">Eliminar</button>
+            </div>
+        @endif
+    @endcan
 
 </div>
 

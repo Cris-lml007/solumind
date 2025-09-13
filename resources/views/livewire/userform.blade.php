@@ -237,30 +237,32 @@
             </div>
         @endif
     </div>
-    @if ($user->id == null)
-        <div class="modal-footer">
-            <div class="">
-                <input type="checkbox" class="form-check-input" wire:model="is_active">
-                <label for="" class="form-check-label">Activo</label>
-            </div>
-            <button class="btn btn-primary" wire:click="save">Guardar</button>
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
-    @else
-        <hr>
-        <div class="d-flex justify-content-end my-3">
-            @if (Auth::user()->permission->config >= 2)
-                <div class="m-0 pt-2">
+    @can('config-permission', 3)
+        @if ($user->id == null)
+            <div class="modal-footer">
+                <div class="">
                     <input type="checkbox" class="form-check-input" wire:model="is_active">
                     <label for="" class="form-check-label">Activo</label>
                 </div>
-            @endif
-            <button class="btn btn-primary ms-1" wire:click="save">Guardar</button>
-            @if (Auth::user()->permission->config >= 2)
-                <button class="btn btn-danger ms-1" id="btn-remove" data-bs-dismiss="modal">Eliminar</button>
-            @endif
-        </div>
-    @endif
+                <button class="btn btn-primary" wire:click="save">Guardar</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        @else
+            <hr>
+            <div class="d-flex justify-content-end my-3">
+                @if (Auth::user()->permission->config >= 2)
+                    <div class="m-0 pt-2">
+                        <input type="checkbox" class="form-check-input" wire:model="is_active">
+                        <label for="" class="form-check-label">Activo</label>
+                    </div>
+                @endif
+                <button class="btn btn-primary ms-1" wire:click="save">Guardar</button>
+                @if (Auth::user()->permission->config >= 2)
+                    <button class="btn btn-danger ms-1" id="btn-remove" data-bs-dismiss="modal">Eliminar</button>
+                @endif
+            </div>
+        @endif
+    @endcan
 </div>
 
 @script

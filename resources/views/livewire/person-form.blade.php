@@ -38,18 +38,20 @@
             </div>
         </div>
     </div>
-    @if ($person->id == null)
-        <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="save">Guargar</button>
-            <button class="btn btn-secondary">Cancelar</button>
-        </div>
-    @else
-        <hr>
-        <div class="d-flex justify-content-end my-3">
-            <button wire:click="save" class="btn btn-primary">Guargar</button>
-            <button id="btn-remove" class="ms-1 btn btn-danger">Eliminar</button>
-        </div>
-    @endif
+    @can('config-permission', 3)
+        @if ($person->id == null)
+            <div class="modal-footer">
+                <button class="btn btn-primary" wire:click="save">Guargar</button>
+                <button class="btn btn-secondary">Cancelar</button>
+            </div>
+        @else
+            <hr>
+            <div class="d-flex justify-content-end my-3">
+                <button wire:click="save" class="btn btn-primary">Guargar</button>
+                <button id="btn-remove" class="ms-1 btn btn-danger">Eliminar</button>
+            </div>
+        @endif
+    @endcan
 </div>
 @script
     <script>
@@ -69,5 +71,3 @@
         });
     </script>
 @endscript
-
-

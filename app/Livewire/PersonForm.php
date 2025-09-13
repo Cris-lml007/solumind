@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Person;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -18,6 +19,8 @@ class PersonForm extends Component
     public Person $person;
 
     public function mount($id = null){
+        if(!Gate::allows('config-permission',3))
+            abort('404');
         try {
             $this->person = Person::findOrFail($id);
             $this->ci = $this->person->ci;
@@ -30,6 +33,8 @@ class PersonForm extends Component
     }
 
     public function save(){
+        if(!Gate::allows('config-permission',3))
+            abort('404');
         $this->validate();
         $this->person->ci = $this->ci;
         $this->person->name = $this->name;
@@ -40,6 +45,8 @@ class PersonForm extends Component
     }
 
     public function remove(){
+        if(!Gate::allows('config-permission',3))
+            abort('404');
         $this->person->delete();
         $this->redirect(route('dashboard.settings'));
     }
@@ -47,6 +54,8 @@ class PersonForm extends Component
 
     public function render()
     {
+        if(!Gate::allows('config-permission',3))
+            abort('404');
         return view('livewire.person-form');
     }
 }

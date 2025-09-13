@@ -21,18 +21,20 @@
             </div>
         </div>
     </div>
-    @if ($category->id == null)
-        <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="save">Guardar</button>
-            <button class="btn btn-sencodary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
-    @else
-        <hr>
-        <div class="d-flex justify-content-end">
-            <button class="btn btn-primary" wire:click="save">Guardar</button>
-            <button class="btn btn-danger ms-1" id="btn-remove">Eliminar</button>
-        </div>
-    @endif
+    @can('config-permission', 3)
+        @if ($category->id == null)
+            <div class="modal-footer">
+                <button class="btn btn-primary" wire:click="save">Guardar</button>
+                <button class="btn btn-sencodary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        @else
+            <hr>
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-primary" wire:click="save">Guardar</button>
+                <button class="btn btn-danger ms-1" id="btn-remove">Eliminar</button>
+            </div>
+        @endif
+    @endcan
 </div>
 
 @script
