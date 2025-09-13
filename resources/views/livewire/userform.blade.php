@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        @if (Auth::user()->id == 1)
+        @if (Auth::user()->permission->config >= 2)
             <div class="mb-3">
                 <label for="">Enlazar con Persona</label>
                 <select wire:model="person_id" id="" class="form-select">
@@ -155,6 +155,86 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col border rounded">
+                    <label for="product">Gestión de Clientes</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p7" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p7" value="2" class="form-check-input">
+                        <label for="">Lectura</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p7" value="3" class="form-check-input">
+                        <label for="">Lectura y Escritura</label>
+                    </div>
+                </div>
+                <div class="col border rounded">
+                    <label for="product">Gestión de Comprobantes</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p8" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p8" value="2" class="form-check-input">
+                        <label for="">Lectura</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p8" value="3" class="form-check-input">
+                        <label for="">Lectura y Escritura</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col border rounded">
+                    <label for="product">Libro Mayor</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p9" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p9" value="2" class="form-check-input">
+                        <label for="">Lectura</label>
+                    </div>
+                </div>
+                <div class="col border rounded">
+                    <label for="product">Reportes</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p10" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p10" value="2" class="form-check-input">
+                        <label for="">Lectura</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col border rounded">
+                    <label for="product">Configuraciones</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p11" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p11" value="3" class="form-check-input">
+                        <label for="">Lectura y Escritura</label>
+                    </div>
+                </div>
+                <div class="col border rounded">
+                    <label for="product">Historial de Movimientos</label>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p12" value="1" class="form-check-input">
+                        <label for="">Ninguno</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" wire:model="p12" value="3" class="form-check-input">
+                        <label for="">Lectura y Escritura</label>
+                    </div>
+                </div>
+            </div>
         @endif
     </div>
     @if ($user->id == null)
@@ -169,14 +249,14 @@
     @else
         <hr>
         <div class="d-flex justify-content-end my-3">
-            @if (Auth::user()->id == 1)
+            @if (Auth::user()->permission->config >= 2)
                 <div class="m-0 pt-2">
                     <input type="checkbox" class="form-check-input" wire:model="is_active">
                     <label for="" class="form-check-label">Activo</label>
                 </div>
             @endif
             <button class="btn btn-primary ms-1" wire:click="save">Guardar</button>
-            @if (Auth::user()->id == 1)
+            @if (Auth::user()->permission->config >= 2)
                 <button class="btn btn-danger ms-1" id="btn-remove" data-bs-dismiss="modal">Eliminar</button>
             @endif
         </div>

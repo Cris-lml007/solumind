@@ -1,7 +1,7 @@
 <x-slot name="path_dir">Dashboard > Proveedores > {{ $nit }}</x-slot>
 
 <div>
-    <div class="{{$is_update ? 'container' : 'modal-body'}}">
+    <div class="{{ $is_update ? 'container' : 'modal-body' }}">
         <h6><strong>Información Personal</strong></h6>
         <div class="d-flex">
             <div style="width: 50%;">
@@ -80,18 +80,20 @@
             </div>
         </div>
     </div>
-    @if ($is_update)
-        <hr class="w-100">
-        <div class="d-flex justify-content-end my-3">
-            <button class="btn btn-primary me-1" wire:click="save">Modificar</button>
-            <button class="btn btn-danger" id="btn-remove">Eliminar</button>
-        </div>
-    @else
-        <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="save">Guardar</button>
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
-    @endif
+    @can('supplier-permission', 3)
+        @if ($is_update)
+            <hr class="w-100">
+            <div class="d-flex justify-content-end my-3">
+                <button class="btn btn-primary me-1" wire:click="save">Modificar</button>
+                <button class="btn btn-danger" id="btn-remove">Eliminar</button>
+            </div>
+        @else
+            <div class="modal-footer">
+                <button class="btn btn-primary" wire:click="save">Guardar</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        @endif
+    @endcan
 </div>
 
 @script
@@ -106,8 +108,8 @@
                 cancelButtonColor: "red",
                 confirmButtonText: "Si, deseo borrar!",
                 cancelButtonText: "Cancelar"
-            }).then((result)=>{
-                if( result.isConfirmed ) $wire.dispatch('remove');
+            }).then((result) => {
+                if (result.isConfirmed) $wire.dispatch('remove');
             })
         });
     </script>

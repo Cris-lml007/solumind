@@ -6,8 +6,10 @@
             <h1 class="m-0">Lista de Proveedores</h1>
             <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Proveedores</strong></h6>
         </div>
-        <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
-            Proveedor</button>
+        @can('supplier-permission', 3)
+            <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
+                Proveedor</button>
+        @endcan
     </div>
 
     <div class="card">
@@ -15,7 +17,8 @@
             <x-adminlte.tool.datatable id="table1" :heads="$heads" :config="$config">
                 @foreach ($data as $item)
                     <tr>
-                        <td class="simpleline"><strong>{{ $item->nit == null ? $item->person->ci : $item->nit }}</strong></td>
+                        <td class="simpleline"><strong>{{ $item->nit == null ? $item->person->ci : $item->nit }}</strong>
+                        </td>
                         <td><strong>{{ $item->person->name }}</strong><br>{{ $item->organization }}</td>
                         <td><strong>{{ $item->email == null ? $item->person->email : $item->email }}</strong><br>{{ $item->phone == null ? $item->person->phone : $item->phone }}
                         </td>
