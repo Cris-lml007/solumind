@@ -77,7 +77,8 @@
                         @endphp
                         <div class="input-group">
                             <input type="number" class="form-control"
-                                value="{{Illuminate\Support\Number::format($contract->detail_contract()->sum('purchase_total'),precision:2) }}" disabled>
+                                value="{{ Illuminate\Support\Number::format($contract->detail_contract()->sum('purchase_total'), precision: 2) }}"
+                                disabled>
                             <span class="input-group-text">Bs</span>
                         </div>
                     </div>
@@ -104,7 +105,8 @@
                                 <td>{{ $item->person->ci }}</td>
                                 <td>{{ $item->person->name }}</td>
                                 <td>{{ $item->pivot->interest }}</td>
-                                <td>{{  Illuminate\Support\Number::format($utotal * ($item->pivot->interest / 100),precision:2)}}</td>
+                                <td>{{ Illuminate\Support\Number::format($utotal * ($item->pivot->interest / 100), precision: 2) }}
+                                </td>
                             </tr>
                             @php
                                 $ptotal += $utotal * ($item->pivot->interest / 100);
@@ -113,17 +115,19 @@
                         @endforeach
                         <tfoot>
                             <th colspan="3">TOTAL UTILIDAD</th>
-                            <th>{{ Illuminate\Support\Number::format($ptotal,precision:2) }} Bs</th>
+                            <th>{{ Illuminate\Support\Number::format($ptotal, precision: 2) }} Bs</th>
                         </tfoot>
                     </x-adminlte.tool.datatable>
                 </div>
                 <hr>
                 <div class="d-flex justify-content-end my-3">
-                    @if ($contract->status->value < 3)
-                        <button class="btn btn-success me-1" wire:click="aprove">Aprobar</button>
-                    @endif
-                    <button class="btn btn-primary me-1" wire:click="create">Guardar</button>
-                    <button class="btn btn-danger" id="btn-remove">Eliminar</button>
+                    @can('voucher-permission', 3)
+                        @if ($contract->status->value < 3)
+                            <button class="btn btn-success me-1" wire:click="aprove">Aprobar</button>
+                        @endif
+                        <button class="btn btn-primary me-1" wire:click="create">Guardar</button>
+                        <button class="btn btn-danger" id="btn-remove">Eliminar</button>
+                    @endcan
                 </div>
             </div>
             <div class="tab-pane fade" id="products-tab-pane" role="tabpanel" aria-labelledby="products-tab"
@@ -131,9 +135,11 @@
                 <div>
                     <div class="my-3 d-flex justify-content-between py-0">
                         <h5 class="m-0 p-0" style="align-self: center;"><strong>Detalle de Contrato</strong></h5>
-                        <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"><i
-                                class="fa fa-plus"></i> Añadir
-                            Producto</button>
+                        @can('voucher-permission', 3)
+                            <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"><i
+                                    class="fa fa-plus"></i> Añadir
+                                Producto</button>
+                        @endcan
                     </div>
                     <x-adminlte.tool.datatable id="detail" :heads="$heads">
                         @foreach ($list ?? [] as $item)
@@ -167,9 +173,10 @@
                             @endphp
                             <tr>
                                 <td>{{ $item->detailable()->withTrashed()->first()?->name .' ' .$size }}</td>
-                                <td>{{ Illuminate\Support\Number::format($item->sale_price,precision:2)}}</td>
+                                <td>{{ Illuminate\Support\Number::format($item->sale_price, precision: 2) }}</td>
                                 <td>{{ $item->quantity }}</td>
-                                <td>{{ Illuminate\Support\Number::format((float) $item->sale_price * (int) $item->quantity,precision:2)  }}</td>
+                                <td>{{ Illuminate\Support\Number::format((float) $item->sale_price * (int) $item->quantity, precision: 2) }}
+                                </td>
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#modal"
                                         wire:click="loadProduct({{ $item->id }})" class="btn btn-primary"><i
@@ -186,7 +193,7 @@
                         <tfoot>
                             <th colspan="2"></th>
                             <th>Total</th>
-                            <th>{{ Illuminate\Support\Number::format($total,precision:2) }}</th>
+                            <th>{{ Illuminate\Support\Number::format($total, precision: 2) }}</th>
                             <th></th>
                         </tfoot>
                     </x-adminlte.tool.datatable>
@@ -196,8 +203,10 @@
                 tabindex="0" wire:ignore.self>
                 <div class="d-flex justify-content-between mt-3 mb-3">
                     <h5 class="my-o py-0"><strong>Detalle de Inversión</strong></h5>
-                    <button data-bs-toggle="modal" data-bs-target="#modal-partner" class="btn btn-primary"><i
-                            class="fa fa-plus"></i> Añadir Inversión</button>
+                    @can('voucher-permission', 3)
+                        <button data-bs-toggle="modal" data-bs-target="#modal-partner" class="btn btn-primary"><i
+                                class="fa fa-plus"></i> Añadir Inversión</button>
+                    @endcan
                 </div>
                 <div id="table-partner">
                     <x-adminlte.tool.datatable id="partner" :heads="['CI', 'Nombre Completo', 'Interes (%)', 'Acciones']">
@@ -211,8 +220,10 @@
                                     <button data-bs-toggle="modal" data-bs-target="#modal-partner"
                                         class="btn btn-primary" wire:click="loadInversion({{ $item->id }})"><i
                                             class="fa fa-pen"></i></button>
-                                    <button wire:click="deleteInversion({{ $item->id }})"
-                                        class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                    @can('voucher-permission', 3)
+                                        <button wire:click="deleteInversion({{ $item->id }})"
+                                            class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                                    @endcan
                                 </td>
                             </tr>
                         @endforeach
@@ -225,25 +236,25 @@
                 <div class="my-3">
                     @php
                         $tbill = $contract->detail_contract->sum(function ($item) {
-                            return (int)($item->sale_price ?? 0) * ((int)($item->bill ?? 0) / 100);
+                            return (int) ($item->sale_price ?? 0) * ((int) ($item->bill ?? 0) / 100);
                         });
                         $toperating = $contract->detail_contract->sum(function ($item) {
-                            return (int)($item->sale_price ?? 0) * ((int)($item->operating ?? 0) / 100);
+                            return (int) ($item->sale_price ?? 0) * ((int) ($item->operating ?? 0) / 100);
                         });
                         $tcomission = $contract->detail_contract->sum(function ($item) {
-                            return (int)($item->sale_price ?? 0) * ((int)($item->comission ?? 0) / 100);
+                            return (int) ($item->sale_price ?? 0) * ((int) ($item->comission ?? 0) / 100);
                         });
                         $tbank = $contract->detail_contract->sum(function ($item) {
-                            return (int)($item->sale_price ?? 0) * ((int)($item->bank ?? 0) / 100);
+                            return (int) ($item->sale_price ?? 0) * ((int) ($item->bank ?? 0) / 100);
                         });
                         $tunexpected = $contract->detail_contract->sum(function ($item) {
-                            return (int)($item->sale_price ?? 0) * ((int)($item->unexpected ?? 0) / 100);
+                            return (int) ($item->sale_price ?? 0) * ((int) ($item->unexpected ?? 0) / 100);
                         });
                         $tinterest = $contract->detail_contract->sum(function ($item) {
-                            return (int)($item->sale_price ?? 0) * ((int)($item->interest ?? 0) / 100);
+                            return (int) ($item->sale_price ?? 0) * ((int) ($item->interest ?? 0) / 100);
                         });
                         $tutility = $contract->detail_contract->sum(function ($item) {
-                            return (int)($item->sale_price ?? 0) * ((int)($item->utility ?? 0) / 100);
+                            return (int) ($item->sale_price ?? 0) * ((int) ($item->utility ?? 0) / 100);
                         });
                     @endphp
                     <div class="row">
@@ -251,7 +262,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-money_bill"></i> Facturacion:
-                                        {{ Illuminate\Support\Number::format($tbill,precision:2) }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($tbill, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -259,7 +270,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-truck"></i> Funcionamiento:
-                                        {{ Illuminate\Support\Number::format($toperating,precision:2) }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($toperating, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -267,7 +278,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-bookmark"></i>Comisión:
-                                        {{ Illuminate\Support\Number::format($tcomission,precision:2) }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($tcomission, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -277,7 +288,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-bank"></i> Banco:
-                                        {{ Illuminate\Support\Number::format($tbank,precision:2) }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($tbank, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -285,7 +296,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-percent"></i> Interes:
-                                        {{ Illuminate\Support\Number::format($tinterest,precision:2) }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($tinterest, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -293,7 +304,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-angles_up"></i> Utilidad:
-                                        {{ Illuminate\Support\Number::format($utotal,precision:2) }} Bs</h6>
+                                        {{ Illuminate\Support\Number::format($utotal, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
@@ -311,8 +322,10 @@
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->date }}</td>
-                                <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount,precision:2) : '' }}</td>
-                                <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount,precision:2) : '' }}</td>
+                                <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
+                                </td>
+                                <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
+                                </td>
                                 <td>{{ $item->description }}</td>
                                 <td>{{ $item->account->name }}</td>
                             </tr>
@@ -328,7 +341,8 @@
                     </x-adminlte.tool.datatable>
                     <div class="card">
                         <div class="card-body  {{ $ti - $te > 0 ? 'bg-success' : 'bg-danger' }}">
-                            <div><strong>Total Ganancia:</strong> {{ Illuminate\Support\Number::format($ti -$te,precision:2) }} Bs</div>
+                            <div><strong>Total Ganancia:</strong>
+                                {{ Illuminate\Support\Number::format($ti - $te, precision: 2) }} Bs</div>
                         </div>
                     </div>
                 </div>
@@ -606,10 +620,12 @@
                 @enderror
             </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="create">Guardar</button>
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
+        @can('voucher-permission', 3)
+            <div class="modal-footer">
+                <button class="btn btn-primary" wire:click="create">Guardar</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        @endcan
     @endif
 </div>
 

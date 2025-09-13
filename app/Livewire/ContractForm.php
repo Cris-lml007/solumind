@@ -12,8 +12,8 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\StatusContract;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -80,6 +80,8 @@ class ContractForm extends Component
     public ContractPartner $contract_partner;
 
     public function mount($id = null){
+        if(!Gate::allows('voucher-read'))
+            abort('404');
         $this->partners = Partner::all();
         $this->clients = Client::all();
         $this->products = array_merge(Product::all()->all(),Item::all()->all());
@@ -138,6 +140,8 @@ class ContractForm extends Component
     }
 
     public function saveInversion(){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
         Validator::make(
             [
                 'partner_ci' => $this->partner_ci,
@@ -171,6 +175,8 @@ class ContractForm extends Component
     }
 
     public function deleteInversion($id){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
         ContractPartner::find($id)->delete();
     }
 
@@ -230,6 +236,8 @@ class ContractForm extends Component
     }
 
     public function create(){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
         $this->validate();
         $this->contract->cod = $this->code;
         $this->contract->client_id = $this->searchable_item;
@@ -257,6 +265,8 @@ class ContractForm extends Component
     }
 
     public function add(){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
         Validator::make(
             [
                 'code_product' => $this->code_product,
@@ -304,17 +314,23 @@ class ContractForm extends Component
     }
 
     public function aprove(){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
         $this->contract->status = StatusContract::CONTRACT->value;
         $this->contract->save();
         $this->redirect(route('dashboard.proof'));
     }
 
     public function remove(){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
         $this->contract->delete();
         $this->redirect(route('dashboard.proof'));
     }
 
     public function delete($id){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
         DetailContract::find($id)->delete();
         $this->contract->refresh();
         $this->list = $this->contract->detail_contract;
@@ -322,6 +338,8 @@ class ContractForm extends Component
 
     public function render()
     {
+        if(!Gate::allows('voucher-read'))
+            abort('404');
         $heads = ['Producto', 'Precio (Bs)', 'Cantidad', 'Subtotal', 'Acciones'];
         $transactions = Transaction::where('contract_id',$this->contract->id)->get();
         return view('livewire.contract-form',compact(['heads','transactions']));

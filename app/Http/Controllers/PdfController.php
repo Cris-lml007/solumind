@@ -8,10 +8,13 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class PdfController extends Controller
 {
     public function generateVoucher($id){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
         $data = Transaction::find($id);
         $pdf = Pdf::setOptions([
             'isHtmlParseEnabled' => true,
@@ -32,6 +35,8 @@ class PdfController extends Controller
         return $pdf->stream();
     }
     public function generateDelivery($id){
+        if(!Gate::allows('delivery-permission',3))
+            abort('404');
         $data = Delivery::find($id);
         $pdf = Pdf::setOptions([
             'isHtmlParseEnabled' => true,

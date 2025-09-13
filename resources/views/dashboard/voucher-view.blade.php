@@ -29,10 +29,12 @@
             </li>
         </div>
         <div class="d-flex justify-content-end w-50">
-            <button data-bs-target="#modalNuevaProforma" data-bs-toggle="modal" class="btn btn-primary"
-                style="height: 38px;">
-                <i class="fa fa-plus"></i> Crear Nueva Proforma
-            </button>
+            @can('voucher-permission', 3)
+                <button data-bs-target="#modalNuevaProforma" data-bs-toggle="modal" class="btn btn-primary"
+                    style="height: 38px;">
+                    <i class="fa fa-plus"></i> Crear Nueva Proforma
+                </button>
+            @endcan
         </div>
     </ul>
 
@@ -55,9 +57,14 @@
                                     @endif
                                 </td>
                                 <td>{{ $item->description }}</td>
-                                <td><strong>{{ Illuminate\Support\Number::format($item->amount,precision:2) }}</strong></td>
-                                <td><a href="{{ route('dashboard.proof.pdf',$item->id) }}" class="btn btn-primary"><i
-                                            class="fa fa-file-pdf"></i> Exportar</a></td>
+                                <td><strong>{{ Illuminate\Support\Number::format($item->amount, precision: 2) }}</strong>
+                                </td>
+                                @can('voucher-permission', 3)
+                                    <td><a href="{{ route('dashboard.proof.pdf', $item->id) }}" class="btn btn-primary"><i
+                                                class="fa fa-file-pdf"></i> Exportar</a></td>
+                                @else
+                                    <td></td>
+                                @endcan
                             </tr>
                         @endforeach
                     </x-adminlte.tool.datatable>
@@ -66,8 +73,7 @@
         </div>
 
         {{-- PROFORMAS --}}
-        <div class="tab-pane fade {{ $activeTab == 'proformas' ? 'show active' : '' }}" id="proformas-pane"
-            role="tabpanel">
+        <div class="tab-pane fade {{ $activeTab == 'proformas' ? 'show active' : '' }}" id="proformas-pane" role="tabpanel">
             <div class="card card-top-border-radius-0">
                 <div class="card-body">
                     <x-adminlte.tool.datatable id="table-proformas" :heads="$heads['proformas']" :config="$config">
@@ -77,7 +83,7 @@
                                 <td>{{ $item->client->person->name }}<br>{{ $item->client->organization }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->create_at) }}</td>
                                 <td><span
-                                            class="badge {{ $item->status->value == 1 ? 'badge-success' : 'badge-danger' }}">{{ $item->status->value == 1 ? 'Activo' : 'Fallido' }}</span>
+                                        class="badge {{ $item->status->value == 1 ? 'badge-success' : 'badge-danger' }}">{{ $item->status->value == 1 ? 'Activo' : 'Fallido' }}</span>
                                 </td>
                                 {{-- <td class="text-right"><strong>{{ number_format($item->total, 2, ',', '.') }}</strong></td> --}}
                                 <td><a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
