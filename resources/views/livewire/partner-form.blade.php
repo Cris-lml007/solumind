@@ -69,24 +69,31 @@
                         <td>{{ $item->cod }}</td>
                         <td>{{ $item->pivot->amount }}</td>
                         <td>{{ $item->pivot->interest }}</td>
-                        <td>{{ App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount') }}</td>
-                        <td>{{ ($utotal * ($item->pivot->interest / 100)) - App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount') }}</td>
-                        <td><button data-bs-toggle="modal" data-bs-target="#modal-pay" class="btn btn-primary" x-on:click="$wire.contractPartner = '{{ $item->pivot->id }}'"><i
+                        <td>{{ App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount') }}
+                        </td>
+                        <td>{{ $utotal * ($item->pivot->interest / 100) -App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount') }}
+                        </td>
+                        <td><button data-bs-toggle="modal" data-bs-target="#modal-pay" class="btn btn-primary"
+                                x-on:click="$wire.contractPartner = '{{ $item->pivot->id }}'"><i
                                     class="fa fa-money-bill"></i></button></td>
                     </tr>
                 @endforeach
             </x-adminlte.tool.datatable>
         </div>
         <hr class="w-100">
-        <div class="d-flex justify-content-end my-3">
-            <button class="btn btn-primary me-1" wire:click="save">Modificar</button>
-            <button class="btn btn-danger" id="btn-remove">Eliminar</button>
-        </div>
+        @can('partner-permission', 3)
+            <div class="d-flex justify-content-end my-3">
+                <button class="btn btn-primary me-1" wire:click="save">Modificar</button>
+                <button class="btn btn-danger" id="btn-remove">Eliminar</button>
+            </div>
+        @endcan
     @else
-        <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="save">Guardar</button>
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
+        @can('partner-permission', 3)
+            <div class="modal-footer">
+                <button class="btn btn-primary" wire:click="save">Guardar</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        @endcan
     @endif
 
     <x-modal id="modal-pay" title="Pagar Utilidad" class="">
@@ -96,23 +103,25 @@
                 <input type="number" class="form-control" wire:model="pay_amount">
                 <span class="input-group-text">Bs</span>
             </div>
-                <div class="text-danger" style="height: 20px;">
-                    @error('amount')
-                        {{ $message }}
-                    @enderror
-                </div>
+            <div class="text-danger" style="height: 20px;">
+                @error('amount')
+                    {{ $message }}
+                @enderror
+            </div>
             <label for="">Descripción</label>
             <textarea class="form-control" wire:model="pay_description"></textarea>
-                <div class="text-danger" style="height: 20px;">
-                    @error('description')
-                        {{ $message }}
-                    @enderror
-                </div>
+            <div class="text-danger" style="height: 20px;">
+                @error('description')
+                    {{ $message }}
+                @enderror
+            </div>
         </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" wire:click="payUtility">Pagar</button>
-            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        </div>
+        @can('partner-permission', 3)
+            <div class="modal-footer">
+                <button class="btn btn-primary" wire:click="payUtility">Pagar</button>
+                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        @endcan
     </x-modal>
 </div>
 

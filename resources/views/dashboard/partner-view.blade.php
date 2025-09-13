@@ -6,8 +6,10 @@
             <h1 class="m-0">Lista de Socios</h1>
             <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Socios</strong></h6>
         </div>
-        <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
-            Socio</button>
+        @can('partner-permission', 3)
+            <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
+                Socio</button>
+        @endcan
     </div>
 
     <div class="card">
@@ -28,9 +30,9 @@
     </div>
 
     <x-modal title="Nuevo Socio" id="modal" class="modal-lg">
-            <livewire:partner-form></livewire:partner-form>
+        <livewire:partner-form></livewire:partner-form>
     </x-modal>
-    @endsection
+@endsection
 
 @section('css')
     <style>

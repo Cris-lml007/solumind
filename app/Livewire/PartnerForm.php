@@ -2,16 +2,14 @@
 
 namespace App\Livewire;
 
-use App\Models\Account;
-use App\Models\Contract;
 use App\Models\ContractPartner;
 use App\Models\Partner;
 use App\Models\Person;
 use App\Models\Transaction;
 use App\TypeTransaction;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -39,6 +37,8 @@ class PartnerForm extends Component
     public $pay_amount;
 
     public function mount($id = null){
+        if(!Gate::allows('partner-read'))
+            abort('404');
         try{
             $this->partner = Partner::where('id',$id)->firstOrFail();
             $this->ci = $this->partner->person->ci;
@@ -69,6 +69,8 @@ class PartnerForm extends Component
     }
 
     public function save(){
+        if(!Gate::allows('partner-permission',3))
+            abort('404');
         $this->validate();
         $this->person->ci = $this->ci;
         $this->person->name = $this->name;
@@ -85,11 +87,15 @@ class PartnerForm extends Component
     }
 
     public function remove(){
+        if(!Gate::allows('partner-permission',3))
+            abort('404');
         $this->partner->delete();
         $this->redirect(route('dashboard.partner'));
     }
 
     public function payUtility(){
+        if(!Gate::allows('partner-permission',3))
+            abort('404');
         $contractPartner = ContractPartner::find($this->contractPartner);
         $utotal = $contractPartner->contract->detail_contract()->sum(DB::raw('sale_price * quantity')) - $contractPartner->contract->detail_contract()->sum('purchase_total');
         // dd($contractPartner->interest);
@@ -114,6 +120,8 @@ class PartnerForm extends Component
 
     public function render()
     {
+        if(!Gate::allows('partner-read'))
+            abort('404');
         $data_t = $this->partner->contracts()->where('status',3)->get();
         $config_t = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $heads_t = ['Contrato', 'Inversión (Bs)', 'Utilidad (%)', 'Retirado (Bs)', 'Saldo (Bs)','Acciones'];
