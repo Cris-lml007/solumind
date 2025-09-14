@@ -23,6 +23,12 @@ return new class extends Migration
             $table->integer('type');
             $table->timestamps();
             $table->softDeletes();
+
+
+            $table->foreign('contract_id')->references('id')->on('contracts')->nullOnDelete();
+            $table->foreign('contract_partner_id')->references('id')->on('contract_partners')->nullOnDelete();
+            $table->foreign('account_id')->references('id')->on('accounts')->nullOnDelete();
+            $table->foreign('delivery_id')->references('id')->on('deliveries')->nullOnDelete();
         });
     }
 

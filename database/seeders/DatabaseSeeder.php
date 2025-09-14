@@ -28,12 +28,13 @@ class DatabaseSeeder extends Seeder
 
         UserPermission::create([
             'user_id' => $u->id,
-            'product' => 4,
-            'supplier' => 4,
-            'partner' => 4,
-            'item' => 4,
-            'transaction' => 4,
-            'delivery' => 4,
+            'product' => 3,
+            'supplier' => 3,
+            'partner' => 3,
+            'item' => 3,
+            'transaction' => 3,
+            'delivery' => 3,
+            'config' => 3
         ]);
 
         $a = new Account();

@@ -11,6 +11,7 @@ use App\Livewire\SupplierForm;
 use App\Livewire\ClientForm;
 use App\Livewire\ContractForm;
 use App\Livewire\DiaryBookForm;
+use App\Livewire\History;
 use App\Livewire\PersonForm;
 use App\Livewire\Userform;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +52,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('settings/account/{id}',AccountForm::class)->name('dashboard.settings.account');
     Route::get('settings/user/{id}',Userform::class)->name('dashboard.settings.user.form');
     Route::get('settings/person/{id}',PersonForm::class)->name('dashboard.settings.person.form');
+    Route::get('history',History::class)->name('dashboard.history');
 
     Route::get('proof/pdf/{id}',[PdfController::class,'generateVoucher'])->name('dashboard.proof.pdf');
     Route::get('delivery/pdf/{id}',[PdfController::class,'generateDelivery'])->name('dashboard.delivery.pdf');

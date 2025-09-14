@@ -21,6 +21,8 @@ return new class extends Migration
             // $table->string('description');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('contract_id')->references('id')->on('contracts')->cascadeOnDelete();
+            $table->foreign('partner_id')->references('id')->on('partners')->cascadeOnDelete();
         });
     }
 

@@ -373,9 +373,9 @@ return [
             'can' => 'ledger-read'
         ],
         [
-            'text' => 'Historial de Movimientos',
+            'text' => 'Historial',
             'icon' => 'fas fa-fw fa-history',
-            'url' => '#',
+            'route' => 'dashboard.history',
             'can' => 'history-read'
         ],
         ['header' => 'Reportes'],

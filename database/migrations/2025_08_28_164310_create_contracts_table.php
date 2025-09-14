@@ -22,6 +22,8 @@ return new class extends Migration
             $table->integer('time_delivery')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('client_id')->references('id')->on('clients')->cascadeOnDelete();
         });
     }
 

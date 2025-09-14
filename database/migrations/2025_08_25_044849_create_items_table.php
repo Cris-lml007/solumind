@@ -23,6 +23,8 @@ return new class extends Migration
             $table->decimal('price',8,2)->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();
         });
     }
 

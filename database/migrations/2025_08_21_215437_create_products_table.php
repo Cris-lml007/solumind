@@ -19,12 +19,14 @@ return new class extends Migration
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('name');
+            $table->string('size');
             $table->string('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->cascadeOnDelete();
         });
     }
 

@@ -29,6 +29,8 @@ return new class extends Migration
             $table->decimal('purchase_total');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('contract_id')->references('id')->on('contracts')->cascadeOnDelete();
         });
     }
 

@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('received_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('contract_id')->references('id')->on('contracts')->cascadeOnDelete();
         });
     }
 

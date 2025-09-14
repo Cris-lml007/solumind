@@ -18,6 +18,9 @@ return new class extends Migration
             $table->integer('quantity');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('detail_contract_id')->references('id')->on('detail_contracts')->cascadeOnDelete();
+            $table->foreign('delivery_id')->references('id')->on('deliveries')->cascadeOnDelete();
         });
     }
 
