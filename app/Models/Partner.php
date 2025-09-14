@@ -15,10 +15,10 @@ class Partner extends Model
 
     public function contracts(){
         return $this->belongsToMany(Contract::class,'contract_partners')->withPivot([
-            'amount',
-            'type',
+            // 'amount',
+            // 'type',
             'interest',
-            'description',
+            // 'description',
             'id'
         ]);
     }

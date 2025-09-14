@@ -12,4 +12,8 @@ class DetailItem extends Model
     public function product(){
         return $this->belongsTo(Product::class);
     }
+
+    public function item(){
+        return $this->belongsTo(Item::class);
+    }
 }
