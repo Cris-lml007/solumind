@@ -190,7 +190,7 @@
                                     <input type="text" disabled class="form-control mb-3" wire:model="s" disabled>
                                     <label for="p">Precio (Bs)</label>
                                     <input type="number" id="p" class="form-control mb-3"
-                                        wire:model.lazy="p" disabled>
+                                        wire:model.lazy="p">
                                 </div>
                             </div>
                         </div>

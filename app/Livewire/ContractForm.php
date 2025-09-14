@@ -14,6 +14,7 @@ use App\StatusContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
@@ -76,6 +77,9 @@ class ContractForm extends Component
     public $partner_description;
     // #[Validate('required')]
     public $partner_amount;
+    public $valide;
+    public $payment;
+    public $delivery;
     public $partner;
     public ContractPartner $contract_partner;
 
@@ -90,6 +94,9 @@ class ContractForm extends Component
             $this->code = $this->contract->cod;
             $this->searchable_item = $this->contract->client_id;
             $this->description = $this->contract->description;
+            $this->payment = $this->contract->payment;
+            $this->valide = $this->contract->time_valide;
+            $this->delivery = $this->contract->time_delivery;
             $this->list = $this->contract->detail_contract;
             // dd($this->list[0]->detailable()->withTrashed()->get());
             $this->detail = new DetailContract();
@@ -246,6 +253,26 @@ class ContractForm extends Component
         $this->redirect(route('dashboard.proof'));
     }
 
+    public function save(){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
+        Validator::make([
+            'code' => $this->code,
+            'client_id' => $this->searchable_item,
+        ],[
+            'code' => ['required', Rule::unique('contracts','cod')->ignore($this->contract->id)],
+            'client_id' => 'required|exists:clients,id'
+        ])->validate();
+        $this->contract->cod = $this->code;
+        $this->contract->client_id = $this->searchable_item;
+        $this->contract->description = $this->description;
+        $this->contract->payment = $this->payment;
+        $this->contract->time_delivery = $this->delivery;
+        $this->contract->time_valide = $this->valide;
+        $this->contract->save();
+        $this->redirect(route('dashboard.proof'));
+    }
+
     public function loadProduct($id){
         $this->detail = DetailContract::find($id);
         $this->bill = $this->detail->bill;
@@ -321,6 +348,31 @@ class ContractForm extends Component
         $this->redirect(route('dashboard.proof'));
     }
 
+    public function finish(){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
+        $this->contract->status = StatusContract::CONTRACT_COMPLETE->value;
+        $this->contract->save();
+        $this->redirect(route('dashboard.proof'));
+    }
+
+    public function proofFail(){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
+        $this->contract->status = StatusContract::PROFORMA_FAIL->value;
+        $this->contract->save();
+        $this->redirect(route('dashboard.proof'));
+    }
+
+    public function contractFail(){
+        if(!Gate::allows('voucher-permission',3))
+            abort('404');
+        $this->contract->status = StatusContract::CONTRACT_FAIL->value;
+        $this->contract->save();
+        $this->redirect(route('dashboard.proof'));
+    }
+
+
     public function remove(){
         if(!Gate::allows('voucher-permission',3))
             abort('404');
@@ -340,7 +392,7 @@ class ContractForm extends Component
     {
         if(!Gate::allows('voucher-read'))
             abort('404');
-        $heads = ['Producto', 'Precio (Bs)', 'Cantidad', 'Subtotal', 'Acciones'];
+        $heads = ['ID', 'Producto', 'Precio (Bs)', 'Cantidad', 'Subtotal', 'Acciones'];
         $transactions = Transaction::where('contract_id',$this->contract->id)->get();
         return view('livewire.contract-form',compact(['heads','transactions']));
     }

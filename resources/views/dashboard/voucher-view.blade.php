@@ -87,8 +87,11 @@
                                         class="badge {{ $item->status->value == 1 ? 'badge-success' : 'badge-danger' }}">{{ $item->status->value == 1 ? 'Activo' : 'Fallido' }}</span>
                                 </td>
                                 {{-- <td class="text-right"><strong>{{ number_format($item->total, 2, ',', '.') }}</strong></td> --}}
-                                <td><a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
-                                            class="fa fa-ellipsis-v"></i></a></td>
+                                <td>
+                                    <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
+                                            class="fa fa-ellipsis-v"></i></a>
+                                    <a class="btn btn-secondary"><i class="fa fa-file" href="#"></i></a>
+                                </td>
                             </tr>
                         @endforeach
                     </x-adminlte.tool.datatable>
@@ -108,9 +111,14 @@
                                 <td>{{ $item->cod }}</td>
                                 <td>{{ $item->client->person->name }}</td>
                                 <td>{{ $item->time_delivery }} Dias</td>
-                                <td><span class="badge badge-success">{{ __($item->status->name) }}</span></td>
-                                <td><a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
-                                            class="fa fa-ellipsis-v"></i></a></td>
+                                <td><span
+                                        class="badge {{ $item->status->value == 3 || $item->status->value == 5 ? 'badge-success' : 'badge-danger' }}">{{ __($item->status->name) }}</span>
+                                </td>
+                                <td>
+                                    <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
+                                            class="fa fa-ellipsis-v"></i></a>
+                                    <a class="btn btn-secondary"><i class="fa fa-file" href="#"></i></a>
+                                </td>
                             </tr>
                         @endforeach
                     </x-adminlte.tool.datatable>

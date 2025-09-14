@@ -69,6 +69,27 @@
                         {{ $message }}
                     @enderror
                 </div>
+                <label for="">Tipo de Pago</label>
+                <input type="text" wire:model="payment" class="form-control">
+                <div class="text-danger" style="height: 20px;">
+                    @error('payment')
+                        {{ $message }}
+                    @enderror
+                </div>
+                <label for="">Validez (Dias)</label>
+                <input type="number" wire:model="valide" class="form-control">
+                <div class="text-danger" style="height: 20px;">
+                    @error('valide')
+                        {{ $message }}
+                    @enderror
+                </div>
+                <label for="">Plazo de Entrega (Dias)</label>
+                <input type="number" wire:model="delivery" class="form-control">
+                <div class="text-danger" style="height: 20px;">
+                    @error('delivery')
+                        {{ $message }}
+                    @enderror
+                </div>
                 <div class="row mt-0 mb-3">
                     <div class="col">
                         <label>Presupuesto</label>
@@ -125,8 +146,15 @@
                     @can('voucher-permission', 3)
                         @if ($contract->status->value < 3)
                             <button class="btn btn-success me-1" wire:click="aprove">Aprobar</button>
+                            <button class="btn btn-secondary me-1" wire:click="proofFail">Fallido</button>
                         @endif
-                        <button class="btn btn-primary me-1" wire:click="create">Guardar</button>
+                        <button class="btn btn-success me-1" wire:click="finish">Finalizar</button>
+                        <button class="btn btn-secondary me-1" wire:click="contractFail">Fallido</button>
+                        @if ($contract->id == null)
+                            <button class="btn btn-primary me-1" wire:click="create">Guardar</button>
+                        @else
+                            <button class="btn btn-primary me-1" wire:click="save">Guardar</button>
+                        @endif
                         <button class="btn btn-danger" id="btn-remove">Eliminar</button>
                     @endcan
                 </div>
@@ -193,7 +221,7 @@
                             </tr>
                         @endforeach
                         <tfoot>
-                            <th colspan="2"></th>
+                            <th colspan="3"></th>
                             <th>Total</th>
                             <th>{{ Illuminate\Support\Number::format($total, precision: 2) }}</th>
                             <th></th>
@@ -478,7 +506,7 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="description">Descripción</label>
+                    <label for="description">Observación</label>
                     <textarea class="form-control" rows="4" wire:model="description_product"></textarea>
                 </div>
                 <h6><strong>Desglose Financiero</strong></h6>
