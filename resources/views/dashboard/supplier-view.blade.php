@@ -16,7 +16,8 @@
         <div class="card-body">
             <x-adminlte.tool.datatable id="table1" :heads="$heads" :config="$config">
                 @foreach ($data as $item)
-                    <tr>
+                <tr>
+                        <td class="simpleline"><strong>{{ $item->id }}</strong>
                         <td class="simpleline"><strong>{{ $item->nit == null ? $item->person->ci : $item->nit }}</strong>
                         </td>
                         <td><strong>{{ $item->person->name }}</strong><br>{{ $item->organization }}</td>

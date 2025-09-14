@@ -25,6 +25,7 @@
                         $t_expense += $item->type == 2 ? $item->amount : 0;
                     @endphp
                     <tr onclick="edit({{ $item->id }})" class="item-table">
+                        <td>{{ $item->id }}</td>
                         <td>{{ $item->date }}</td>
                         <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}</td>
                         <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}</td>

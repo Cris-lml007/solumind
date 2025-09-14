@@ -102,6 +102,7 @@
                         @endphp
                         @foreach ($contract->partners as $item)
                             <tr>
+                                <td><strong>{{ $item->id }}</strong></td>
                                 <td>{{ $item->person->ci }}</td>
                                 <td>{{ $item->person->name }}</td>
                                 <td>{{ $item->pivot->interest }}</td>
@@ -172,6 +173,7 @@
                                 );
                             @endphp
                             <tr>
+                                <td><strong>{{ $item->id }}</strong></td>
                                 <td>{{ $item->detailable()->withTrashed()->first()?->name .' ' .$size }}</td>
                                 <td>{{ Illuminate\Support\Number::format($item->sale_price, precision: 2) }}</td>
                                 <td>{{ $item->quantity }}</td>
@@ -212,6 +214,7 @@
                     <x-adminlte.tool.datatable id="partner" :heads="['CI', 'Nombre Completo', 'Interes (%)', 'Acciones']">
                         @foreach ($contract->inversions ?? [] as $item)
                             <tr>
+                                <td><strong>{{ $item->id }}</strong></td>
                                 <td>{{ $item->partner->person->ci }}</td>
                                 <td>{{ $item->partner->person->name }}</td>
                                 <!-- <td>{{ $item->amount }}</td> -->

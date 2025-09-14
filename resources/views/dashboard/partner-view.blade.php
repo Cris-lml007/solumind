@@ -17,6 +17,7 @@
             <x-adminlte.tool.datatable id="table1" :heads="$heads" :config="$config">
                 @foreach ($data as $item)
                     <tr>
+                        <td class="simpleline"><strong>{{ $item->id }}</strong></td>
                         <td class="simpleline"><strong>{{ $item->person->ci }}</strong></td>
                         <td><strong>{{ $item->person->name }}</strong><br>{{ $item->organization }}</td>
                         <td><strong>{{ $item->person->email }}</strong><br>{{ $item->person->phone }}</td>

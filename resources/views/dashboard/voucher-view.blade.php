@@ -79,6 +79,7 @@
                     <x-adminlte.tool.datatable id="table-proformas" :heads="$heads['proformas']" :config="$config">
                         @foreach ($data['proformas'] as $item)
                             <tr>
+                                <td><strong>{{ $item->id }}</strong></td>
                                 <td>{{ $item->cod }}</td>
                                 <td>{{ $item->client->person->name }}<br>{{ $item->client->organization }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->create_at) }}</td>
@@ -103,6 +104,7 @@
                     <x-adminlte.tool.datatable id="table-contratos" :heads="$heads['contratos']" :config="$config">
                         @foreach ($data['contratos'] as $item)
                             <tr>
+                                <td><strong>{{ $item->id }}</strong></td>
                                 <td>{{ $item->cod }}</td>
                                 <td>{{ $item->client->person->name }}</td>
                                 <td>{{ $item->time_delivery }} Dias</td>

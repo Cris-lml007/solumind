@@ -69,9 +69,10 @@
         <div class="tab-pane fade" id="categories-tab-pane" role="tabpanel" aria-labelledby="categories-tab" tabindex="0">
             <div class="card">
                 <div class="card-body">
-                    <x-adminlte.tool.datatable id="categories" :heads="['Identidicador', 'Nombre', 'Acciones']">
+                    <x-adminlte.tool.datatable id="categories" :heads="['ID', 'Identidicador', 'Nombre', 'Acciones']">
                         @foreach ($data['categories'] as $item)
                             <tr>
+                                <td>{{ $item->id }}</td>
                                 <td>{{ $item->alias }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td><a class="btn btn-primary"
@@ -85,9 +86,10 @@
         </div>
         <div class="tab-pane fade" id="person-tab-pane" role="tabpanel" aria-labelledby="person-tab" tabindex="0">
             <div class="my-3">
-                <x-adminlte.tool.datatable id="table-person" :heads="['CI', 'Nombre Completo', 'Email', 'Celular', 'Acciones']">
+                <x-adminlte.tool.datatable id="table-person" :heads="['ID', 'CI', 'Nombre Completo', 'Email', 'Celular', 'Acciones']">
                     @foreach ($data['persons'] as $item)
                         <tr>
+                            <td>{{ $item->id }}</td>
                             <td>{{ $item->ci }}</td>
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->email }}</td>

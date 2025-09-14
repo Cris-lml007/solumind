@@ -17,6 +17,7 @@
             <x-adminlte.tool.datatable id="table1" :heads="$heads" :config="$config">
                 @foreach ($data as $item)
                     <tr>
+                        <td><strong>{{ $item->id }}</strong></td>
                         <td><strong>{{ $item->cod }}</strong></td>
                         <td><strong>{{ $item->name }}</strong><br></td>
                         <td><strong>{{ Illuminate\Support\Number::format($item->price + $item->extra, precision: 2) }}</strong>

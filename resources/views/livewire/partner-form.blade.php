@@ -66,6 +66,7 @@
                         $utotal = $item->detail_contract()->sum(DB::raw('sale_price * quantity')) - $item->detail_contract()->sum('purchase_total');
                     @endphp
                     <tr>
+                        <td><strong>{{ $item->id }}</strong></td>
                         <td>{{ $item->cod }}</td>
                         <td>{{ $item->pivot->amount }}</td>
                         <td>{{ $item->pivot->interest }}</td>
