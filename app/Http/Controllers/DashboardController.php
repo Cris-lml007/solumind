@@ -17,8 +17,8 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\StatusContract;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class DashboardController extends Controller
 {
@@ -30,13 +30,17 @@ class DashboardController extends Controller
         return view('dashboard.index',compact(['data','utotal','total','patrimony']));
     }
     public function supplier(){
-        $heads = ['NIT', 'Nombre Proveedor', 'Contacto Principal', 'Acciones'];
-        $config = ['columns' => [null, null, null, ['orderable' => false, 'searchable' => false]]];
+        if(!Gate::allows('supplier-read'))
+            abort('404');
+        $heads = ['ID', 'NIT', 'Nombre Proveedor', 'Contacto Principal', 'Acciones'];
+        $config = ['columns' => [null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = Supplier::all();
         return view('dashboard.supplier-view', compact(['heads', 'config','data']));
     }
 
     public function product(){
+        if(!Gate::allows('product-read'))
+            abort('404');
         $heads = ['ID', 'Nombre Producto', 'Proveedor', 'Precio (Bs)', 'Acciones'];
         $config = ['columns' => [null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = Product::all();
@@ -44,27 +48,35 @@ class DashboardController extends Controller
     }
 
     public function assembly(){
-        $heads = ['Codigo', 'Nombre de Producto', 'Precio', 'Acciones'];
-        $config = ['columns' => [null, null, null, ['orderable' => false, 'searchable' => false]]];
+        if(!Gate::allows('item-read'))
+            abort('404');
+        $heads = ['ID','Codigo', 'Nombre de Producto', 'Precio', 'Acciones'];
+        $config = ['columns' => [null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = Item::all();
         return view('dashboard.assembly-view',compact(['heads','config','data']));
     }
 
     public function partner(){
-        $heads = ['CI','Nombre Completo','Contacto Principal','Acciones'];
+        if(!Gate::allows('partner-read'))
+            abort('404');
+        $heads = ['ID','CI','Nombre Completo','Contacto Principal','Acciones'];
         $config = ['columns' => [null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = Partner::all();
         return view('dashboard.partner-view',compact(['heads','config','data']));
     }
 
     public function client(){
-        $heads = ['CI', 'NIT', 'Nombre Cliente', 'Contacto Principal', 'Acciones'];
-        $config = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
+        if(!Gate::allows('client-read'))
+            abort('404');
+        $heads = ['ID', 'CI', 'NIT', 'Nombre Cliente', 'Contacto Principal', 'Acciones'];
+        $config = ['columns' => [null,null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = Client::all();
         return view('dashboard.client-view', compact(['heads', 'config','data']));
     }
 
     public function proof(){
+        if(!Gate::allows('voucher-read'))
+            abort('404');
         $config = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = [
             'comprobantes' => Transaction::all(),
@@ -74,8 +86,8 @@ class DashboardController extends Controller
 
         $heads = [
             'comprobantes' => ['ID', 'Fecha', 'Tipo', 'Descripción', 'Monto (Bs)', 'Acciones'],
-            'proformas' => ['Codigo.', 'Cliente', 'Fecha Emisión', 'Estado', 'Acciones'],
-            'contratos' => ['Codigo.', 'Cliente', 'Plazo de Entrega', 'Estado', 'Acciones']
+            'proformas' => ['ID', 'Codigo', 'Cliente', 'Fecha Emisión', 'Estado', 'Acciones'],
+            'contratos' => ['ID', 'Codigo', 'Cliente', 'Plazo de Entrega', 'Estado', 'Acciones']
         ];
 
 
@@ -83,12 +95,16 @@ class DashboardController extends Controller
     }
 
     public function diaryBook(){
-        $heads = ['Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato', 'Cuenta'];
+        if(!Gate::allows('transaction-read'))
+            abort('404');
+        $heads = ['ID', 'Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato', 'Cuenta'];
         $data = Transaction::orderBy('date','asc')->get();
         return view('dashboard.diary-book',compact(['heads','data']));
     }
 
     public function ledger(){
+        if(!Gate::allows('ledger-read'))
+            abort('404');
         $heads = ['Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato', 'Cuenta'];
         $data = Transaction::orderBy('date','asc')->get();
         $data1 = DB::table('transactions')
@@ -106,12 +122,16 @@ class DashboardController extends Controller
     }
 
     public function delivery(){
+        if(!Gate::allows('delivery-read'))
+            abort('404');
         $heads = ['Fecha','ID','Codigo de Contrato','Importe (Bs)','Saldo (Bs)','Generar'];
         $data = Delivery::all();
         return view('dashboard.delivery-view',compact(['heads','data']));
     }
 
     public function settings(){
+        if(!Gate::allows('config-read'))
+            abort('404');
         $data = [
             'categories' => Category::all(),
             'accounts' => Account::all(),
