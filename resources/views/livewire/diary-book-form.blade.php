@@ -35,7 +35,7 @@
                 <label>Contrato</label>
                 <div class="input-group">
                     <select name="search-item" class="form-select" style="height: 38px;" wire:model="contract_id">
-                        <option>Seleccione contrato</option>
+                        <option value="null">Seleccione contrato</option>
                         @foreach ($contracts as $item)
                             <option value="{{ $item->id }}">{{ $item->cod . ' - ' . $item->client->person->name }}
                             </option>

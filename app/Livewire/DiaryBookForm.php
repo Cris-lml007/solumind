@@ -92,7 +92,7 @@ class DiaryBookForm extends Component
         $this->transaction->description = $this->description;
         $this->transaction->amount = $this->import;
         $this->transaction->type = $this->type;
-        $this->transaction->contract_id = $this->contract_id;
+        $this->transaction->contract_id = $this->contract_id == 'null' ? null : $this->contract_id;
         $this->transaction->account_id = $this->account_id;
         $this->transaction->date = $this->date;
         $this->transaction->save();
