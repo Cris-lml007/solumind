@@ -258,7 +258,7 @@
                 @endif
                 <button class="btn btn-primary ms-1" wire:click="save">Guardar</button>
                 @if (Auth::user()->permission->config >= 2)
-                    <button class="btn btn-danger ms-1" id="btn-remove" data-bs-dismiss="modal">Eliminar</button>
+                    <button class="btn btn-danger ms-1" id="btn-remove">Eliminar</button>
                 @endif
             </div>
         @endif
@@ -285,7 +285,7 @@
                 confirmButtonText: "Si, deseo borrar!",
                 cancelButtonText: "Cancelar"
             }).then((result) => {
-                if (result.isConfirmed) $wire.dispatch('remove');
+                if (result.isConfirmed) $wire.remove();
             })
         });
     </script>
