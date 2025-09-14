@@ -29,9 +29,9 @@
                 </div>
                 <label for="cellular">Celular</label>
                 <input type="tel" name="cellular" class="form-control mb-1" placeholder="Ingrese número de celular"
-                    wire:model="cellular">
+                    wire:model="phone">
                 <div class="text-danger" style="height: 20px;">
-                    @error('cellular')
+                    @error('phone')
                         {{ $message }}
                     @enderror
                 </div>
