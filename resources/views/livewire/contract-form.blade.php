@@ -148,8 +148,12 @@
                             <button class="btn btn-success me-1" wire:click="aprove">Aprobar</button>
                             <button class="btn btn-secondary me-1" wire:click="proofFail">Fallido</button>
                         @endif
-                        <button class="btn btn-success me-1" wire:click="finish">Finalizar</button>
-                        <button class="btn btn-secondary me-1" wire:click="contractFail">Fallido</button>
+
+                        @if ($contract->status->value >= 3)
+                            <button class="btn btn-success me-1" wire:click="finish">Finalizar</button>
+                            <button class="btn btn-secondary me-1" wire:click="contractFail">Fallido</button>
+                        @endif
+
                         @if ($contract->id == null)
                             <button class="btn btn-primary me-1" wire:click="create">Guardar</button>
                         @else

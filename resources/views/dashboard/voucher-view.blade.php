@@ -84,7 +84,7 @@
                                 <td>{{ $item->client->person->name }}<br>{{ $item->client->organization }}</td>
                                 <td>{{ \Carbon\Carbon::parse($item->create_at) }}</td>
                                 <td><span
-                                        class="badge {{ $item->status->value == 1 ? 'badge-success' : 'badge-danger' }}">{{ $item->status->value == 1 ? 'Activo' : 'Fallido' }}</span>
+                                        class="badge {{ $item->status->value == 1 && Carbon\Carbon::parse($item->created_at)->diffInDays(Carbon\Carbon::parse(now())) <= $item->time_valide ? 'badge-success' : 'badge-danger' }}">{{ $item->status->value == 1 ? 'Activo' : 'Fallido' }}</span>
                                 </td>
                                 {{-- <td class="text-right"><strong>{{ number_format($item->total, 2, ',', '.') }}</strong></td> --}}
                                 <td>
