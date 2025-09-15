@@ -134,7 +134,7 @@
             <table class="info-table">
                 <tr>
                     <td class="font-bold" style="width: 15%;">Fecha:</td>
-                    <td style="width: 35%;">{{ \Carbon\Carbon::parse($contract->created_at)->format('d \d\e F \d\e Y') }}</td>
+                    <td style="width: 35%;">{{ \Carbon\Carbon::parse($contract->created_at ?? '')->format('d \d\e F \d\e Y') }}</td>
                     <td class="font-bold" style="width: 15%;">Facturable a:</td>
                     <td style="width: 35%;">{{ $contract->client->person->name ?? '' }}</td>
                 </tr>
@@ -198,7 +198,7 @@
 
         <table class="footer-table">
             <tr>
-                <td class="font-bold">Son: {{ $totalEnPalabras }}</td>
+                <td class="font-bold">Son: {{ $totalEnPalabras ?? '' }}</td>
                 <td class="font-bold text-right" style="font-size: 14px;">{{ number_format($total, 2, ',', '.') }}</td>
             </tr>
         </table>

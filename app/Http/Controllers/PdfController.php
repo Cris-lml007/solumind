@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contract;
 use App\Models\Delivery;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -54,5 +55,16 @@ class PdfController extends Controller
         $pdf->setPaper('letter');
         $pdf->render();
         return $pdf->stream();
+    }
+
+    public function generateProof($id){
+        $pdf = Pdf::setOptions([
+            'isHtmlParseEnabled' => true,
+            'isRemoteEnabled' => true
+        ])->loadView('pdf.proof',[ 'contract' => Contract::find($id)]);
+        $pdf->setPaper('letter');
+        $pdf->render();
+        return $pdf->stream();
+
     }
 }

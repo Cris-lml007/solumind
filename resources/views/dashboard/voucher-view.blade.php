@@ -90,7 +90,7 @@
                                 <td>
                                     <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
                                             class="fa fa-ellipsis-v"></i></a>
-                                    <a class="btn btn-secondary"><i class="fa fa-file" href="#"></i></a>
+                                    <a class="btn btn-secondary" href="{{route('dashboard.proof.form.pdf',$item->id)}}"><i class="fa fa-file"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -117,7 +117,7 @@
                                 <td>
                                     <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
                                             class="fa fa-ellipsis-v"></i></a>
-                                    <a class="btn btn-secondary"><i class="fa fa-file" href="#"></i></a>
+                                    <a class="btn btn-secondary" href="{{route('dashboard.proof.form.pdf',$item->id)}}"><i class="fa fa-file"></i></a>
                                 </td>
                             </tr>
                         @endforeach

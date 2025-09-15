@@ -62,9 +62,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         return redirect(route('dashboard.settings.user.form',$id));
     })->name('dashboard.profile');
 
-    Route::get('pdf',function(){
-        return view('pdf.delivery');
-    });
+    Route::get('proof/{id}/pdf',[PdfController::class,'generateProof'])->name('dashboard.proof.form.pdf');
 
 
 
