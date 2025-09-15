@@ -1,4 +1,10 @@
 <div>
+    <div class="d-flex justify-content-between mb-3 p-0" style="align-items: center;">
+        <div>
+            <h1 class="m-0">Historial</h1>
+            <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Historial</strong></h6>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
             <ul class="nav nav-tabs" id="myTab" role="tablist">

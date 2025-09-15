@@ -96,6 +96,8 @@ class ProductForm extends Component
 
     public function updatedNit(){
         $this->code = Supplier::where('nit', $this->nit)->exists() ? 'nf-fa-circle_check text-success' :'nf-oct-x_circle text-danger';
+        $this->supplier = Supplier::where('nit',$this->nit)->first() ?? new Supplier();
+        $this->updatedSize();
     }
 
     public function updatedCategory(){
@@ -109,11 +111,21 @@ class ProductForm extends Component
             if(strlen($word) > 2)
                 $this->cod = $this->cod . substr($word,0,3);
         }
+        $this->cod = $this->cod . 's'.$this->supplier?->id;
+    }
+
+    public function updatedName1(){
+        $words = explode(' ', $this->name);
+        $this->cod = "";
+        foreach ($words as $word) {
+            if(strlen($word) > 2)
+                $this->cod = $this->cod . substr($word,0,3);
+        }
     }
 
     public function updatedSize(){
-        $this->updatedName();
-        $this->cod = $this->cod . $this->size;
+        $this->updatedName1();
+        $this->cod = $this->cod . $this->size . 's'.$this->supplier?->id;
     }
 
     public function save(){

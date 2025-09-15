@@ -22,8 +22,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
+#[Title('')]
 class History extends Component
 {
     // public $list = [];
@@ -31,21 +33,6 @@ class History extends Component
     public function mount(){
         if(!Gate::allows('history-permission',3))
             abort('404');
-        // $this->list = [
-        //     'users'             => User::onlyTrashed()->get(),
-        //     'transactions'      => Transaction::onlyTrashed()->get(),
-        //     'products'          => Product::onlyTrashed()->get(),
-        //     'partners'          => Partner::onlyTrashed()->get(),
-        //     'clients'            => Client::onlyTrashed()->get(),
-        //     'contracts'         => Contract::onlyTrashed()->get(),
-        //     'detail_contracts'  => DetailContract::onlyTrashed()->get(),
-        //     'item_details'      => DetailItem::onlyTrashed()->get(),
-        //     'categories'        => Category::onlyTrashed()->get(),
-        //     'accounts'          => Account::onlyTrashed()->get(),
-        //     'suppliers'         => Supplier::onlyTrashed()->get(),
-        //     'contract_partners' => ContractPartner::onlyTrashed()->get(),
-        //     'assemblies'        => Item::onlyTrashed()->get(),
-        // ];
     }
 
     public function updated(){

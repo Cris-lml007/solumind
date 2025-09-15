@@ -7,7 +7,7 @@
 @section('content')
     <div class="d-flex justify-content-between mb-3 p-0" style="align-items: center;">
         <div>
-            <h1 class="m-0">Gestión Contable</h1>
+            <h1 class="m-0">Comprobantes</h1>
             <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Comprobantes</strong></h6>
         </div>
     </div>
