@@ -80,6 +80,7 @@ class ProductForm extends Component
             // $this->size ="adas";
         }catch(\Exception $e){
             $this->product = new Product();
+            $this->supplier = new Supplier();
         }
     }
 
