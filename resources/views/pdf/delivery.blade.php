@@ -97,11 +97,11 @@
         </tr>
         <tr>
             <td><strong>Depósito:</strong></td>
-            <td>{{ Illuminate\Support\Number::format($amount,precision:2)}} Bs</td>
+            <td>{{ Illuminate\Support\Number::format($amount ?? 0,precision:2)}} Bs</td>
         </tr>
         <tr>
             <td><strong>Saldo restante:</strong></td>
-            <td>{{Illuminate\Support\Number::format($balance - $amount,precision:2)}} Bs</td>
+            <td>{{Illuminate\Support\Number::format($balance - ($amount ?? 0),precision:2)}} Bs</td>
         </tr>
     </table>
 
