@@ -129,6 +129,70 @@ class DashboardController extends Controller
         return view('dashboard.delivery-view',compact(['heads','data']));
     }
 
+    public function report(){
+        $contracts = DB::table('contracts')->groupBy('status')->select(DB::raw('status,COUNT(*) as count'))->get()->toArray();
+
+        $transactions = [Transaction::where('type',1)->sum('amount'),Transaction::where('type',2)->sum('amount')];
+
+        $accounts = DB::table('transactions')
+            ->join('accounts', 'accounts.id', '=', 'transactions.account_id')
+            ->select(
+                'accounts.name',
+                DB::raw('SUM(CASE WHEN transactions.type = 1 THEN amount
+                WHEN transactions.type = 2 THEN -amount
+                ELSE 0 END) as amount')
+            )
+            ->groupBy('accounts.id', 'accounts.name')
+            ->get()
+            ->toArray();
+
+        $products = DB::table('detail_contracts')
+            ->groupBy('detailable_id','detailable_type')->join('products','products.id','=','detail_contracts.detailable_id')
+            ->select(DB::raw('products.cod, SUM(quantity) as quantity'))
+            ->get()->toArray();
+        $items = DB::table('detail_contracts')
+            ->groupBy('detailable_id','detailable_type')->join('items','items.id','=','detail_contracts.detailable_id')
+            ->select(DB::raw('items.cod, SUM(quantity) as quantity'))
+            ->get()->toArray();
+
+
+        $products = array_merge($products,$items);
+
+        // $deliveries = DB::table('deliveries')
+        //     ->select(
+        //         DB::raw('YEAR(created_at) as year'),
+        //         DB::raw('MONTH(created_at) as month'),
+        //         DB::raw('COUNT(*) as total_deliveries')
+        //     )
+        //     ->groupBy(DB::raw('YEAR(created_at)'), DB::raw('MONTH(created_at)'))
+        //     ->orderBy(DB::raw('YEAR(created_at)'), 'desc')
+        //     ->orderBy(DB::raw('MONTH(created_at)'), 'desc')
+        //     ->get()->toArray();
+        $driver = DB::getDriverName();
+
+        if ($driver === 'mysql') {
+            $deliveries = DB::table('deliveries')
+                ->select(
+                    DB::raw("DATE_FORMAT(created_at, '%Y-%m') as period"),
+                    DB::raw("COUNT(*) as total_deliveries")
+                )
+                ->groupBy('period')
+                ->orderBy('period', 'desc')
+                ->get()->toArray();
+        } elseif ($driver === 'sqlite') {
+            $deliveries = DB::table('deliveries')
+                ->select(
+                    DB::raw("strftime('%Y-%m', created_at) as period"),
+                    DB::raw("COUNT(*) as total_deliveries")
+                )
+                ->groupBy('period')
+                ->orderBy('period', 'desc')
+                ->get()->toArray();
+        }
+        // dd($deliveries);
+        return view('dashboard.report-view',compact('transactions','accounts','contracts','products','deliveries'));
+    }
+
     public function settings(){
         if(!Gate::allows('config-read'))
             abort('404');

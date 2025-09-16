@@ -69,7 +69,7 @@
         <tr>
             <td style="width: 50%; vertical-align: top;">
                 <div class="">
-                    <img src="https://brandemia.org/contenido/subidas/2023/01/logo-coca-cola-2003-2020-1024x576.png"
+                    <img src="#"
                         alt="LOGO" width="110px">
                 </div>
                 <div style="vertical-align: top; padding-left: 12px;">
