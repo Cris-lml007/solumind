@@ -19,12 +19,12 @@ class DeliveryForm extends Component
     public $detail_id;
     public $quantity;
     public $amount;
-    #[Validate('required|date')]
+    #[Validate('required|date', as: 'fecha')]
     public $date;
     public $contract;
-    #[Validate('required')]
+    #[Validate('required',as: 'codigo de contrato')]
     public $contract_cod;
-    #[Validate('|required')]
+    #[Validate('|required', as: 'recibido por')]
     public $receiver_by;
 
     public $max_quantity;

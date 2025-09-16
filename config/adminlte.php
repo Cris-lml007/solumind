@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'SOLUMIND',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -382,7 +382,7 @@ return [
         [
             'text' => 'Generar Reportes',
             'icon' => 'fas fa-fw fa-history',
-            'url' => '#',
+            'route' => 'dashboard.report',
             'can' => 'report-read'
         ],
         ['header' => 'Opciones Avanzadas'],
@@ -397,11 +397,11 @@ return [
             'route' => 'dashboard.settings',
             'can' => 'config-read'
         ],
-        [
-            'text' => 'Soporte',
-            'icon' => 'fas fa-fw fa-life-ring',
-            'url' => '#',
-        ],
+        // [
+        //     'text' => 'Soporte',
+        //     'icon' => 'fas fa-fw fa-life-ring',
+        //     'route' => 'dashboard.support',
+        // ],
     ],
 
     /*

@@ -15,13 +15,13 @@ use Livewire\Component;
 class DiaryBookForm extends Component
 {
 
-    #[Validate('required|date')]
+    #[Validate('required|date',as:'fecha')]
     public $date;
     #[Validate('required', message: 'Selecione un tipo')]
     #[Validate('integer', message: 'Seleccione un tipo')]
     #[Validate('between:1,2', message: 'Debe ser un Ingreso o Egreso')]
     public $type;
-    #[Validate('required|integer')]
+    #[Validate('required|integer',as:'importe')]
     public $import;
     public $contract_id;
     #[Validate('required|string')]

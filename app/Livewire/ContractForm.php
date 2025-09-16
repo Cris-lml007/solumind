@@ -30,11 +30,10 @@ class ContractForm extends Component
     public $searchable;
     public $clients = [];
 
-    #[Validate('required|unique:contracts,cod')]
+    #[Validate('required|unique:contracts,cod', as: 'codigo')]
     public $code;
-    #[Validate('required')]
+    #[Validate('required', as: 'producto')]
     public $searchable_item;
-    #[Validate('required')]
     public $description;
 
     public $code_product;
@@ -159,6 +158,10 @@ class ContractForm extends Component
                 'partner_ci' => 'required|exists:people,ci',
                 'partner_interest' => 'integer|max:'.(100 - $this->contract->inversions()->sum('interest'))
                 // 'partner_id' => Rule::unique('contract_partners')->where(fn($query) => $query->where('contract_id',$this->contract->id))
+            ],[],[
+                'partner_ci' => 'CI',
+                'partner_id' => 'socio',
+                'partner_interest' => '% interes'
             ]
         )->validate();
 
@@ -262,6 +265,9 @@ class ContractForm extends Component
         ],[
             'code' => ['required', Rule::unique('contracts','cod')->ignore($this->contract->id)],
             'client_id' => 'required|exists:clients,id'
+        ],[],[
+            'code' => 'codigo',
+            'client_id' => 'cliente'
         ])->validate();
         $this->contract->cod = $this->code;
         $this->contract->client_id = $this->searchable_item;
@@ -301,7 +307,17 @@ class ContractForm extends Component
                 'sale_price' => $this->sale_price,
                 'quantity' => $this->quantity
             ],
-            []
+            [
+                'code_product' => 'required',
+                'purchase_price' => 'required',
+                'sale_price' => 'required',
+                'quantity' => 'required'
+            ],[],[
+                'code_product' => 'codigo de producto',
+                'purchase_price' => 'precio de adquisición',
+                'sale_price' => 'precio de venta',
+                'quantity' => 'cantidad'
+            ]
         )->validate();
         if($this->detail->id == null){
             $this->detail = DetailContract::create([

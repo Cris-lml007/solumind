@@ -204,4 +204,8 @@ class DashboardController extends Controller
         ];
         return view('dashboard.settings',compact(['data']));
     }
+
+    public function support(){
+        return view('dashboard.support-view');
+    }
 }

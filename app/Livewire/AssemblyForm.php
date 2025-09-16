@@ -19,14 +19,14 @@ class AssemblyForm extends Component
 {
     use WithFileUploads;
 
-    #[Validate('required|unique:items,cod|unique:products,cod')]
+    #[Validate('required|unique:items,cod|unique:products,cod', as: 'codigo')]
     public $code;
-    #[Validate('required')]
+    #[Validate('required',as: 'nombre')]
     public $name;
     public $description;
     public $price = 0;
     public $extra = 0;
-    #[Validate('required')]
+    #[Validate('required',as:'categoria')]
     public $category;
     public $alias;
     public $img;
@@ -203,6 +203,11 @@ class AssemblyForm extends Component
         ],[
             'code' => ['required',Rule::unique('items','cod')->ignore($this->item->id),Rule::unique('products','cod')],
             'name' => 'required'
+        ],[
+
+        ],[
+            'code' => 'codigo',
+            'name' => 'nombre'
         ])->validate();
         $this->item->cod = $this->code;
         $this->item->name = $this->name;

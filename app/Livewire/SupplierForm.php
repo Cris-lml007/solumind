@@ -18,10 +18,10 @@ class SupplierForm extends Component
 
     #[Validate('required|integer|min_digits:6|max_digits:10')]
     public $ci = '';
-    #[Validate('required|string')]
+    #[Validate('required|string',as: 'nombre')]
     public $name;
     public $email;
-    #[Validate('required|integer|min_digits:7|max_digits:8')]
+    #[Validate('required|integer|min_digits:7|max_digits:8',as: 'celular')]
     public $cellular;
 
     #[Validate('required|integer')]

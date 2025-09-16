@@ -1,6 +1,10 @@
 @extends('adminlte::page')
 
 @section('content')
+    <div>
+        <h1 class="m-0">Reportes</h1>
+        <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Generar Reportes</strong></h6>
+    </div>
     <div class="row">
         <div class="col">
             <div class="card">

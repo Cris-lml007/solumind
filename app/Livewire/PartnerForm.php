@@ -20,9 +20,9 @@ class PartnerForm extends Component
 
     #[Validate('required|integer|min_digits:6|max_digits:10')]
     public $ci;
-    #[Validate('required')]
+    #[Validate('required',as: 'nombre')]
     public $name;
-    #[Validate('required|integer|min_digits:7|max_digits:8')]
+    #[Validate('required|integer|min_digits:7|max_digits:8',as : 'celular')]
     public $cellular;
     public $email;
 
@@ -105,6 +105,9 @@ class PartnerForm extends Component
         ],[
             'description' => 'required',
             'amount' => 'required|decimal:0,1000000|min:1|max:'. (($utotal * ($contractPartner->interest / 100)) - $contractPartner->transactions()->sum('amount'))
+        ],[],[
+            'description' => 'descripción',
+            'amount' => 'cantidad'
         ])->validate();
         Transaction::create([
             'date' => Carbon::now()->format('Y-m-d'),

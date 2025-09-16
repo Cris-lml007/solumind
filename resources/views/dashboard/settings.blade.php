@@ -22,6 +22,9 @@
                 <button class="nav-link" id="person-tab" data-bs-toggle="tab" data-bs-target="#person-tab-pane"
                     type="button" role="tab" aria-controls="person-tab-pane" aria-selected="false">Personas</button>
             </li>
+            <!-- <li class="nav-item" role="presentation"> -->
+            <!--     <a href="" class="nav-link">Bitacora</a> -->
+            <!-- </li> -->
         </div>
         <div class="d-flex justify-content-end w-50">
             <button data-bs-toggle="modal" data-bs-target="#modal" class="btn btn-primary"><i

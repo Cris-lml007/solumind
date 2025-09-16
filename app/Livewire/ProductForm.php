@@ -23,14 +23,14 @@ class ProductForm extends Component
 
     public $code = 'nf-fa-stop';
 
-    #[Validate('required')]
+    #[Validate('required',as: 'nombre')]
     public $name;
-    #[Validate('required')]
+    #[Validate('required',as:'precio')]
     public $price;
     public $description;
     #[Validate('required|integer|exists:suppliers')]
     public $nit;
-    #[Validate('required')]
+    #[Validate('required',as:'categoria')]
     public $category;
     public $img;
 
