@@ -111,7 +111,7 @@ class ProductForm extends Component
             if(strlen($word) > 2)
                 $this->cod = $this->cod . substr($word,0,3);
         }
-        $this->cod = $this->cod . 's'.$this->supplier?->id;
+        $this->cod = $this->cod . 's'.$this?->supplier?->id ?? '';
     }
 
     public function updatedName1(){
