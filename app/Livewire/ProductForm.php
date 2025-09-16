@@ -111,7 +111,8 @@ class ProductForm extends Component
             if(strlen($word) > 2)
                 $this->cod = $this->cod . substr($word,0,3);
         }
-        $this->cod = $this->cod . 's'.$this?->supplier?->id ?? '';
+        if($this->supplier != null)
+            $this->cod = $this->cod . 's'.$this?->supplier?->id ?? '';
     }
 
     public function updatedName1(){
@@ -125,7 +126,8 @@ class ProductForm extends Component
 
     public function updatedSize(){
         $this->updatedName1();
-        $this->cod = $this->cod . $this->size . 's'.$this->supplier?->id;
+        if($this->supplier != null)
+            $this->cod = $this->cod . $this->size . 's'.$this->supplier?->id ?? '';
     }
 
     public function save(){
