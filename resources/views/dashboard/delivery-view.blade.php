@@ -27,7 +27,7 @@
                         <td>{{ $item->date }}</td>
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->contract->cod }}</td>
-                        <td>{{ Illuminate\Support\Number::format($item->amount, precision: 2) }}</td>
+                        <td>{{ Illuminate\Support\Number::format($item->amount ?? 0, precision: 2) }}</td>
                         <td>{{ Illuminate\Support\Number::format($balance, precision: 2) }}</td>
                         @can('delivery-permission', 3)
                             <td><a href="{{ route('dashboard.delivery.pdf', $item->id) }}" class="btn btn-primary"><i
