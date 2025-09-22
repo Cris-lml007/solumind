@@ -44,6 +44,7 @@ class PdfController extends Controller
             'isRemoteEnabled' => true
         ])->loadView('pdf.delivery',[
             'id' => $data->id,
+            'contract' => $data->contract->cod,
             'date' => $data->date,
             'received' => $data->received_by,
             'name' => $data->contract->client->name ?? $data->contract->client->person->name,

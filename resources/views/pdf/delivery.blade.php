@@ -45,9 +45,14 @@
 </head>
 <body>
     <div class="header" style="display: flex; align-items: center; justify-content: center;">
-        <!-- Logo -->
-        <div style="flex: 0 0 100px; text-align: left;">
-            <img src="ruta/al/logo.png" alt="Logo Empresa" style="max-width: 100px; max-height: 80px;">
+        <div>
+            <!-- Logo -->
+            <div style="text-align: left;display: inline-block;width: 48% ;">
+                <img src="ruta/al/logo.png" alt="Logo Empresa" style="max-width: 100px; max-height: 80px;">
+            </div>
+            <div style="text-align: right;display: inline-block;width: 48%;">
+                <strong>N° {{ $id }}</strong>
+            </div>
         </div>
 
         <!-- Título -->
@@ -59,15 +64,15 @@
     <table class="no-border">
         <tr>
             <td><strong>Fecha:</strong> {{$date ?? ''}}</td>
-            <td><strong>ID Retiro:</strong> {{$id ?? ''}}</td>
+            <td><strong>Contrato:</strong> {{$contract ?? ''}}</td>
+        </tr>
+        <tr>
+            <td><strong>NIT:</strong> {{$nit}}</td>
+            <td><strong>Cliente:</strong> {{$name}}</td>
         </tr>
         <tr>
             <td><strong>Recibido por:</strong> {{$received ?? ''}}</td>
             <td><strong>Autorizado por:</strong> {{Auth::user()->person->name ?? Auth::user()->email}}</td>
-        </tr>
-        <tr>
-            <td><strong>Cliente:</strong> {{$name}}</td>
-            <td><strong>NIT:</strong> {{$nit}}</td>
         </tr>
     </table>
 
@@ -77,32 +82,30 @@
             <tr>
                 <th>Producto</th>
                 <th>Cantidad</th>
+                <th>Precio</th>
+                <td>Subtotal</td>
             </tr>
         </thead>
         <tbody>
+            @php
+                $total = 0;
+            @endphp
             @foreach ($data as $item)
+            @php
+                $total += $item->pivot->quantity*$item->detailable->price;
+            @endphp
             <tr>
                 <td>{{$item->detailable->name ?? ''}}</td>
                 <td>{{$item->pivot->quantity}}</td>
+                <td>{{ Number::format($item->detailable->price,precision: 2) }}</td>
+                <td>{{ Number::format($item->pivot->quantity*$item->detailable->price, precision: 2) }}</td>
             </tr>
             @endforeach
         </tbody>
-    </table>
-
-    <h3>Resumen de Pago</h3>
-    <table>
-        <tr>
-            <td><strong>Saldo pendiente:</strong></td>
-            <td>{{ Illuminate\Support\Number::format($balance,precision:2)}} Bs</td>
-        </tr>
-        <tr>
-            <td><strong>Depósito:</strong></td>
-            <td>{{ Illuminate\Support\Number::format($amount ?? 0,precision:2)}} Bs</td>
-        </tr>
-        <tr>
-            <td><strong>Saldo restante:</strong></td>
-            <td>{{Illuminate\Support\Number::format($balance - ($amount ?? 0),precision:2)}} Bs</td>
-        </tr>
+        <tfoot>
+            <th colspan="3">TOTAL</th>
+            <th>{{ Number::format($total, precision: 2) }} Bs</th>
+        </tfoot>
     </table>
 
     <br><br>
@@ -110,7 +113,6 @@
         <tr>
             <td>_________________________<br>Recibido por</td>
             <td>_________________________<br>Autorizado por</td>
-            <td>_________________________<br>Cliente</td>
         </tr>
     </table>
 </body>
