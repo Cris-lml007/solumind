@@ -62,7 +62,7 @@
                     <input type="text" class="form-control mb-3" placeholder="Ingrese cliente a buscar"
                         wire:model.live="searchable">
                 </div>
-                <label for="description">Descripción</label>
+                <label for="description">Observación</label>
                 <textarea id="description" class="form-control mb-1" wire:model="description"></textarea>
                 <div class="text-danger" style="height: 20px;">
                     @error('description')
@@ -243,7 +243,7 @@
                     @endcan
                 </div>
                 <div id="table-partner">
-                    <x-adminlte.tool.datatable id="partner" :heads="['CI', 'Nombre Completo', 'Interes (%)', 'Acciones']">
+                    <x-adminlte.tool.datatable id="partner" :heads="['ID','CI', 'Nombre Completo', 'Interes (%)', 'Acciones']">
                         @foreach ($contract->inversions ?? [] as $item)
                             <tr>
                                 <td><strong>{{ $item->id }}</strong></td>
@@ -647,7 +647,7 @@
                 <input type="text" class="form-control mb-3" placeholder="Ingrese cliente a buscar"
                     wire:model.live="searchable">
             </div>
-            <label for="description">Descripción</label>
+            <label for="description">Observación</label>
             <textarea id="description" class="form-control mb-1" wire:model="description"></textarea>
             <div class="text-danger" style="height: 20px;">
                 @error('description')

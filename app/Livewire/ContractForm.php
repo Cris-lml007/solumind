@@ -174,6 +174,7 @@ class ContractForm extends Component
         $this->contract_partner->contract_id = $this->contract->id;
         $this->contract_partner->partner_id = $this->partner->id;
         $this->contract_partner->save();
+        $this->contract_partner = new ContractPartner();
         $this->reset('partner_ci',
             'partner_type',
             'partner_id',
