@@ -48,16 +48,16 @@
         <div>
             <!-- Logo -->
             <div style="text-align: left;display: inline-block;width: 48% ;">
-                <img src="ruta/al/logo.png" alt="Logo Empresa" style="max-width: 100px; max-height: 80px;">
+                <img src="{{ $logo }}" alt="{{ $logo }}" style="max-width: 150px; max-height: 80px;margin-top: 10px;border-radius: 5px;">
             </div>
-            <div style="text-align: right;display: inline-block;width: 48%;">
+            <div style="text-align: right;display: inline-block;width: 48%;height: 26px;">
                 <strong>N° {{ $id }}</strong>
             </div>
         </div>
 
         <!-- Título -->
         <div style="flex: 1; text-align: center;">
-            <h2>Detalle de Entrega</h2>
+            <h2>Nota de Remisión</h2>
         </div>
     </div>
 
@@ -81,31 +81,17 @@
         <thead>
             <tr>
                 <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <td>Subtotal</td>
+                <th>Cantidad Entregado (Ud.)</th>
             </tr>
         </thead>
         <tbody>
-            @php
-                $total = 0;
-            @endphp
             @foreach ($data as $item)
-            @php
-                $total += $item->pivot->quantity*$item->detailable->price;
-            @endphp
             <tr>
-                <td>{{$item->detailable->name ?? ''}}</td>
+                <td>{{$item->detailable->name . ' ' . ($item->detailable->size ?? '')}}</td>
                 <td>{{$item->pivot->quantity}}</td>
-                <td>{{ Number::format($item->detailable->price,precision: 2) }}</td>
-                <td>{{ Number::format($item->pivot->quantity*$item->detailable->price, precision: 2) }}</td>
             </tr>
             @endforeach
         </tbody>
-        <tfoot>
-            <th colspan="3">TOTAL</th>
-            <th>{{ Number::format($total, precision: 2) }} Bs</th>
-        </tfoot>
     </table>
 
     <br><br>

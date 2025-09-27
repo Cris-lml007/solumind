@@ -27,24 +27,11 @@
             </div>
         </div>
         <div class="d-flex">
-            <div class="w-50">
+            <div class="w-100">
                 <label for="">Recibido por</label>
                 <input type="text" class="form-control" wire:model="receiver_by">
                 <div class="text-danger" style="height: 20px;">
                     @error('receiver_by')
-                        {{ $message }}
-                    @enderror
-                </div>
-            </div>
-            <div class="w-50 ms-1">
-                <label for="">Importe</label>
-                <div class="input-group">
-                    <input type="number" class="form-control" placeholder="saldo: {{ $balance ?? '' }} Bs"
-                        wire:model="amount">
-                    <span class="input-group-text">Bs</span>
-                </div>
-                <div class="text-danger" style="height: 20px;">
-                    @error('amount')
                         {{ $message }}
                     @enderror
                 </div>

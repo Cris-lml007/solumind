@@ -140,17 +140,17 @@ class DeliveryForm extends Component
         $delivery->save();
         $delivery->detail_contract()->attach($l);
 
-        if($this->amount != null || $this->amount >0){
-            Transaction::create([
-                'contract_id' => $this->contract->id,
-                'delivery_id' => $delivery->id,
-                'type' => 1,
-                'description' => "Pago parcial de {$this->amount} Bs a cuenta del contrato {$this->contract->id}, referido a entrega {$delivery->id}. Saldo pendiente: ". ($this->balance - $this->amount) ."Bs.",
-                'account_id' => 2,
-                'date' => $this->date,
-                'amount' => $this->amount
-            ]);
-        }
+        // if($this->amount != null || $this->amount >0){
+        //     Transaction::create([
+        //         'contract_id' => $this->contract->id,
+        //         'delivery_id' => $delivery->id,
+        //         'type' => 1,
+        //         'description' => "Pago parcial de {$this->amount} Bs a cuenta del contrato {$this->contract->id}, referido a entrega {$delivery->id}. Saldo pendiente: ". ($this->balance - $this->amount) ."Bs.",
+        //         'account_id' => 2,
+        //         'date' => $this->date,
+        //         'amount' => $this->amount
+        //     ]);
+        // }
         return $this->redirect(route('dashboard.delivery'));
     }
 

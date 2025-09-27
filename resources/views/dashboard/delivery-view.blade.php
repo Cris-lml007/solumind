@@ -16,19 +16,9 @@
             <x-adminlte.tool.datatable id="table" :heads="$heads">
                 @foreach ($data as $item)
                     <tr>
-                        @php
-                            $balance =
-                                $item->contract?->detail_contract()?->sum(DB::raw('sale_price*quantity')) -
-                                $item->contract
-                                    ?->transactions()
-                                    ->where('account_id', 2)
-                                    ->sum('amount');
-                        @endphp
                         <td>{{ $item->date }}</td>
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->contract->cod }}</td>
-                        <td>{{ Illuminate\Support\Number::format($item->amount ?? 0, precision: 2) }}</td>
-                        <td>{{ Illuminate\Support\Number::format($balance, precision: 2) }}</td>
                         @can('delivery-permission', 3)
                             <td><a href="{{ route('dashboard.delivery.pdf', $item->id) }}" class="btn btn-primary"><i
                                         class="fa fa-file"></i></a></td>

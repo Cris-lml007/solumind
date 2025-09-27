@@ -21,6 +21,7 @@ class PdfController extends Controller
             'isHtmlParseEnabled' => true,
             'isRemoteEnabled' => true
         ])->loadView('pdf.voucher',[
+            'logo' => 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png'))),
             'number' => $data->id,
             'ci' => $data->contract_partner?->partner->person->ci ?? (Auth::user()?->person->ci ?? Auth::user()->id),
             'name' => $data->contract_partner?->partner->person->name ?? (Auth::user()?->person->name ?? Auth::user()->email),
@@ -43,14 +44,13 @@ class PdfController extends Controller
             'isHtmlParseEnabled' => true,
             'isRemoteEnabled' => true
         ])->loadView('pdf.delivery',[
+            'logo' => 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png'))),
             'id' => $data->id,
             'contract' => $data->contract->cod,
             'date' => $data->date,
             'received' => $data->received_by,
             'name' => $data->contract->client->name ?? $data->contract->client->person->name,
             'nit' => $data->contract->client->nit ?? $data->contract->client->person->ci,
-            'amount' => $data->amount,
-            'balance' => $data->contract?->detail_contract()?->sum(DB::raw('sale_price*quantity')) - $data->contract->transactions()->where('account_id',2)->sum('amount') + $data->amount,
             'data' => $data->detail_contract,
         ]);
         $pdf->setPaper('letter');
