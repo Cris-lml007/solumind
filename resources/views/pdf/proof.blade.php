@@ -69,8 +69,8 @@
         <tr>
             <td style="width: 50%; vertical-align: top;">
                 <div class="">
-                    <img src="#"
-                        alt="LOGO" width="110px">
+                    <img src="{{ $logo }}"
+                        alt="LOGO" width="150px" style="margin-left: 10px;border-radius: 5px;">
                 </div>
                 <div style="vertical-align: top; padding-left: 12px;">
                     <!-- <strong>SOLUMIND</strong><br> -->
@@ -82,7 +82,7 @@
 
 
             <td style="width: 50%; vertical-align: middle;" class="right">
-                <strong>N°:</strong> {{ $contract->id }}<br>
+                <strong>Codigo:</strong> {{ $contract->cod }}<br>
                 <strong>Fecha:</strong> {{ Carbon\Carbon::parse($contract->created_at)->toFormattedDateString() }}<br>
                 <strong>Validez:</strong> {{ $contract->time_valide }} días
             </td>
@@ -97,16 +97,16 @@
     <table class="mt-20">
         <tr>
             <td style="width: 50%;border: solid 1px black;">
-                <strong>Cliente:</strong> {{ $contract->client->name ?? $contract->client->person->name }}<br>
+                <strong>CI/NIT:</strong> {{ $contract->client->nit ?? $contract->client->person->ci }}
             </td>
             <td style="width: 50%;border: solid 1px black;">
-                <strong>Contacto:</strong>
-                {{ !empty($contract->client->phone) ? $contract->client->phone : $contract->client->person->phone }}<br>
+                <strong>Cliente:</strong> {{ $contract->client->name ?? $contract->client->person->name }}<br>
             </td>
         </tr>
         <tr>
             <td style="width: 50%;border: solid 1px black;">
-                <strong>CI/NIT:</strong> {{ $contract->client->nit ?? $contract->client->person->ci }}
+                <strong>Contacto:</strong>
+                {{ !empty($contract->client->phone) ? $contract->client->phone : $contract->client->person->phone }}<br>
             </td>
             <td style="width: 50%;border: solid 1px black;">
                 <strong>Correo:</strong>
@@ -129,7 +129,7 @@
             <tr>
                 <th class="center" style="width: 5%;">#</th>
                 <th class="center" style="width: 50%;">Descripción</th>
-                <th class="center" style="width: 15%;">Cantidad</th>
+                <th class="center" style="width: 15%;">Cantidad (Ud.)</th>
                 <th class="center" style="width: 15%;">Precio Unit.</th>
                 <th class="center" style="width: 15%;">Subtotal</th>
             </tr>
@@ -153,8 +153,8 @@
                 </tr>
             @endforeach
             <tr>
-                <td colspan="4" class="right"><strong>Total</strong></td>
-                <td class="right"><strong>{{ Illuminate\Support\Number::format($total, precision: 2) }} Bs</strong></td>
+                <td colspan="2" class="right"><strong>Total</strong></td>
+                <td colspan="3" class="right"><strong>{{ Illuminate\Support\Number::format($total, precision: 2) }} Bs</strong></td>
             </tr>
             <tr>
                 <td colspan="5" style="height:40px;">

@@ -80,7 +80,7 @@
     <table class="header-table">
         <tr>
             <td class="header-logo">
-                <img src="{{ public_path('images/logo.png') }}" alt="Logo" style="width:80px;">
+                <img src="{{  $logo }}" alt="Logo" style="width:150px;border-radius: 5px;">
             </td>
             <td class="header-title">
                 COMPROBANTE

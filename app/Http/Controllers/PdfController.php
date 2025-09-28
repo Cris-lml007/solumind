@@ -30,7 +30,8 @@ class PdfController extends Controller
             'type' => $data->type == 1 ? 'Ingreso' : 'Egreso',
             'date' => Carbon::parse($data->date)->format('d/m/Y'),
             'description' => $data->description,
-            'contract' => $data->contract?->cod ?? ''
+            'contract' => $data->contract?->cod ?? '',
+            'logo' => 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png')))
         ]);
         $pdf->setPaper('letter');
         $pdf->render();
@@ -62,7 +63,10 @@ class PdfController extends Controller
         $pdf = Pdf::setOptions([
             'isHtmlParseEnabled' => true,
             'isRemoteEnabled' => true
-        ])->loadView('pdf.proof',[ 'contract' => Contract::find($id)]);
+        ])->loadView('pdf.proof',[
+            'contract' => Contract::find($id),
+            'logo' => 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png')))
+        ]);
         $pdf->setPaper('letter');
         $pdf->render();
         return $pdf->stream();
