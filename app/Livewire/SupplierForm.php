@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Account;
 use App\Models\Person;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Gate;
@@ -104,6 +105,14 @@ class SupplierForm extends Component
         $this->supplier->phone = $this->business_cellular;
         $this->supplier->person_id = $this->person->id;
         $this->supplier->save();
+
+        Account::where('accountable_type',Supplier::class)
+            ->where('accountable_id',$this->supplier->id)
+            ->firstOrCreate([
+                'name' => 'Proveedor: '. (empty($this->supplier->organization) ? $this->person->name : $this->supplier->organization),
+                'accountable_type' => Supplier::class,
+                'accountable_id' => $this->supplier->id
+            ]);
         $this->redirect(route('dashboard.supplier'));
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Account;
 use App\Models\ContractPartner;
 use App\Models\Partner;
 use App\Models\Person;
@@ -48,7 +49,8 @@ class PartnerForm extends Component
 
             $this->organization = $this->partner->organization;
             $this->post = $this->partner->post;
-        }catch(\Exception){
+            $this->person = $this->partner->person;
+        }catch(\Exception $e){
             $this->partner = new Partner();
             $this->person = new Person();
         }
@@ -82,6 +84,13 @@ class PartnerForm extends Component
         $this->partner->post = $this->post;
         $this->partner->person_id = $this->person->id;
         $this->partner->save();
+        Account::where('accountable_type',Partner::class)
+            ->where('accountable_id',$this->partner->id)
+            ->firstOrCreate([
+                'name' => 'Socio: '. (empty($this->partner->organization) ? $this->person->name : ($this->partner->organization . ' - ' . $this->person->name)),
+                'accountable_type' => Partner::class,
+                'accountable_id' => $this->partner->id
+            ]);
 
         $this->redirect(route('dashboard.partner'));
     }
@@ -116,7 +125,7 @@ class PartnerForm extends Component
             'type' => TypeTransaction::EXPENSE->value,
             'description' => $this->pay_description,
             'amount' => $this->pay_amount,
-            'account_id' => 1
+            'account_id' => $this->partner->account->id
         ]);
         return $this->redirect(route('dashboard.partner.form',$this->partner->id));
     }

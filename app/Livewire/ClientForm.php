@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Account;
 use App\Models\Client;
 use App\Models\Person;
 use Illuminate\Support\Facades\Gate;
@@ -105,6 +106,14 @@ class ClientForm extends Component
         $this->client->email = $this->bussiness_email;
         $this->client->phone = $this->bussiness_phone;
         $this->client->save();
+
+        Account::where('accountable_type',Client::class)
+            ->where('accountable_id',$this->client->id)
+            ->firstOrCreate([
+                'name' => 'Cliente: '. (empty($this->client->organization) ? $this->person->name : $this->client->organization),
+                'accountable_type' => Client::class,
+                'accountable_id' => $this->client->id
+            ]);
         $this->redirect(route('dashboard.client'));
     }
 

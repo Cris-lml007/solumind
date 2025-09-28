@@ -16,4 +16,8 @@ class Supplier extends Model
     public function products(){
         return $this->hasMany(Product::class);
     }
+
+    public function account(){
+        return $this->morphOne(Account::class, 'accountable');
+    }
 }

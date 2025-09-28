@@ -34,17 +34,22 @@ class DatabaseSeeder extends Seeder
             'item' => 3,
             'transaction' => 3,
             'delivery' => 3,
-            'config' => 3
+            'config' => 3,
+            'client' => 3,
+            'report' => 2,
+            'history' => 3,
+            'ledger' => 2,
+            'voucher' => 3
         ]);
 
-        $a = new Account();
-        $a->name = 'Cuentas por Pagar';
-        $a->id = 1;
-        $a->save();
-
-        $b = new Account();
-        $b->name = 'Cuentas por Cobrar';
-        $b->id = 2;
-        $b->save();
+        // $a = new Account();
+        // $a->name = 'Cuentas por Pagar';
+        // $a->id = 1;
+        // $a->save();
+        //
+        // $b = new Account();
+        // $b->name = 'Cuentas por Cobrar';
+        // $b->id = 2;
+        // $b->save();
     }
 }

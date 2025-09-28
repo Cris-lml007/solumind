@@ -19,4 +19,8 @@ class Partner extends Model
             'id'
         ]);
     }
+
+    public function account(){
+        return $this->morphOne(Account::class, 'accountable');
+    }
 }
