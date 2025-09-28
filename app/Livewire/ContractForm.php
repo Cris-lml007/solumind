@@ -156,7 +156,7 @@ class ContractForm extends Component
             ],
             [
                 'partner_ci' => 'required|exists:people,ci',
-                'partner_interest' => 'integer|max:'.(100 - $this->contract->inversions()->sum('interest'))
+                'partner_interest' => 'integer|max:'.(100 - $this->contract->inversions()->sum('interest') + ($this->contract_partner->interest ?? 0) )
                 // 'partner_id' => Rule::unique('contract_partners')->where(fn($query) => $query->where('contract_id',$this->contract->id))
             ],[],[
                 'partner_ci' => 'CI',

@@ -97,7 +97,7 @@
                             #dd($contract->partners()->sum('amount'));
                         @endphp
                         <div class="input-group">
-                            <input type="number" class="form-control"
+                            <input type="text" class="form-control"
                                 value="{{ Illuminate\Support\Number::format($contract->detail_contract()->sum('purchase_total'), precision: 2) }}"
                                 disabled>
                             <span class="input-group-text">Bs</span>
@@ -106,7 +106,7 @@
                     <div class="col">
                         <label>Saldo</label>
                         <div class="input-group">
-                            <input type="number"
+                            <input type="text"
                                 class="form-control {{ $contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('account_id', 2)->sum('amount') >=0? 'bg-success': 'bg-danger' }}"
                                 value="{{ Illuminate\Support\Number::format($contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('account_id', 1)->sum('amount'),precision: 2) }}"
                                 disabled>
@@ -116,10 +116,11 @@
                 </div>
                 <div>
                     <h5><strong>Utilidades</strong></h5>
-                    <x-adminlte.tool.datatable id="table-utilities" :heads="['CI', 'Nombre Completo', '%', 'Utilidad (Bs)']">
+                    <x-adminlte.tool.datatable id="table-utilities" :heads="['ID', 'CI', 'Nombre Completo', '%', 'Utilidad (Bs)']">
                         @php
                             $utotal = $contract->detail_contract()->sum(DB::raw('sale_price * quantity')) - $contract->detail_contract()->sum('purchase_total');
                             $ptotal = 0;
+                            $tt = 0;
                         @endphp
                         @foreach ($contract->partners as $item)
                             <tr>
@@ -132,11 +133,13 @@
                             </tr>
                             @php
                                 $ptotal += $utotal * ($item->pivot->interest / 100);
+                                $tt += $item->pivot->interest;
                                 #dd($utotal);
                             @endphp
                         @endforeach
                         <tfoot>
                             <th colspan="3">TOTAL UTILIDAD</th>
+                            <th>{{ Illuminate\Support\Number::percentage($tt) }} Bs</th>
                             <th>{{ Illuminate\Support\Number::format($ptotal, precision: 2) }} Bs</th>
                         </tfoot>
                     </x-adminlte.tool.datatable>
@@ -209,7 +212,7 @@
                                 <td>{{ $item->detailable()->withTrashed()->first()?->name .' ' .$size }}</td>
                                 <td>{{ Illuminate\Support\Number::format($item->sale_price, precision: 2) }}</td>
                                 <td>{{ $item->quantity }}</td>
-                                <td>{{ Illuminate\Support\Number::format((float) $item->sale_price * (int) $item->quantity, precision: 2) }}
+                                <td>{{ Illuminate\Support\Number::format((float) $item->sale_price * (float) $item->quantity, precision: 2) }}
                                 </td>
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#modal"
@@ -220,7 +223,7 @@
                                             class="fa fa-trash"></i></button>
                                 </td>
                                 @php
-                                    $total += (float) $item->sale_price * (int) $item->quantity;
+                                    $total += (float) $item->sale_price * (float) $item->quantity;
                                 @endphp
                             </tr>
                         @endforeach
@@ -243,7 +246,7 @@
                     @endcan
                 </div>
                 <div id="table-partner">
-                    <x-adminlte.tool.datatable id="partner" :heads="['ID','CI', 'Nombre Completo', 'Interes (%)', 'Acciones']">
+                    <x-adminlte.tool.datatable id="partner" :heads="['ID', 'CI', 'Nombre Completo', 'Interes (%)', 'Acciones']">
                         @foreach ($contract->inversions ?? [] as $item)
                             <tr>
                                 <td><strong>{{ $item->id }}</strong></td>
@@ -271,25 +274,25 @@
                 <div class="my-3">
                     @php
                         $tbill = $contract->detail_contract->sum(function ($item) {
-                            return (int) ($item->sale_price ?? 0) * ((int) ($item->bill ?? 0) / 100);
+                            return (float) ($item->sale_price ?? 0) * ((float) ($item->bill ?? 0) / 100) * (float) $item->quantity;
                         });
                         $toperating = $contract->detail_contract->sum(function ($item) {
-                            return (int) ($item->sale_price ?? 0) * ((int) ($item->operating ?? 0) / 100);
+                            return (float) $item->sale_price * ((float) $item->operating / 100) * (float) $item->quantity;
                         });
                         $tcomission = $contract->detail_contract->sum(function ($item) {
-                            return (int) ($item->sale_price ?? 0) * ((int) ($item->comission ?? 0) / 100);
+                            return (float) ($item->sale_price ?? 0) * ((float) ($item->comission ?? 0) / 100) * (float) $item->quantity;
                         });
                         $tbank = $contract->detail_contract->sum(function ($item) {
-                            return (int) ($item->sale_price ?? 0) * ((int) ($item->bank ?? 0) / 100);
+                            return (float) ($item->sale_price ?? 0) * ((float) ($item->bank ?? 0) / 100) * (float) $item->quantity;
                         });
                         $tunexpected = $contract->detail_contract->sum(function ($item) {
-                            return (int) ($item->sale_price ?? 0) * ((int) ($item->unexpected ?? 0) / 100);
+                            return (float) ($item->sale_price ?? 0) * ((float) ($item->unexpected ?? 0) / 100) * (float) $item->quantity;
                         });
                         $tinterest = $contract->detail_contract->sum(function ($item) {
-                            return (int) ($item->sale_price ?? 0) * ((int) ($item->interest ?? 0) / 100);
+                            return (float) ($item->sale_price ?? 0) * ((float) ($item->interest ?? 0) / 100) * (float) $item->quantity;
                         });
                         $tutility = $contract->detail_contract->sum(function ($item) {
-                            return (int) ($item->sale_price ?? 0) * ((int) ($item->utility ?? 0) / 100);
+                            return (float) ($item->sale_price ?? 0) * ((float) ($item->utility ?? 0) / 100) * (float) $item->quantity;
                         });
                     @endphp
                     <div class="row">
@@ -520,17 +523,17 @@
                         <div class="input-group mb-3">
                             <input class="form-control" type="number" name="bill" wire:model.live="bill">
                             <span class="input-group-text">%</span>
-                            <input class="form-control" type="number" name="bill-value" disabled
+                            <input class="form-control" type="text" name="bill-value" disabled
                                 style="text-align: end;"
-                                value="{{ (((float) $sale_price ?? 0) * (float) ($bill ?? 0)) / 100 }}">
+                                value="{{ Number::format((((float) $sale_price ?? 0) * (float) ($bill ?? 0)) / 100, precision: 2) }}">
                             <span class="input-group-text">Bs</span>
                         </div>
                         <label for="operating">Gastos de Funcionamiento</label>
                         <div class="input-group mb-3">
                             <input class="form-control" type="number" name="operating" wire:model.live="operating">
                             <span class="input-group-text">%</span>
-                            <input class="form-control" type="number" name="operating-value" disabled
-                                value="{{ (((float) $sale_price ?? 0) * (float) ($operating ?? 0)) / 100 }}"
+                            <input class="form-control" type="text" name="operating-value" disabled
+                                value="{{ Number::format((((float) $sale_price ?? 0) * (float) ($operating ?? 0)) / 100, precision: 2) }}"
                                 style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
@@ -538,8 +541,8 @@
                         <div class="input-group mb-3">
                             <input class="form-control" type="number" name="bank" wire:model.live="bank">
                             <span class="input-group-text">%</span>
-                            <input class="form-control" type="number" name="bank-value" disabled
-                                value="{{ (((float) $sale_price ?? 0) * (float) ($bank ?? 0)) / 100 }}"
+                            <input class="form-control" type="text" name="bank-value" disabled
+                                value="{{ Number::format((((float) $sale_price ?? 0) * (float) ($bank ?? 0)) / 100, precision: 2) }}"
                                 style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
@@ -550,14 +553,15 @@
                         @endphp
                         <label for="bill">Costo Subtotal</label>
                         <div class="input-group mb-3">
-                            <input class="form-control" type="number" name="bill-value" disabled
-                                value="{{ $subtotal }}" style="text-align: end;">
+                            <input class="form-control" type="text" name="bill-value" disabled
+                                value="{{ Number::format($subtotal, precision: 2) }}" style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
                         <label for="bill">Costo Total de Venta</label>
                         <div class="input-group mb-3">
-                            <input class="form-control" type="number" name="bill-value" disabled
-                                value="{{ (float) $sale_price * (int) $quantity }}" style="text-align: end;">
+                            <input class="form-control" type="text" name="bill-value" disabled
+                                value="{{ Number::format((float) $sale_price * (float) $quantity, precision: 2) }}"
+                                style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
                     </div>
@@ -566,8 +570,8 @@
                         <div class="input-group mb-3">
                             <input class="form-control" type="number" name="interest" wire:model.live="interest">
                             <span class="input-group-text">%</span>
-                            <input class="form-control" type="number" name="interest-value" disabled
-                                value="{{ (((float) $sale_price ?? 0) * (float) ($interest ?? 0)) / 100 }}"
+                            <input class="form-control" type="text" name="interest-value" disabled
+                                value="{{ Number::format((((float) $sale_price ?? 0) * (float) ($interest ?? 0)) / 100, precision: 2) }}"
                                 style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
@@ -575,8 +579,8 @@
                         <div class="input-group mb-3">
                             <input class="form-control" type="number" name="comission" wire:model.live="comission">
                             <span class="input-group-text">%</span>
-                            <input class="form-control" type="number" name="comission-value" disabled
-                                value="{{ (((float) $sale_price ?? 0) * (float) ($comission ?? 0)) / 100 }}"
+                            <input class="form-control" type="text" name="comission-value" disabled
+                                value="{{ Number::format((((float) $sale_price ?? 0) * (float) ($comission ?? 0)) / 100, precision: 2) }}"
                                 style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
@@ -585,8 +589,8 @@
                             <input class="form-control" type="number" name="unexpected"
                                 wire:model.live="unexpected">
                             <span class="input-group-text">%</span>
-                            <input class="form-control" type="number" name="unexpected-value" disabled
-                                value="{{ (((float) $sale_price ?? 0) * (float) ($unexpected ?? 0)) / 100 }}"
+                            <input class="form-control" type="text" name="unexpected-value" disabled
+                                value="{{ Number::format((((float) $sale_price ?? 0) * (float) ($unexpected ?? 0)) / 100, precision: 2) }}"
                                 style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
@@ -594,14 +598,15 @@
 
                         <label for="bill">Costo Total de Adquisición</label>
                         <div class="input-group mb-3">
-                            <input class="form-control" type="number" name="bill-value" disabled
-                                value="{{ $subtotal * (int) $quantity }}" style="text-align: end;">
+                            <input class="form-control" type="text" name="bill-value" disabled
+                                value="{{ Number::format($subtotal * (float) $quantity, precision: 2) }}"
+                                style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
                         <label for="bill">Utilidad Total</label>
                         <div class="input-group mb-3">
-                            <input class="form-control" type="number" name="bill-value" disabled
-                                value="{{ (float) $sale_price * (int) $quantity - (float) $subtotal * (int) $quantity }}"
+                            <input class="form-control" type="text" name="bill-value" disabled
+                                value="{{ Number::format((float) $sale_price * (float) $quantity - (float) $subtotal * (float) $quantity, precision: 2) }}"
                                 style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
