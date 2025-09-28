@@ -26,6 +26,11 @@
                     type="button" role="tab" aria-controls="detail-tab-pane" aria-selected="false"
                     wire:click="$refresh">Detalles</button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="delivery-tab" data-bs-toggle="tab" data-bs-target="#delivery-tab-pane"
+                    type="button" role="tab" aria-controls="delivery-tab-pane" aria-selected="false"
+                    wire:click="$refresh">Entregados</button>
+            </li>
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel" aria-labelledby="info-tab"
@@ -385,6 +390,24 @@
                     </div>
                 </div>
             </div>
+            <div class="tab-pane fade show" id="delivery-tab-pane" role="tabpanel" aria-labelledby="delivery-tab"
+                tabindex="0" wire:ignore.self>
+                <div class="my-3">
+                    <h5 class="mb-3"><strong>Productos Entregados</strong></h5>
+                    <x-adminlte.tool.datatable id="table-delivery" :heads="['ID', 'Fecha' , 'Codigo', 'Cantidad', 'Entregado', 'Disponible']">
+                        @foreach ($contract->detail_contract ?? [] as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->date }}</td>
+                                <td>{{ $item->detailable()->withTrashed()->first()?->cod }}</td>
+                                <td>{{ $item->quantity }}</td>
+                                <td>{{ $item->deliveries()->sum('quantity') }}</td>
+                                <td>{{ (int) $item->quantity - (int) $item->deliveries()->sum('quantity') }}</td>
+                            </tr>
+                        @endforeach
+                    </x-adminlte.tool.datatable>
+                </div>
+            </div>
         </div>
 
         <x-modal id="modal-partner" title="Añadir Inversión" class="">
@@ -682,6 +705,9 @@
                 destroy: true
             })
             $('#detail').DataTable({
+                destroy: true
+            })
+            $('#table-delivery').DataTable({
                 destroy: true
             })
 

@@ -50,7 +50,7 @@ class PdfController extends Controller
             'contract' => $data->contract->cod,
             'date' => $data->date,
             'received' => $data->received_by,
-            'name' => $data->contract->client->name ?? $data->contract->client->person->name,
+            'name' => $data->contract->client->organization ?? $data->contract->client->person->name,
             'nit' => $data->contract->client->nit ?? $data->contract->client->person->ci,
             'data' => $data->detail_contract,
         ]);

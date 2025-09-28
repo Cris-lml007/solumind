@@ -100,7 +100,7 @@
                 <strong>CI/NIT:</strong> {{ $contract->client->nit ?? $contract->client->person->ci }}
             </td>
             <td style="width: 50%;border: solid 1px black;">
-                <strong>Cliente:</strong> {{ $contract->client->name ?? $contract->client->person->name }}<br>
+                <strong>Cliente:</strong> {{ $contract->client->organization ?? $contract->client->person->name }}<br>
             </td>
         </tr>
         <tr>

@@ -122,7 +122,7 @@
         </tr>
         <tr>
             <td><strong>Tipo:</strong> {{ $type ?? '' }}</td>
-            <td><strong>Cuenta:</strong> {{ $account ?? '' }}</td>
+            <td><strong>A Cuenta:</strong> {{ $account ?? '' }}</td>
         </tr>
         <tr>
             <td><strong>Contrato:</strong> {{ $contract ?? '' }}</td>
