@@ -776,7 +776,7 @@
                 confirmButtonText: "Si, deseo borrar!",
                 cancelButtonText: "Cancelar"
             }).then((result) => {
-                if (result.isConfirmed) $wire.dispatch('remove');
+                if (result.isConfirmed) $wire.remove();
             })
         });
     </script>
