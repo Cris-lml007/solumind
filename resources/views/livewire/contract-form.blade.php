@@ -113,7 +113,7 @@
                         <div class="input-group">
                             <input type="text"
                                 class="form-control {{ $contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('account_id', 2)->sum('amount') >=0? 'bg-success': 'bg-danger' }}"
-                                value="{{ Illuminate\Support\Number::format($contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('account_id', 1)->sum('amount'),precision: 2) }}"
+                                value="{{ Illuminate\Support\Number::format($contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('type', 2)->sum('amount'),precision: 2) }}"
                                 disabled>
                             <span class="input-group-text">Bs</span>
                         </div>
@@ -394,12 +394,12 @@
                 tabindex="0" wire:ignore.self>
                 <div class="my-3">
                     <h5 class="mb-3"><strong>Productos Entregados</strong></h5>
-                    <x-adminlte.tool.datatable id="table-delivery" :heads="['ID', 'Fecha' , 'Codigo', 'Cantidad', 'Entregado', 'Disponible']">
+                    <x-adminlte.tool.datatable id="table-delivery" :heads="['ID', 'Codigo', 'Nombre', 'Cantidad', 'Entregado', 'Disponible']">
                         @foreach ($contract->detail_contract ?? [] as $item)
                             <tr>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item->date }}</td>
                                 <td>{{ $item->detailable()->withTrashed()->first()?->cod }}</td>
+                                <td>{{ $item->detailable()->withTrashed()->first()?->name . ' ' . $item->detailable()->withTrashed()->first()?->size }}</td>
                                 <td>{{ $item->quantity }}</td>
                                 <td>{{ $item->deliveries()->sum('quantity') }}</td>
                                 <td>{{ (int) $item->quantity - (int) $item->deliveries()->sum('quantity') }}</td>
