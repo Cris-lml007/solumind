@@ -405,6 +405,11 @@ class ContractForm extends Component
         $this->list = $this->contract->detail_contract;
     }
 
+    public function clearProduct(){
+        $this->detail = new DetailContract();
+        $this->reset(['code_product','name_product','description_product', 'sale_price', 'purchase_price', 'quantity', 'subtotal']);
+    }
+
     public function render()
     {
         if(!Gate::allows('voucher-read'))

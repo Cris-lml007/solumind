@@ -615,7 +615,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" wire:click="add">Añadir</button>
-                <button data-bs-dismiss="modal" class="btn btn-secondary">Cerrar</button>
+                <button data-bs-dismiss="modal" class="btn btn-secondary" wire:click="clearProduct">Cerrar</button>
             </div>
         </x-modal>
     @else
