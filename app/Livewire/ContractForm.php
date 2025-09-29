@@ -14,6 +14,7 @@ use App\StatusContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Number;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\Title;
@@ -100,13 +101,33 @@ class ContractForm extends Component
             // dd($this->list[0]->detailable()->withTrashed()->get());
             $this->detail = new DetailContract();
             $this->contract_partner = new ContractPartner();
+            $this->sale_price = Number::format(0, precision: 2);
+            $this->purchase_price = Number::format(0, precision: 2);
         }catch(\Exception){
             $this->contract = new Contract();
         }
     }
 
+    public function updatedPurchasePrice(){
+        try{
+            $this->purchase_price = Number::parse($this->purchase_price);
+            $this->purchase_price = Number::format(empty($this->purchase_price) ? 0 : $this->purchase_price, precision: 2);
+            // dd(Number::parse($this->purchase_price) * 2);
+        }catch(\Exception){
+            $this->purchase_price = Number::format(0, precision: 2);
+        }
+    }
+    public function updatedSalePrice(){
+        try{
+            $this->sale_price = Number::parse($this->sale_price);
+            $this->sale_price = Number::format(empty($this->sale_price) ? 0 : $this->sale_price, precision: 2);
+        }catch(\Exception){
+            $this->sale_price = Number::format(0, precision: 2);
+        }
+    }
+
     public function updated(){
-        $this->subtotal = (((float) $this->sale_price ?? 0) * (float) ($this->bill ?? 0)) / 100 + (((float) $this->sale_price ?? 0) * (float) ($this->interest ?? 0)) / 100 + (((float) $this->sale_price ?? 0) * (float) ($this->operating ?? 0)) / 100 + (((float) $this->sale_price ?? 0) * (float) ($this->comission ?? 0)) / 100 + (((float) $this->sale_price ?? 0) * (float) ($this->bank ?? 0)) / 100 + (((float) $this->sale_price ?? 0) * (float) ($this->unexpected ?? 0)) / 100 + (float) $this->purchase_price ?? 0;
+        $this->subtotal = ((Number::parse($this->sale_price) ?? 0) * (float) ($this->bill ?? 0)) / 100 + ((Number::parse($this->sale_price) ?? 0) * (float) ($this->interest ?? 0)) / 100 + ((Number::parse($this->sale_price) ?? 0) * (float) ($this->operating ?? 0)) / 100 + ((Number::parse($this->sale_price) ?? 0) * (float) ($this->comission ?? 0)) / 100 + ((Number::parse($this->sale_price) ?? 0) * (float) ($this->bank ?? 0)) / 100 + ((Number::parse($this->sale_price) ?? 0) * (float) ($this->unexpected ?? 0)) / 100 + Number::parse($this->purchase_price);
     }
 
     public function updatedPartnerId(){
@@ -355,6 +376,8 @@ class ContractForm extends Component
         $this->detail = new DetailContract();
         // $this->reset(['code_product','name_product','description_product','bill','interest','operating','comission','bank','unexpected','purchase_price','quantity','sale_price','subtotal']);
         $this->reset(['code_product','name_product','description_product','purchase_price','quantity','sale_price','subtotal']);
+        $this->sale_price = Number::format(0, precision: 2);
+        $this->purchase_price = Number::format(0, precision: 2);
     }
 
     public function aprove(){
@@ -408,6 +431,8 @@ class ContractForm extends Component
     public function clearProduct(){
         $this->detail = new DetailContract();
         $this->reset(['code_product','name_product','description_product', 'sale_price', 'purchase_price', 'quantity', 'subtotal']);
+        $this->sale_price = Number::format(0, precision: 2);
+        $this->purchase_price = Number::format(0, precision: 2);
     }
 
     public function render()
