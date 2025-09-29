@@ -117,7 +117,7 @@
 
     <table class="details">
         <tr>
-            <td><strong>NIT/CI:</strong> {{ $ci ?? '' }}</td>
+            <td><strong>ID/CI:</strong> {{ $ci ?? '' }}</td>
             <td><strong>Nombre:</strong> {{ $name ?? '' }}</td>
         </tr>
         <tr>
@@ -125,8 +125,8 @@
             <td><strong>A Cuenta:</strong> {{ $account ?? '' }}</td>
         </tr>
         <tr>
-            <td><strong>Contrato:</strong> {{ $contract ?? '' }}</td>
-            <td><strong>Cantidad:</strong> {{ Illuminate\Support\Number::format($amount,precision:2) }} Bs</td>
+            <td><strong>Contrato:</strong> {{ ($contract ?? '') . ' (' . $client . ')'}}</td>
+            <td><strong>Importe:</strong> {{ Illuminate\Support\Number::format($amount,precision:2) }} Bs</td>
         </tr>
     </table>
 

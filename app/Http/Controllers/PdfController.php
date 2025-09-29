@@ -31,6 +31,7 @@ class PdfController extends Controller
             'date' => Carbon::parse($data->date)->format('d/m/Y'),
             'description' => $data->description,
             'contract' => $data->contract?->cod ?? '',
+            'client' => $data->contract?->client->organization ?? $data->contract?->client->person->name ?? '',
             'logo' => 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png')))
         ]);
         $pdf->setPaper('letter');
