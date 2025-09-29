@@ -127,7 +127,7 @@ class ContractForm extends Component
     }
 
     public function updated(){
-        $this->subtotal = ((Number::parse($this->sale_price) ?? 0) * (float) ($this->bill ?? 0)) / 100 + ((Number::parse($this->purchase_price) ?? 0) * (float) ($this->interest ?? 0)) / 100 + ((Number::parse($this->sale_price) ?? 0) * (float) ($this->operating ?? 0)) / 100 + ((Number::parse($this->sale_price) ?? 0) * (float) ($this->comission ?? 0)) / 100 + ((Number::parse($this->sale_price) ?? 0) * (float) ($this->bank ?? 0)) / 100 + ((Number::parse($this->sale_price) ?? 0) * (float) ($this->unexpected ?? 0)) / 100 + Number::parse($this->purchase_price);
+        $this->subtotal = ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->bill ?? 0)) / 100 + ((Number::parse($this->purchase_price ?? 0) ?? 0) * (float) ($this->interest ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->operating ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->comission ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->bank ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->unexpected ?? 0)) / 100 + Number::parse($this->purchase_price ?? 0);
     }
 
     public function updatedPartnerId(){
