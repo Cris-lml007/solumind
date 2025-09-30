@@ -667,7 +667,7 @@
                         <label for="bill">Utilidad Total</label>
                         <div class="input-group mb-3">
                             <input class="form-control" type="text" name="bill-value" disabled
-                                value="{{ Number::format(Number::parse(($sale_price) * (float) $quantity) - ((float) $subtotal * (float) $quantity), precision: 2) }}"
+                                value="{{ Number::format((Number::parse($sale_price) * (float) $quantity) - ((float) $subtotal * (float) $quantity), precision: 2) }}"
                                 style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
