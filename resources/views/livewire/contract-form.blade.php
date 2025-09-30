@@ -119,36 +119,11 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <h5><strong>Utilidades</strong></h5>
-                    <x-adminlte.tool.datatable id="table-utilities" :heads="['ID', 'CI', 'Nombre Completo', '%', 'Utilidad (Bs)']">
-                        @php
-                            $utotal = $contract->detail_contract()->sum(DB::raw('sale_price * quantity')) - $contract->detail_contract()->sum('purchase_total');
-                            $ptotal = 0;
-                            $tt = 0;
-                        @endphp
-                        @foreach ($contract->partners as $item)
-                            <tr>
-                                <td><strong>{{ $item->id }}</strong></td>
-                                <td>{{ $item->person->ci }}</td>
-                                <td>{{ $item->person->name }}</td>
-                                <td>{{ $item->pivot->interest }}</td>
-                                <td>{{ Illuminate\Support\Number::format($utotal * ($item->pivot->interest / 100), precision: 2) }}
-                                </td>
-                            </tr>
-                            @php
-                                $ptotal += $utotal * ($item->pivot->interest / 100);
-                                $tt += $item->pivot->interest;
-                                #dd($utotal);
-                            @endphp
-                        @endforeach
-                        <tfoot>
-                            <th colspan="3">TOTAL UTILIDAD</th>
-                            <th>{{ Illuminate\Support\Number::percentage($tt) }} Bs</th>
-                            <th>{{ Illuminate\Support\Number::format($ptotal, precision: 2) }} Bs</th>
-                        </tfoot>
-                    </x-adminlte.tool.datatable>
-                </div>
+                @php
+                    $utotal = $contract->detail_contract()->sum(DB::raw('sale_price * quantity')) - $contract->detail_contract()->sum('purchase_total');
+                    $ptotal = 0;
+                    $tt = 0;
+                @endphp
                 <hr>
                 <div class="d-flex justify-content-end my-3">
                     @can('voucher-permission', 3)
@@ -294,17 +269,21 @@
                             return Number::parse($item->sale_price) * ((float) ($item->unexpected ?? 0) / 100) * (float) $item->quantity;
                         });
                         $tinterest = $contract->detail_contract->sum(function ($item) {
-                            return Number::parse($item->sale_price) * ((float) ($item->interest ?? 0) / 100) * (float) $item->quantity;
+                            return Number::parse($item->purchase_price) * ((float) ($item->interest ?? 0) / 100) * (float) $item->quantity;
                         });
-                        $tutility = $contract->detail_contract->sum(function ($item) {
-                            return Number::parse($item->sale_price) * ((float) ($item->utility ?? 0) / 100) * (float) $item->quantity;
-                        });
+                        $tutility =
+                            $contract->detail_contract->sum(function ($item) {
+                                return Number::parse($item->sale_price) * (float) $item->quantity;
+                            }) - $contract->detail_contract->sum('purchase_total');
+                        $tpurchase = $contract->detail_contract()->sum('purchase_total');
+                        $tsale = $contract->detail_contract()->sum(DB::raw('sale_price * quantity'));
                     @endphp
                     <div class="row">
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;"><i class="nf nf-fa-money_bill"></i> Facturacion:
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-money_bill"></i> Facturacion
+                                        ({{ $contract->detail_contract()->sum('bill') / $contract->detail_contract()->count() }}%):
                                         {{ Illuminate\Support\Number::format($tbill, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
@@ -312,7 +291,8 @@
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;"><i class="nf nf-fa-truck"></i> Funcionamiento:
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-truck"></i> Funcionamiento
+                                        ({{ $contract->detail_contract()->sum('operating') / $contract->detail_contract()->count() }}%):
                                         {{ Illuminate\Support\Number::format($toperating, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
@@ -320,7 +300,8 @@
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;"><i class="nf nf-fa-bookmark"></i>Comisión:
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-bookmark"></i>Comisión
+                                        ({{ $contract->detail_contract()->sum('comission') / $contract->detail_contract()->count() }}%):
                                         {{ Illuminate\Support\Number::format($tcomission, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
@@ -330,7 +311,8 @@
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;"><i class="nf nf-fa-bank"></i> Banco:
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-bank"></i> Banco
+                                        ({{ $contract->detail_contract()->sum('bank') / $contract->detail_contract()->count() }}%):
                                         {{ Illuminate\Support\Number::format($tbank, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
@@ -338,7 +320,8 @@
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;"><i class="nf nf-fa-percent"></i> Interes:
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-percent"></i> Interes
+                                        ({{ $contract->detail_contract()->sum('interest') / $contract->detail_contract()->count() }}%):
                                         {{ Illuminate\Support\Number::format($tinterest, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
@@ -346,16 +329,70 @@
                         <div class="col">
                             <div class="card border-primary">
                                 <div class="card-body">
-                                    <h6 style="text-align: end;"><i class="nf nf-fa-angles_up"></i> Utilidad:
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-warning"></i> Inprevistos
+                                        ({{ $contract->detail_contract()->sum('unexpected') / $contract->detail_contract()->count() }}%):
+                                        {{ Illuminate\Support\Number::format($tunexpected, precision: 2) }} Bs</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-angles_down"></i> Total
+                                        Adquisición:
+                                        {{ Illuminate\Support\Number::format($tpurchase, precision: 2) }} Bs</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 style="text-align: end;"><i class="nf nf-md-point_of_sale"></i> Total Venta:
+                                        {{ Illuminate\Support\Number::format($tsale, precision: 2) }} Bs</h6>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="card border-primary">
+                                <div class="card-body">
+                                    <h6 style="text-align: end;"><i class="nf nf-fa-angles_up"></i> Total Utilidad:
                                         {{ Illuminate\Support\Number::format($utotal, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <h5><strong>Utilidades</strong></h5>
+                        <x-adminlte.tool.datatable id="table-utilities" :heads="['ID', 'CI', 'Nombre Completo', '%', 'Utilidad (Bs)']">
+                            @foreach ($contract->partners as $item)
+                                <tr>
+                                    <td><strong>{{ $item->id }}</strong></td>
+                                    <td>{{ $item->person->ci }}</td>
+                                    <td>{{ $item->person->name }}</td>
+                                    <td>{{ $item->pivot->interest }}</td>
+                                    <td>{{ Illuminate\Support\Number::format($utotal * ($item->pivot->interest / 100), precision: 2) }}
+                                    </td>
+                                </tr>
+                                @php
+                                    $ptotal += $utotal * ($item->pivot->interest / 100);
+                                    $tt += $item->pivot->interest;
+                                    #dd($utotal);
+                                @endphp
+                            @endforeach
+                            <tfoot>
+                                <th colspan="3">TOTAL UTILIDAD</th>
+                                <th>{{ Illuminate\Support\Number::percentage($tt) }}</th>
+                                <th>{{ Illuminate\Support\Number::format($ptotal, precision: 2) }} Bs</th>
+                            </tfoot>
+                        </x-adminlte.tool.datatable>
+                    </div>
                     @php
                         $ti = 0;
                         $te = 0;
-                    @endphp
+                        @endphp
+                        <h5 class="my-3"><strong> Movimientos Libro Diario</strong></h5>
                     <x-adminlte.tool.datatable id="table-transactions" :heads="['ID', 'Fecha', 'Ingreso (Bs)', 'Egreso (Bs)', 'Descripctión', 'Cuenta']">
                         @foreach ($transactions as $item)
                             @php
@@ -399,7 +436,8 @@
                             <tr>
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->detailable()->withTrashed()->first()?->cod }}</td>
-                                <td>{{ $item->detailable()->withTrashed()->first()?->name . ' ' . $item->detailable()->withTrashed()->first()?->size }}</td>
+                                <td>{{ $item->detailable()->withTrashed()->first()?->name .' ' .$item->detailable()->withTrashed()->first()?->size }}
+                                </td>
                                 <td>{{ $item->quantity }}</td>
                                 <td>{{ $item->deliveries()->sum('quantity') }}</td>
                                 <td>{{ (int) $item->quantity - (int) $item->deliveries()->sum('quantity') }}</td>

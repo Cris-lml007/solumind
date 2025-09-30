@@ -127,7 +127,16 @@ class ContractForm extends Component
     }
 
     public function updated(){
-        $this->subtotal = ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->bill ?? 0)) / 100 + ((Number::parse($this->purchase_price ?? 0) ?? 0) * (float) ($this->interest ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->operating ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->comission ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->bank ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->unexpected ?? 0)) / 100 + Number::parse($this->purchase_price ?? 0);
+        $this->subtotal = Number::parse($this->sale_price ?? 0) * $this->bill / 100;
+        $this->subtotal += Number::parse($this->sale_price ?? 0) * $this->interest / 100;
+        $this->subtotal += Number::parse($this->sale_price ?? 0) * $this->operating / 100;
+        $this->subtotal += Number::parse($this->sale_price ?? 0) * $this->comission / 100;
+        $this->subtotal += Number::parse($this->sale_price ?? 0) * $this->bank / 100;
+        $this->subtotal += Number::parse($this->sale_price ?? 0) * $this->unexpected / 100;
+        //
+         $this->subtotal += Number::parse($this->purchase_price ?? 0);
+
+        // $this->subtotal = ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->bill ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->interest ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->operating ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->comission ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->bank ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->unexpected ?? 0)) / 100 + Number::parse($this->purchase_price ?? 0);
     }
 
     public function updatedPartnerId(){
@@ -371,6 +380,7 @@ class ContractForm extends Component
         }
         $this->detail->detailable()->associate($this->product);
         $this->detail->save();
+        // dd($this->detail);
         $this->contract->refresh();
         $this->list = $this->contract->detail_contract;
         $this->detail = new DetailContract();
