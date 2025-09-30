@@ -127,12 +127,12 @@ class ContractForm extends Component
     }
 
     public function updated(){
-        $this->subtotal = Number::parse($this->sale_price ?? 0) * $this->bill / 100;
-        $this->subtotal += Number::parse($this->sale_price ?? 0) * $this->interest / 100;
-        $this->subtotal += Number::parse($this->sale_price ?? 0) * $this->operating / 100;
-        $this->subtotal += Number::parse($this->sale_price ?? 0) * $this->comission / 100;
-        $this->subtotal += Number::parse($this->sale_price ?? 0) * $this->bank / 100;
-        $this->subtotal += Number::parse($this->sale_price ?? 0) * $this->unexpected / 100;
+        $this->subtotal = Number::parse($this->sale_price ?? 0) * (empty($this->bill) ? 0 : $this->bill) / 100;
+        $this->subtotal += Number::parse($this->purchase_price ?? 0) * (empty($this->interest) ? 0 : $this->interest) / 100;
+        $this->subtotal += Number::parse($this->sale_price ?? 0) * (empty($this->operating) ? 0 : $this->operating) / 100;
+        $this->subtotal += Number::parse($this->sale_price ?? 0) * (empty($this->comission) ? 0 : $this->comission)/ 100;
+        $this->subtotal += Number::parse($this->sale_price ?? 0) * (empty($this->bank) ? 0 : $this->bank) / 100;
+        $this->subtotal += Number::parse($this->sale_price ?? 0) * (empty($this->unexpected) ? 0 : $this->unexpected) / 100;
         //
          $this->subtotal += Number::parse($this->purchase_price ?? 0);
 
