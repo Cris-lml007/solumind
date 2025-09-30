@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('status')->default(1);
             $table->date('time_valide')->nullable();
             $table->string('payment')->nullable();
-            $table->integer('time_delivery')->nullable();
+            $table->date('time_delivery')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

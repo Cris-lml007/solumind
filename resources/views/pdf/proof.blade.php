@@ -118,7 +118,7 @@
                 <strong>Condiciones de Pago:</strong> {{ $contract->payment }}
             </td>
             <td style="width: 50%;border: solid 1px black;">
-                <strong>Plazo de Entrega:</strong> {{ $contract->time_delivery }} días
+                <strong>Plazo de Entrega:</strong> {{ Carbon\Carbon::parse($contract->time_delivery)->toFormattedDateString() }}
             </td>
         </tr>
     </table>

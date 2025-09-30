@@ -89,7 +89,7 @@
                     @enderror
                 </div>
                 <label for="">Plazo de Entrega (Dias)</label>
-                <input type="number" wire:model="delivery" class="form-control">
+                <input type="date" wire:model="delivery" class="form-control">
                 <div class="text-danger" style="height: 20px;">
                     @error('delivery')
                         {{ $message }}
@@ -283,7 +283,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-money_bill"></i> Facturacion
-                                        ({{ $contract->detail_contract()->sum('bill') / $contract->detail_contract()->count() }}%):
+                                        @if($contract->detail_contract()->count() != 0) ({{ $contract->detail_contract()->sum('bill') / $contract->detail_contract()->count() }}%) @endif :
                                         {{ Illuminate\Support\Number::format($tbill, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
@@ -292,7 +292,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-truck"></i> Funcionamiento
-                                        ({{ $contract->detail_contract()->sum('operating') / $contract->detail_contract()->count() }}%):
+                                        @if($contract->detail_contract()->count() != 0)({{ $contract->detail_contract()->sum('operating') / $contract->detail_contract()->count() }}%) @endif :
                                         {{ Illuminate\Support\Number::format($toperating, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
@@ -301,7 +301,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-bookmark"></i>Comisión
-                                        ({{ $contract->detail_contract()->sum('comission') / $contract->detail_contract()->count() }}%):
+                                        @if($contract->detail_contract()->count() != 0) ({{ $contract->detail_contract()->sum('comission') / $contract->detail_contract()->count() }}%) @endif :
                                         {{ Illuminate\Support\Number::format($tcomission, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
@@ -312,7 +312,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-bank"></i> Banco
-                                        ({{ $contract->detail_contract()->sum('bank') / $contract->detail_contract()->count() }}%):
+                                        @if($contract->detail_contract()->count() != 0) ({{ $contract->detail_contract()->sum('bank') / $contract->detail_contract()->count() }}%) @endif:
                                         {{ Illuminate\Support\Number::format($tbank, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
@@ -321,7 +321,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-percent"></i> Interes
-                                        ({{ $contract->detail_contract()->sum('interest') / $contract->detail_contract()->count() }}%):
+                                        @if($contract->detail_contract()->count() != 0) ({{ $contract->detail_contract()->sum('interest') / $contract->detail_contract()->count() }}%) @endif :
                                         {{ Illuminate\Support\Number::format($tinterest, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
@@ -330,7 +330,7 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-warning"></i> Inprevistos
-                                        ({{ $contract->detail_contract()->sum('unexpected') / $contract->detail_contract()->count() }}%):
+                                        @if($contract->detail_contract()->count() != 0) ({{ $contract->detail_contract()->sum('unexpected') / $contract->detail_contract()->count() }}%) @endif :
                                         {{ Illuminate\Support\Number::format($tunexpected, precision: 2) }} Bs</h6>
                                 </div>
                             </div>
