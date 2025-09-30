@@ -238,12 +238,12 @@ class ContractForm extends Component
         if($a != null){
             $this->code_product = $a->cod;
             $this->name_product = $a->name;
-            $this->purchase_price = $a->price;
+            $this->purchase_price = Number::format($a->price,precision: 2);
             $this->product = $a;
         }else if($b !=null){
             $this->code_product = $b->cod;
             $this->name_product = $b->name;
-            $this->purchase_price = $b->price ?? 0 + $b->extra ?? 0;
+            $this->purchase_price = Number::format(($b->price ?? 0) + ($b->extra ?? 0), precision: 2);
             $this->product = $b;
         }else{
             $this->code_product = null;
@@ -256,11 +256,13 @@ class ContractForm extends Component
         $b = Item::where('cod',$this->code_product)->first();
         if($a != null){
             $this->name_product = $a->name;
-            $this->purchase_price = $a->price;
+            $this->purchase_price = Number::format($a->price,precision: 2);
+            // $this->purchase_price = $a->price;
             $this->product = $a;
         }else if($b !=null){
             $this->name_product = $b->name;
-            $this->purchase_price = $b->price ?? 0 + $b->extra ?? 0;
+            // $this->purchase_price = $b->price ?? 0 + $b->extra ?? 0;
+            $this->purchase_price = Number::format(($b->price ?? 0) + ($b->extra ?? 0), precision: 2);
             $this->product = $b;
         }else{
             $this->name_product = null;
