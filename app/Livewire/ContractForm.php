@@ -133,7 +133,7 @@ class ContractForm extends Component
         $this->subtotal += Number::parse($this->sale_price ?? 0) * (empty($this->comission) ? 0 : $this->comission)/ 100;
         $this->subtotal += Number::parse($this->sale_price ?? 0) * (empty($this->bank) ? 0 : $this->bank) / 100;
         $this->subtotal += Number::parse($this->sale_price ?? 0) * (empty($this->unexpected) ? 0 : $this->unexpected) / 100;
-        //
+        // //
          $this->subtotal += Number::parse($this->purchase_price ?? 0);
 
         // $this->subtotal = ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->bill ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->interest ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->operating ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->comission ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->bank ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->unexpected ?? 0)) / 100 + Number::parse($this->purchase_price ?? 0);
@@ -331,6 +331,7 @@ class ContractForm extends Component
     }
 
     public function add(){
+        // dd($this->sale_price);
         if(!Gate::allows('voucher-permission',3))
             abort('404');
         Validator::make(
@@ -382,7 +383,7 @@ class ContractForm extends Component
         }
         $this->detail->detailable()->associate($this->product);
         $this->detail->save();
-        // dd($this->detail);
+        // dd($this->detail->sale_price);
         $this->contract->refresh();
         $this->list = $this->contract->detail_contract;
         $this->detail = new DetailContract();

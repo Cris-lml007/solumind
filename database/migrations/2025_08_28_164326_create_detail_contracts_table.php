@@ -18,15 +18,15 @@ return new class extends Migration
             $table->string('detailable_type')->nullable();
             $table->string('description')->nullable();
             $table->integer('quantity');
-            $table->decimal('purchase_price');
-            $table->decimal('sale_price');
+            $table->decimal('purchase_price',15,2);
+            $table->decimal('sale_price',15,2);
             $table->decimal('bill');
             $table->decimal('interest');
             $table->decimal('operating');
             $table->decimal('comission');
             $table->decimal('bank');
             $table->decimal('unexpected');
-            $table->decimal('purchase_total');
+            $table->decimal('purchase_total',15,2);
             $table->timestamps();
             $table->softDeletes();
 

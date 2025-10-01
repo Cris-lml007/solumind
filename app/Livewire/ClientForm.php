@@ -96,15 +96,15 @@ class ClientForm extends Component
         $this->person->ci = $this->ci;
         $this->person->name = $this->name;
         $this->person->email = $this->email;
-        $this->person->phone = $this->phone;
+        $this->person->phone = empty($this->phone) ? null : $this->phone;
         $this->person->save();
 
         $this->client->person_id = $this->person->id;
         $this->client->organization = $this->organization;
         $this->client->nit = $this->nit;
-        $this->client->phone = $this->phone;
+        $this->client->phone = empty($this->phone) ? null : $this->phone;
         $this->client->email = $this->bussiness_email;
-        $this->client->phone = $this->bussiness_phone;
+        $this->client->phone = empty($this->bussiness_phone) ? null : $this->bussiness_phone;
         $this->client->save();
 
         Account::where('accountable_type',Client::class)

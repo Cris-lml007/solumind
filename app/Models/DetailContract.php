@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Number;
 
 class DetailContract extends Model
 {
@@ -30,5 +31,17 @@ class DetailContract extends Model
 
     public function deliveries(){
         return $this->belongsToMany(Delivery::class,'delivery_detail_contracts')->withPivot(['quantity']);
+    }
+
+    public function setPurchasePriceAttribute($value){
+        $this->attributes['purchase_price'] = Number::parse($value);
+    }
+
+    public function setSalePriceAttribute($value){
+        $this->attributes['sale_price'] = Number::parse($value);
+    }
+
+    public function setPurchaseTotalAttribute($value){
+        $this->attributes['purchase_total'] = Number::parse($value);
     }
 }

@@ -12,6 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('categories', function (Blueprint $table) {
+            $table->id();
+            $table->string('alias')->unique();
+            $table->string('name');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->uuid('key')->default(Uuid::uuid4());
@@ -21,7 +29,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('size');
             $table->string('description')->nullable();
-            $table->decimal('price', 10, 2);
+            $table->decimal('price', 15, 2);
             $table->timestamps();
             $table->softDeletes();
 
@@ -36,5 +44,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('products');
+        Schema::dropIfExists('categories');
     }
 };

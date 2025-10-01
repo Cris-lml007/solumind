@@ -120,7 +120,9 @@
                     </div>
                 </div>
                 @php
-                    $utotal = $contract->detail_contract()->sum(DB::raw('sale_price * quantity')) - $contract->detail_contract()->sum('purchase_total');
+                #dd($contract->detail_contract()->sum(DB::raw('sale_price')));
+                $utotal = $contract->detail_contract()->sum(DB::raw('sale_price * quantity'));
+            $utotal -= $contract->detail_contract()->sum('purchase_total');
                     $ptotal = 0;
                     $tt = 0;
                 @endphp
@@ -612,7 +614,7 @@
                         @php
                             #$subtotal = (((float) $sale_price ?? 0) * (float) ($bill ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($interest ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($operating ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($comission ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($bank ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($unexpected ?? 0)) / 100 + (float) $purchase_price ?? 0;
                         @endphp
-                        <label for="bill">Costo Subtotal</label>
+                        <label for="bill">Costo Subtotal Unitario</label>
                         <div class="input-group mb-3">
                             <input class="form-control" type="text" name="bill-value" disabled
                                 value="{{ Number::format($subtotal, precision: 2) }}" style="text-align: end;">
@@ -632,7 +634,7 @@
                             <input class="form-control" type="number" name="interest" wire:model.live="interest">
                             <span class="input-group-text">%</span>
                             <input class="form-control" type="text" name="interest-value" disabled
-                                value="{{ Number::format(((Number::parse($sale_price) ?? 0) * (float) ($interest ?? 0)) / 100, precision: 2) }}"
+                                value="{{ Number::format(((Number::parse($purchase_price) ?? 0) * (float) ($interest ?? 0)) / 100, precision: 2) }}"
                                 style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>

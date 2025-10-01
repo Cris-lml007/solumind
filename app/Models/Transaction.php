@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Number;
 
 class Transaction extends Model
 {
@@ -34,5 +35,16 @@ class Transaction extends Model
 
     public function delivery(){
         return $this->belongsTo(Delivery::class);
+    }
+
+    public function setAmountAttribute($value){
+        $this->attributes['amount'] = Number::parse($value);
+    }
+
+    protected function casts(): array{
+        return [
+            'amount' => 'decimal:2',
+            'date' => 'date'
+        ];
     }
 }

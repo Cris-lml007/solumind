@@ -20,4 +20,14 @@ class Supplier extends Model
     public function account(){
         return $this->morphOne(Account::class, 'accountable');
     }
+
+    public function setPhoneAttribute($value){
+        $this->attributes['phone'] = empty($value) ? null : $value;
+    }
+
+    protected function casts(): array{
+        return [
+            'phone' => 'integer'
+        ];
+    }
 }

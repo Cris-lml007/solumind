@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Number;
 
 class Item extends Model
 {
@@ -19,5 +20,9 @@ class Item extends Model
 
     public function category(){
         return $this->belongsTo(Category::class);
+    }
+
+    public function setPriceAttribute($value){
+        $this->attributes['price'] = is_null($value) ? null : Number::parse($value);
     }
 }

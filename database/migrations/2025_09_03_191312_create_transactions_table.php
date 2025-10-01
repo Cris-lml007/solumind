@@ -11,15 +11,36 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('accounts', function (Blueprint $table) {
+            $table->id();
+            $table->string('name')->unique();
+            $table->nullableMorphs('accountable');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+
+        Schema::create('deliveries', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('contract_id');
+            //$table->decimal('amount',15,2)->nullable();
+            $table->date('date');
+            $table->string('received_by')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('contract_id')->references('id')->on('contracts')->cascadeOnDelete();
+        });
+
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('contract_id')->nullable();
             $table->date('date');
             $table->unsignedBigInteger('contract_partner_id')->nullable();
             $table->unsignedBigInteger('account_id')->nullable();
-            $table->unsignedInteger('delivery_id')->nullable();
+            $table->unsignedBigInteger('delivery_id')->nullable();
             $table->string('description');
-            $table->decimal('amount',10,2);
+            $table->decimal('amount',15,2);
             $table->integer('type');
             $table->timestamps();
             $table->softDeletes();
@@ -38,5 +59,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('transactions');
+        Schema::dropIfExists('deliveries');
+        Schema::dropIfExists('accounts');
     }
 };

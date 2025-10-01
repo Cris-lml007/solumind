@@ -17,10 +17,10 @@ return new class extends Migration
             $table->uuid('key')->default(Uuid::uuid4());
             $table->string('cod')->unique();
             $table->string('name');
-            $table->unsignedInteger('category_id');
+            $table->unsignedBigInteger('category_id');
             $table->string('description')->nullable();
-            $table->decimal('extra',8,2)->nullable();
-            $table->decimal('price',8,2)->nullable();
+            $table->decimal('extra',15,2)->nullable();
+            $table->decimal('price',15,2)->nullable();
             $table->timestamps();
             $table->softDeletes();
 
