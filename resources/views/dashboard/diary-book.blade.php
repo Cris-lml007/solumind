@@ -31,7 +31,7 @@
                         <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}</td>
                         <td>{{ $item->description }}</td>
                         <td>{{ $item->contract->cod ?? '' }}</td>
-                        <td>{{ $item->account->name }}</td>
+                        <td>{{ $item->account->name ?? '' }}</td>
                     </tr>
                 @endforeach
                 <tfoot>

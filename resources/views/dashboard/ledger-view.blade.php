@@ -25,7 +25,7 @@
                         </td>
                         <td>{{ $item->description }}</td>
                         <td>{{ $item->contract->cod ?? '' }}</td>
-                        <td>{{ $item->account->name }}</td>
+                        <td>{{ $item->account->name ?? ''}}</td>
                     </tr>
                 @endforeach
                 <tfoot>

@@ -60,7 +60,7 @@ class DashboardController extends Controller
         if(!Gate::allows('partner-read'))
             abort('404');
         $heads = ['ID','CI','Nombre Completo','Contacto Principal','Acciones'];
-        $config = ['columns' => [null, null, null, ['orderable' => false, 'searchable' => false]]];
+        $config = ['columns' => [null, null, null,null, ['orderable' => false, 'searchable' => false]]];
         $data = Partner::all();
         return view('dashboard.partner-view',compact(['heads','config','data']));
     }
@@ -69,7 +69,7 @@ class DashboardController extends Controller
         if(!Gate::allows('client-read'))
             abort('404');
         $heads = ['ID', 'CI', 'NIT', 'Nombre Cliente', 'Contacto Principal', 'Acciones'];
-        $config = ['columns' => [null,null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
+        $config = ['columns' => [null,null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = Client::all();
         return view('dashboard.client-view', compact(['heads', 'config','data']));
     }
@@ -147,11 +147,11 @@ class DashboardController extends Controller
             ->toArray();
 
         $products = DB::table('detail_contracts')
-            ->groupBy('detailable_id','detailable_type')->join('products','products.id','=','detail_contracts.detailable_id')
+            ->groupBy('detailable_id','detailable_type','products.cod')->join('products','products.id','=','detail_contracts.detailable_id')
             ->select(DB::raw('products.cod, SUM(quantity) as quantity'))
             ->get()->toArray();
         $items = DB::table('detail_contracts')
-            ->groupBy('detailable_id','detailable_type')->join('items','items.id','=','detail_contracts.detailable_id')
+            ->groupBy('detailable_id','detailable_type','items.cod')->join('items','items.id','=','detail_contracts.detailable_id')
             ->select(DB::raw('items.cod, SUM(quantity) as quantity'))
             ->get()->toArray();
 

@@ -27,7 +27,7 @@ return new class extends Migration
             $table->unsignedBigInteger('supplier_id')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('name');
-            $table->string('size');
+            $table->string('size')->nullable();
             $table->string('description')->nullable();
             $table->decimal('price', 15, 2);
             $table->timestamps();

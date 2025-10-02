@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('client_id');
             $table->string('description')->nullable();
             $table->integer('status')->default(1);
-            $table->date('time_valide')->nullable();
+            $table->integer('time_valide')->nullable();
             $table->string('payment')->nullable();
             $table->date('time_delivery')->nullable();
             $table->timestamps();

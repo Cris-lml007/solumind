@@ -51,7 +51,6 @@
             </div>
         </div>
     </div>
-    </div>
 @endsection
 
 @section('js')
@@ -114,7 +113,7 @@
                             labels: products.map(row => row.cod),
                             datasets: [{
                                 data: products.map(row => row.quantity),
-                                backgroundColor: contracts.map(row => getRandomColor())
+                                backgroundColor: products.map(row => getRandomColor())
                             }]
                         },
                         options: {

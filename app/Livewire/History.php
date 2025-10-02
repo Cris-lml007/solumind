@@ -16,12 +16,10 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Transaction;
 use App\Models\User;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Schema;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
@@ -232,6 +230,7 @@ class History extends Component
     {
         $user = User::withTrashed()->find($id);
         $user?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Transactions
@@ -245,6 +244,7 @@ class History extends Component
     {
         $transaction = Transaction::withTrashed()->find($id);
         $transaction?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Products
@@ -258,6 +258,7 @@ class History extends Component
     {
         $product = Product::withTrashed()->find($id);
         $product?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Partners
@@ -271,6 +272,7 @@ class History extends Component
     {
         $partner = Partner::withTrashed()->find($id);
         $partner?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Clients
@@ -284,6 +286,7 @@ class History extends Component
     {
         $client = Client::withTrashed()->find($id);
         $client?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Contracts
@@ -297,6 +300,7 @@ class History extends Component
     {
         $contract = Contract::withTrashed()->find($id);
         $contract?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Detail Contracts
@@ -310,6 +314,7 @@ class History extends Component
     {
         $detail_contract = DetailContract::withTrashed()->find($id);
         $detail_contract?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Item Details
@@ -323,6 +328,7 @@ class History extends Component
     {
         $item_detail = DetailItem::withTrashed()->find($id);
         $item_detail?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Categories
@@ -336,6 +342,7 @@ class History extends Component
     {
         $category = Category::withTrashed()->find($id);
         $category?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Accounts
@@ -349,6 +356,7 @@ class History extends Component
     {
         $account = Account::withTrashed()->find($id);
         $account?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Suppliers
@@ -362,6 +370,7 @@ class History extends Component
     {
         $supplier = Supplier::withTrashed()->find($id);
         $supplier?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Contract Partners
@@ -375,6 +384,7 @@ class History extends Component
     {
         $contract_partner = ContractPartner::withTrashed()->find($id);
         $contract_partner?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
     // 🔹 Assemblies (Items)
@@ -388,6 +398,7 @@ class History extends Component
     {
         $item = Item::withTrashed()->find($id);
         $item?->forceDelete();
+        $this->redirect(route('dashboard.history'));
     }
 
 

@@ -305,7 +305,14 @@ class ContractForm extends Component
         $this->contract->time_delivery = $this->delivery;
         $this->contract->time_valide = $this->valide;
         $this->contract->save();
-        $this->redirect(route('dashboard.proof'));
+        $this->js("Swal.fire({
+            icon: 'success',
+            title: 'Guardado',
+            text: 'Los cambios se guardaron correctamente',
+            timer: 3000,
+            showConfirmButton: false
+        })");
+        // $this->redirect(route('dashboard.proof'));
     }
 
     public function loadProduct($id){

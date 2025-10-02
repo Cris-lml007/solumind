@@ -18,17 +18,7 @@
                 @foreach ($data as $item)
                     <tr>
                         <td><strong>{{ $item->id }}</strong></td>
-                        @php
-                            $words = explode(' ', $item->name);
-                            $s = 0;
-                            foreach ($words as $word) {
-                                if (strlen($word) > 2) {
-                                    $s += 3;
-                                }
-                            }
-                            $size = substr($item->cod, $s, strlen($item->cod));
-                        @endphp
-                        <td><strong>{{ $item->name . ' ' . $size }}</strong></td>
+                        <td><strong>{{ $item->name . ' ' . $item->size }}</strong></td>
                         <td><strong>{{ $item->supplier->organization == null ? $item->supplier->person->name : $item->supplier->organization }}</strong>
                         </td>
                         <td><strong>{{ Illuminate\Support\Number::format($item->price, precision: 2) }}</strong></td>

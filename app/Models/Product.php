@@ -25,4 +25,8 @@ class Product extends Model
     public function setPriceAttribute($value){
         $this->attributes['price'] = Number::parse($value);
     }
+
+    public function setNameAttribute($value){
+        $this->attributes['name'] = strtoupper($value);
+    }
 }

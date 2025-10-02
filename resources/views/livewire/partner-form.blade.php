@@ -68,11 +68,10 @@
                     <tr>
                         <td><strong>{{ $item->id }}</strong></td>
                         <td>{{ $item->cod }}</td>
-                        <td>{{ $item->pivot->amount }}</td>
                         <td>{{ $item->pivot->interest }}</td>
-                        <td>{{ App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount') }}
+                        <td>{{ Number::format(App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount'), precision: 2) }}
                         </td>
-                        <td>{{ $utotal * ($item->pivot->interest / 100) -App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount') }}
+                        <td>{{Number::format( $utotal * ($item->pivot->interest / 100) -App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount'), precision: 2) }}
                         </td>
                         <td><button data-bs-toggle="modal" data-bs-target="#modal-pay" class="btn btn-primary"
                                 x-on:click="$wire.contractPartner = '{{ $item->pivot->id }}'"><i

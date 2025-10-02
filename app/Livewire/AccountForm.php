@@ -50,7 +50,6 @@ class AccountForm extends Component
     public function remove(){
         if(!Gate::allows('config-permission',3))
             abort('404');
-        if($this->account->id == 1) return redirect()->route('dashboard.settings');
         $this->account->delete();
         return redirect()->route('dashboard.settings');
     }

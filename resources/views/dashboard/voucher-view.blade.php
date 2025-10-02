@@ -110,7 +110,7 @@
                                 <td><strong>{{ $item->id }}</strong></td>
                                 <td>{{ $item->cod }}</td>
                                 <td>{{ $item->client->person->name }}</td>
-                                <td>{{ $item->time_delivery }} Dias</td>
+                                <td>{{ $item->time_delivery }}</td>
                                 <td><span
                                         class="badge {{ $item->status->value == 3 || $item->status->value == 5 ? 'badge-success' : 'badge-danger' }}">{{ __($item->status->name) }}</span>
                                 </td>
