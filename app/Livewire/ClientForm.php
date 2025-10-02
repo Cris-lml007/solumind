@@ -41,7 +41,6 @@ class ClientForm extends Component
         if(!Gate::allows('client-read'))
             abort('404');
         try {
-
             $this->client = Client::findOrFail($id);
             $this->person = $this->client->person;
             $this->ci = $this->person->ci;
@@ -52,9 +51,7 @@ class ClientForm extends Component
             $this->bussiness_email = $this->client->email;
             $this->bussiness_phone = $this->client->phone;
             $this->nit = $this->client->nit;
-
-
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->ci = '';
             $this->name = '';
             $this->email = '';
@@ -78,8 +75,7 @@ class ClientForm extends Component
             $this->name = $this->person->name;
             $this->email = $this->person->email;
             $this->phone = $this->person->phone;
-        } catch (\Exception $e) {
-
+        } catch (\Exception) {
             $this->person = new Person();
             $this->name = '';
             $this->email = '';
@@ -109,6 +105,7 @@ class ClientForm extends Component
 
         Account::where('accountable_type',Client::class)
             ->where('accountable_id',$this->client->id)
+            ->where('name','Cliente: '. (empty($this->client->organization) ? $this->person->name : $this->client->organization))
             ->firstOrCreate([
                 'name' => 'Cliente: '. (empty($this->client->organization) ? $this->person->name : $this->client->organization),
                 'accountable_type' => Client::class,

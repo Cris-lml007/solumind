@@ -98,9 +98,6 @@
                 <div class="row mt-0 mb-3">
                     <div class="col">
                         <label>Presupuesto</label>
-                        @php
-                            #dd($contract->partners()->sum('amount'));
-                        @endphp
                         <div class="input-group">
                             <input type="text" class="form-control"
                                 value="{{ Illuminate\Support\Number::format($contract->detail_contract()->sum('purchase_total'), precision: 2) }}"
@@ -120,7 +117,6 @@
                     </div>
                 </div>
                 @php
-                #dd($contract->detail_contract()->sum(DB::raw('sale_price')));
                 $utotal = $contract->detail_contract()->sum(DB::raw('sale_price * quantity'));
             $utotal -= $contract->detail_contract()->sum('purchase_total');
                     $ptotal = 0;
@@ -234,7 +230,6 @@
                                 <td><strong>{{ $item->id }}</strong></td>
                                 <td>{{ $item->partner->person->ci }}</td>
                                 <td>{{ $item->partner->person->name }}</td>
-                                <!-- <td>{{ $item->amount }}</td> -->
                                 <td>{{ $item->interest }}</td>
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#modal-partner"
@@ -380,7 +375,6 @@
                                 @php
                                     $ptotal += $utotal * ($item->pivot->interest / 100);
                                     $tt += $item->pivot->interest;
-                                    #dd($utotal);
                                 @endphp
                             @endforeach
                             <tfoot>
@@ -609,11 +603,6 @@
                                 style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
-
-
-                        @php
-                            #$subtotal = (((float) $sale_price ?? 0) * (float) ($bill ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($interest ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($operating ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($comission ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($bank ?? 0)) / 100 + (((float) $sale_price ?? 0) * (float) ($unexpected ?? 0)) / 100 + (float) $purchase_price ?? 0;
-                        @endphp
                         <label for="bill">Costo Subtotal Unitario</label>
                         <div class="input-group mb-3">
                             <input class="form-control" type="text" name="bill-value" disabled

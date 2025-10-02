@@ -98,7 +98,6 @@ class ContractForm extends Component
             $this->valide = $this->contract->time_valide;
             $this->delivery = $this->contract->time_delivery;
             $this->list = $this->contract->detail_contract;
-            // dd($this->list[0]->detailable()->withTrashed()->get());
             $this->detail = new DetailContract();
             $this->contract_partner = new ContractPartner();
             $this->sale_price = Number::format(0, precision: 2);
@@ -112,7 +111,6 @@ class ContractForm extends Component
         try{
             $this->purchase_price = Number::parse($this->purchase_price);
             $this->purchase_price = Number::format(empty($this->purchase_price) ? 0 : $this->purchase_price, precision: 2);
-            // dd(Number::parse($this->purchase_price) * 2);
         }catch(\Exception){
             $this->purchase_price = Number::format(0, precision: 2);
         }
@@ -133,10 +131,8 @@ class ContractForm extends Component
         $this->subtotal += Number::parse($this->sale_price ?? 0) * (empty($this->comission) ? 0 : $this->comission)/ 100;
         $this->subtotal += Number::parse($this->sale_price ?? 0) * (empty($this->bank) ? 0 : $this->bank) / 100;
         $this->subtotal += Number::parse($this->sale_price ?? 0) * (empty($this->unexpected) ? 0 : $this->unexpected) / 100;
-        // //
          $this->subtotal += Number::parse($this->purchase_price ?? 0);
 
-        // $this->subtotal = ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->bill ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->interest ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->operating ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->comission ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->bank ?? 0)) / 100 + ((Number::parse($this->sale_price ?? 0) ?? 0) * (float) ($this->unexpected ?? 0)) / 100 + Number::parse($this->purchase_price ?? 0);
     }
 
     public function updatedPartnerId(){
@@ -331,7 +327,6 @@ class ContractForm extends Component
     }
 
     public function add(){
-        // dd($this->sale_price);
         if(!Gate::allows('voucher-permission',3))
             abort('404');
         Validator::make(
@@ -383,11 +378,9 @@ class ContractForm extends Component
         }
         $this->detail->detailable()->associate($this->product);
         $this->detail->save();
-        // dd($this->detail->sale_price);
         $this->contract->refresh();
         $this->list = $this->contract->detail_contract;
         $this->detail = new DetailContract();
-        // $this->reset(['code_product','name_product','description_product','bill','interest','operating','comission','bank','unexpected','purchase_price','quantity','sale_price','subtotal']);
         $this->reset(['code_product','name_product','description_product','purchase_price','quantity','sale_price','subtotal']);
         $this->sale_price = Number::format(0, precision: 2);
         $this->purchase_price = Number::format(0, precision: 2);

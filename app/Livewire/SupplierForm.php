@@ -57,7 +57,7 @@ class SupplierForm extends Component
             $this->business_cellular = $this->supplier->phone;
 
             $this->is_update = true;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->ci = '';
             $this->name = '';
             $this->email = '';
@@ -81,7 +81,7 @@ class SupplierForm extends Component
             $this->name = $this->person->name;
             $this->email = $this->person->email;
             $this->cellular = $this->person->phone;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $this->person = new Person();
             $this->name = '';
             $this->email = '';
@@ -108,6 +108,7 @@ class SupplierForm extends Component
 
         Account::where('accountable_type',Supplier::class)
             ->where('accountable_id',$this->supplier->id)
+            ->where('name','Proveedor: '. (empty($this->supplier->organization) ? $this->person->name : $this->supplier->organization))
             ->firstOrCreate([
                 'name' => 'Proveedor: '. (empty($this->supplier->organization) ? $this->person->name : $this->supplier->organization),
                 'accountable_type' => Supplier::class,

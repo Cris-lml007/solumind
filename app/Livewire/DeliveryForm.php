@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\Contract;
 use App\Models\Delivery;
 use App\Models\DetailContract;
-use App\Models\Transaction;
 use App\StatusContract;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -48,10 +47,8 @@ class DeliveryForm extends Component
     }
 
     public function updatedDetailId(){
-        // dd($this->contract->detail_contract()->find($this->detail_id)->deliveries()->sum('quantity'));
         $this->max_quantity = $this->contract->detail_contract()->where('id',$this->detail_id)->first()->quantity -
             $this->contract->detail_contract()->find($this->detail_id)->deliveries()->sum('quantity');
-        // dd($this->max_quantity);
     }
 
     public function add(){
@@ -134,7 +131,6 @@ class DeliveryForm extends Component
         }
         $delivery = new Delivery();
         $delivery->contract_id = $this->contract->id;
-        $delivery->amount = $this->amount;
         $delivery->date = $this->date;
         $delivery->received_by = $this->receiver_by;
         $delivery->save();

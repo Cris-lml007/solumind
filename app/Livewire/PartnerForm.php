@@ -50,7 +50,7 @@ class PartnerForm extends Component
             $this->organization = $this->partner->organization;
             $this->post = $this->partner->post;
             $this->person = $this->partner->person;
-        }catch(\Exception $e){
+        }catch(\Exception){
             $this->partner = new Partner();
             $this->person = new Person();
         }
@@ -86,6 +86,7 @@ class PartnerForm extends Component
         $this->partner->save();
         Account::where('accountable_type',Partner::class)
             ->where('accountable_id',$this->partner->id)
+            ->where('name','Socio: '. (empty($this->partner->organization) ? $this->person->name : ($this->partner->organization . ' - ' . $this->person->name)))
             ->firstOrCreate([
                 'name' => 'Socio: '. (empty($this->partner->organization) ? $this->person->name : ($this->partner->organization . ' - ' . $this->person->name)),
                 'accountable_type' => Partner::class,
@@ -107,7 +108,6 @@ class PartnerForm extends Component
             abort('404');
         $contractPartner = ContractPartner::find($this->contractPartner);
         $utotal = $contractPartner->contract->detail_contract()->sum(DB::raw('sale_price * quantity')) - $contractPartner->contract->detail_contract()->sum('purchase_total');
-        // dd($contractPartner->interest);
         Validator::make([
             'description' => $this->pay_description,
             'amount' => $this->pay_amount
