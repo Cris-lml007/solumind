@@ -39,6 +39,8 @@ class DiaryBookForm extends Component
 
     public $listeners = ['remove' => 'remove'];
 
+    public $status = 0;
+
     public function updatedSearchContract(){
         if(!empty($this->search_contract)){
             $this->contracts = Contract::where('cod','like',$this->search_contract.'%')->get();
@@ -59,6 +61,7 @@ class DiaryBookForm extends Component
             $this->type = $this->transaction->type;
             $this->contract_id = $this->transaction->contract_id;
             $this->account_id = $this->transaction->account_id;
+            $this->status = 1;
         }catch(\Exception){
             $this->transaction = new Transaction();
         }

@@ -15,12 +15,15 @@ class AccountForm extends Component
 
     public $listeners = ['restore' => 'restore'];
 
+    public $status = 0;
+
     public function mount($id = null){
         if(!Gate::allows('config-permission',3))
             abort('404');
         if ($id) {
             $this->account = Account::findOrFail($id);
             $this->name = $this->account->name;
+            $this->status = 1;
         } else {
             $this->account = new Account();
         }

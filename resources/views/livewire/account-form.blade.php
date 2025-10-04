@@ -25,19 +25,21 @@
 
 @script
     <script>
-        $wire.on('active', () => {
-            Swal.fire({
-                icon: 'question',
-                title: 'Cuenta Eliminada?...',
-                text: 'Esta Cuenta Fue Eliminada, Desea recuperala?',
-                showCancelButton: true,
-                confirmButtonColor: '#f7b924',
-                cancelButtonColor: 'red',
-                confirmButtonText: 'recuperar',
-                cancelButtonText: 'cancelar'
-            }).then(result => {
-                if (result.isConfirmed) $wire.dispatch('restore');
-            })
-        });
+        if ($wire.status == 1) {
+            $wire.on('active', () => {
+                Swal.fire({
+                    icon: 'question',
+                    title: 'Cuenta Eliminada?...',
+                    text: 'Esta Cuenta Fue Eliminada, Desea recuperala?',
+                    showCancelButton: true,
+                    confirmButtonColor: '#f7b924',
+                    cancelButtonColor: 'red',
+                    confirmButtonText: 'recuperar',
+                    cancelButtonText: 'cancelar'
+                }).then(result => {
+                    if (result.isConfirmed) $wire.dispatch('restore');
+                })
+            });
+        }
     </script>
 @endscript

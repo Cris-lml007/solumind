@@ -45,6 +45,8 @@ class Userform extends Component
     public User $user;
     public UserPermission $permissions;
 
+    public $status = 0;
+
     public function mount($id = null){
         if(Auth::user()->id != $id)
             if(!Gate::allows('config-permission',3))
@@ -75,6 +77,8 @@ class Userform extends Component
                 $this->p11 = $this->user->permission->config;
                 $this->p12 = $this->user->permission->history;
             }
+
+            $this->status = 1;
         } catch (\Throwable) {
             $this->user = new User();
             $this->permissions = new UserPermission();

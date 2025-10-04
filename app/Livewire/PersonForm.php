@@ -17,6 +17,7 @@ class PersonForm extends Component
     public $email;
 
     public Person $person;
+    public $status = 0;
 
     public function mount($id = null){
         if(!Gate::allows('config-permission',3))
@@ -27,6 +28,7 @@ class PersonForm extends Component
             $this->name = $this->person->name;
             $this->phone = $this->person->phone;
             $this->email = $this->person->email;
+            $this->status = 1;
         } catch (\Throwable $e) {
             $this->person = new Person();
         }

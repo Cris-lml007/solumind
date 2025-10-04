@@ -97,44 +97,45 @@
             document.getElementById('search-contract').classList.toggle('d-none');
         });
 
-        document.getElementById('btn-update').addEventListener('click', () => {
-            Swal.fire({
-                title: 'Actualizar?...',
-                icon: 'warning',
-                text: 'Esta seguro que desea Actualizar?, esto podria causar inconsistencias futuras.',
-                inputLabel: 'ingrese su contraseña',
-                input: 'password',
-                confirmButtonText: 'Actualizar',
-                confirmButtonColor: 'green',
-                cancelButtonText: 'Cancelar',
-                cancelButtonColor: 'red',
-                showCancelButton: true,
-                preConfirm: async (password) => {
-                    return $wire.updateWithPassword(password).then(result => {
-                        if (!result.success) {
-                            throw new Error(result.message || 'Error al Actualizar');
-                        }
-                        return result;
-                    }).catch(error => {
-                        Swal.showValidationMessage(`Error: ${error.message}`);
-                    })
-                }
-            });
-        })
-
-        document.getElementById('btn-remove').addEventListener('click', () => {
-            Swal.fire({
-                title: 'Esta Seguro?...',
-                text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: "#F7B924",
-                cancelButtonColor: "red",
-                confirmButtonText: "Si, deseo borrar!",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) $wire.dispatch('remove');
+        if ($wire.status == 1) {
+            document.getElementById('btn-update').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Actualizar?...',
+                    icon: 'warning',
+                    text: 'Esta seguro que desea Actualizar?, esto podria causar inconsistencias futuras.',
+                    inputLabel: 'ingrese su contraseña',
+                    input: 'password',
+                    confirmButtonText: 'Actualizar',
+                    confirmButtonColor: 'green',
+                    cancelButtonText: 'Cancelar',
+                    cancelButtonColor: 'red',
+                    showCancelButton: true,
+                    preConfirm: async (password) => {
+                        return $wire.updateWithPassword(password).then(result => {
+                            if (!result.success) {
+                                throw new Error(result.message || 'Error al Actualizar');
+                            }
+                            return result;
+                        }).catch(error => {
+                            Swal.showValidationMessage(`Error: ${error.message}`);
+                        })
+                    }
+                });
             })
-        });
+            document.getElementById('btn-remove').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Esta Seguro?...',
+                    text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#F7B924",
+                    cancelButtonColor: "red",
+                    confirmButtonText: "Si, deseo borrar!",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) $wire.dispatch('remove');
+                })
+            });
+        }
     </script>
 @endscript

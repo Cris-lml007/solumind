@@ -69,9 +69,9 @@
                         <td><strong>{{ $item->id }}</strong></td>
                         <td>{{ $item->cod }}</td>
                         <td>{{ $item->pivot->interest }}</td>
-                        <td>{{ Number::format(App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount'), precision: 2) }}
+                        <td>{{ Number::format(App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount'),precision: 2) }}
                         </td>
-                        <td>{{Number::format( $utotal * ($item->pivot->interest / 100) -App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount'), precision: 2) }}
+                        <td>{{ Number::format($utotal * ($item->pivot->interest / 100) -App\Models\ContractPartner::find($item->pivot->id)->transactions()->sum('amount'),precision: 2) }}
                         </td>
                         <td><button data-bs-toggle="modal" data-bs-target="#modal-pay" class="btn btn-primary"
                                 x-on:click="$wire.contractPartner = '{{ $item->pivot->id }}'"><i
@@ -127,19 +127,21 @@
 
 @script
     <script>
-        document.getElementById('btn-remove').addEventListener('click', () => {
-            Swal.fire({
-                title: 'Esta Seguro?...',
-                text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: "#F7B924",
-                cancelButtonColor: "red",
-                confirmButtonText: "Si, deseo borrar!",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) $wire.dispatch('remove');
-            })
-        });
+        if ($wire.status == 1) {
+            document.getElementById('btn-remove').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Esta Seguro?...',
+                    text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#F7B924",
+                    cancelButtonColor: "red",
+                    confirmButtonText: "Si, deseo borrar!",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) $wire.dispatch('remove');
+                })
+            });
+        }
     </script>
 @endscript

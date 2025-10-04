@@ -36,6 +36,8 @@ class ClientForm extends Component
     #[Locked]
     public Person $person;
 
+    public $status = 0;
+
 
     public function mount($id = null){
         if(!Gate::allows('client-read'))
@@ -51,6 +53,7 @@ class ClientForm extends Component
             $this->bussiness_email = $this->client->email;
             $this->bussiness_phone = $this->client->phone;
             $this->nit = $this->client->nit;
+            $this->status = 1;
         } catch (\Exception) {
             $this->ci = '';
             $this->name = '';

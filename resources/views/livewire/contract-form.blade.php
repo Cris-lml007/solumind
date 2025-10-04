@@ -117,8 +117,8 @@
                     </div>
                 </div>
                 @php
-                $utotal = $contract->detail_contract()->sum(DB::raw('sale_price * quantity'));
-            $utotal -= $contract->detail_contract()->sum('purchase_total');
+                    $utotal = $contract->detail_contract()->sum(DB::raw('sale_price * quantity'));
+                    $utotal -= $contract->detail_contract()->sum('purchase_total');
                     $ptotal = 0;
                     $tt = 0;
                 @endphp
@@ -126,13 +126,13 @@
                 <div class="d-flex justify-content-end my-3">
                     @can('voucher-permission', 3)
                         @if ($contract->status->value < 3)
-                            <button class="btn btn-success me-1" wire:click="aprove">Aprobar</button>
-                            <button class="btn btn-secondary me-1" wire:click="proofFail">Fallido</button>
+                            <button class="btn btn-success me-1" id="btn-proof-approve">Aprobar</button>
+                            <button class="btn btn-secondary me-1" id="btn-proof-fail">Fallido</button>
                         @endif
 
                         @if ($contract->status->value >= 3)
-                            <button class="btn btn-success me-1" wire:click="finish">Finalizar</button>
-                            <button class="btn btn-secondary me-1" wire:click="contractFail">Fallido</button>
+                            <button class="btn btn-success me-1" id="btn-finish">Finalizar</button>
+                            <button class="btn btn-secondary me-1" id="btn-contract-fail">Fallido</button>
                         @endif
 
                         @if ($contract->id == null)
@@ -280,8 +280,11 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-money_bill"></i> Facturacion
-                                        @if($contract->detail_contract()->count() != 0) ({{ $contract->detail_contract()->sum('bill') / $contract->detail_contract()->count() }}%) @endif :
-                                        {{ Illuminate\Support\Number::format($tbill, precision: 2) }} Bs</h6>
+                                        @if ($contract->detail_contract()->count() != 0)
+                                            ({{ $contract->detail_contract()->sum('bill') / $contract->detail_contract()->count() }}%)
+                                        @endif :
+                                        {{ Illuminate\Support\Number::format($tbill, precision: 2) }} Bs
+                                    </h6>
                                 </div>
                             </div>
                         </div>
@@ -289,8 +292,11 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-truck"></i> Funcionamiento
-                                        @if($contract->detail_contract()->count() != 0)({{ $contract->detail_contract()->sum('operating') / $contract->detail_contract()->count() }}%) @endif :
-                                        {{ Illuminate\Support\Number::format($toperating, precision: 2) }} Bs</h6>
+                                        @if ($contract->detail_contract()->count() != 0)
+                                            ({{ $contract->detail_contract()->sum('operating') / $contract->detail_contract()->count() }}%)
+                                        @endif :
+                                        {{ Illuminate\Support\Number::format($toperating, precision: 2) }} Bs
+                                    </h6>
                                 </div>
                             </div>
                         </div>
@@ -298,8 +304,11 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-bookmark"></i>Comisión
-                                        @if($contract->detail_contract()->count() != 0) ({{ $contract->detail_contract()->sum('comission') / $contract->detail_contract()->count() }}%) @endif :
-                                        {{ Illuminate\Support\Number::format($tcomission, precision: 2) }} Bs</h6>
+                                        @if ($contract->detail_contract()->count() != 0)
+                                            ({{ $contract->detail_contract()->sum('comission') / $contract->detail_contract()->count() }}%)
+                                        @endif :
+                                        {{ Illuminate\Support\Number::format($tcomission, precision: 2) }} Bs
+                                    </h6>
                                 </div>
                             </div>
                         </div>
@@ -309,8 +318,11 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-bank"></i> Banco
-                                        @if($contract->detail_contract()->count() != 0) ({{ $contract->detail_contract()->sum('bank') / $contract->detail_contract()->count() }}%) @endif:
-                                        {{ Illuminate\Support\Number::format($tbank, precision: 2) }} Bs</h6>
+                                        @if ($contract->detail_contract()->count() != 0)
+                                            ({{ $contract->detail_contract()->sum('bank') / $contract->detail_contract()->count() }}%)
+                                        @endif:
+                                        {{ Illuminate\Support\Number::format($tbank, precision: 2) }} Bs
+                                    </h6>
                                 </div>
                             </div>
                         </div>
@@ -318,8 +330,11 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-percent"></i> Interes
-                                        @if($contract->detail_contract()->count() != 0) ({{ $contract->detail_contract()->sum('interest') / $contract->detail_contract()->count() }}%) @endif :
-                                        {{ Illuminate\Support\Number::format($tinterest, precision: 2) }} Bs</h6>
+                                        @if ($contract->detail_contract()->count() != 0)
+                                            ({{ $contract->detail_contract()->sum('interest') / $contract->detail_contract()->count() }}%)
+                                        @endif :
+                                        {{ Illuminate\Support\Number::format($tinterest, precision: 2) }} Bs
+                                    </h6>
                                 </div>
                             </div>
                         </div>
@@ -327,8 +342,11 @@
                             <div class="card border-primary">
                                 <div class="card-body">
                                     <h6 style="text-align: end;"><i class="nf nf-fa-warning"></i> Inprevistos
-                                        @if($contract->detail_contract()->count() != 0) ({{ $contract->detail_contract()->sum('unexpected') / $contract->detail_contract()->count() }}%) @endif :
-                                        {{ Illuminate\Support\Number::format($tunexpected, precision: 2) }} Bs</h6>
+                                        @if ($contract->detail_contract()->count() != 0)
+                                            ({{ $contract->detail_contract()->sum('unexpected') / $contract->detail_contract()->count() }}%)
+                                        @endif :
+                                        {{ Illuminate\Support\Number::format($tunexpected, precision: 2) }} Bs
+                                    </h6>
                                 </div>
                             </div>
                         </div>
@@ -360,6 +378,28 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <div @class([
+                                'card',
+                                'border-primary',
+                                'bg-success' =>
+                                    Carbon\Carbon::now()->diffInDays(Carbon\Carbon::parse($contract->time_delivery)) > 5,
+                                'bg-primary' =>
+                                    Carbon\Carbon::now()->diffInDays(Carbon\Carbon::parse($contract->time_delivery)) <= 5 &&
+                                    Carbon\Carbon::now()->diffInDays(Carbon\Carbon::parse($contract->time_delivery)) > 2,
+                                'bg-danger' =>
+                                    Carbon\Carbon::now()->diffInDays(Carbon\Carbon::parse($contract->time_delivery)) <= 2,
+                            ])>
+                                <div class="card-body">
+                                    <h6 style="text-align: end;"><i class="nf nf-weather-time_2"></i> Plazo de
+                                        Entrega:
+                                        {{ (int) Carbon\Carbon::now()->diffInDays(Carbon\Carbon::parse($contract->time_delivery)) }}
+                                        Días</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div>
                         <h5><strong>Utilidades</strong></h5>
                         <x-adminlte.tool.datatable id="table-utilities" :heads="['ID', 'CI', 'Nombre Completo', '%', 'Utilidad (Bs)']">
@@ -387,8 +427,8 @@
                     @php
                         $ti = 0;
                         $te = 0;
-                        @endphp
-                        <h5 class="my-3"><strong> Movimientos Libro Diario</strong></h5>
+                    @endphp
+                    <h5 class="my-3"><strong> Movimientos Libro Diario</strong></h5>
                     <x-adminlte.tool.datatable id="table-transactions" :heads="['ID', 'Fecha', 'Ingreso (Bs)', 'Egreso (Bs)', 'Descripctión', 'Cuenta']">
                         @foreach ($transactions as $item)
                             @php
@@ -437,6 +477,9 @@
                                 <td>{{ $item->quantity }}</td>
                                 <td>{{ $item->deliveries()->sum('quantity') }}</td>
                                 <td>{{ (int) $item->quantity - (int) $item->deliveries()->sum('quantity') }}</td>
+                                @php
+                                    $this->max_products += (int) $item->quantity - (int) $item->deliveries()->sum('quantity');
+                                @endphp
                             </tr>
                         @endforeach
                     </x-adminlte.tool.datatable>
@@ -658,7 +701,7 @@
                         <label for="bill">Utilidad Total</label>
                         <div class="input-group mb-3">
                             <input class="form-control" type="text" name="bill-value" disabled
-                                value="{{ Number::format((Number::parse($sale_price) * (float) $quantity) - ((float) $subtotal * (float) $quantity), precision: 2) }}"
+                                value="{{ Number::format(Number::parse($sale_price) * (float) $quantity - (float) $subtotal * (float) $quantity, precision: 2) }}"
                                 style="text-align: end;">
                             <span class="input-group-text">Bs</span>
                         </div>
@@ -723,90 +766,146 @@
 
 @script
     <script>
-        Livewire.hook('morphed', ({
-            el,
-            component
-        }) => {
-            $('#partner').DataTable({
-                destroy: true
-            })
-            $('#table-utilities').DataTable({
-                destroy: true
-            })
-            $('#detail').DataTable({
-                destroy: true
-            })
-            $('#table-delivery').DataTable({
-                destroy: true
-            })
-
-            $(document).ready(function() {
-                $('#table-transactions').DataTable({
-                    footerCallback: function(row, data, start, end, display) {
-                        var api = this.api();
-
-                        // Función para parsear a número
-                        var intVal = function(i) {
-                            return typeof i === 'string' ?
-                                i.replace(/[\$,]/g, '') * 1 :
-                                typeof i === 'number' ?
-                                i : 0;
-                        };
-
-                        // Total ingresos
-                        var totalIngresos = api
-                            .column(2, {
-                                page: 'current'
-                            })
-                            .data()
-                            .reduce(function(a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0);
-
-                        // Total egresos
-                        var totalEgresos = api
-                            .column(3, {
-                                page: 'current'
-                            })
-                            .data()
-                            .reduce(function(a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0);
-
-                        // Actualizar footer
-                        $(api.column(2).footer()).html(totalIngresos.toFixed(
-                            2)) //html(totalIngresos.toFixed(2));
-                        $(api.column(3).footer()).html(totalEgresos.toFixed(2));
-                    }
+        if ($wire.status >= 3) {
+            document.getElementById('btn-finish').addEventListener('click', () => {
+                if ($wire.max_products > 0) {
+                    Swal.fire({
+                        title: 'No se puede finalizar el contrato',
+                        text: 'Aun quedan productos por entregar, por favor verifique',
+                        icon: 'error',
+                        confirmButtonColor: "#F7B924",
+                        confirmButtonText: "Entendido"
+                    })
+                } else {
+                    $wire.finish();
+                }
+            });
+            document.getElementById('btn-contract-fail').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Esta Seguro?...',
+                    text: 'Este Proceso marcara el contrato como fallido',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#F7B924",
+                    cancelButtonColor: "red",
+                    confirmButtonText: "Si, deseo proceder!",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) $wire.contractFail();
+                })
+            });
+        } else if($wire.status>0 && $wire.status <3) {
+            document.getElementById('btn-proof-fail').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Esta Seguro?...',
+                    text: 'Este Proceso marcara la proforma como fallido',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#F7B924",
+                    cancelButtonColor: "red",
+                    confirmButtonText: "Si, deseo proceder!",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) $wire.proofFail();
                 });
             });
-        })
+            document.getElementById('btn-proof-approve').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Esta Seguro?...',
+                    text: 'Este Proceso convertira la proforma a contracto',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#F7B924",
+                    cancelButtonColor: "red",
+                    confirmButtonText: "Si, deseo proceder!",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) $wire.approve();
+                });
+            });
+        }
 
-        document.getElementById('btn-searchable').addEventListener('click', () => {
-            document.getElementById('search').classList.toggle('d-none');
-        });
-        document.getElementById('btn-searchable1').addEventListener('click', () => {
-            document.getElementById('search1').classList.toggle('d-none');
-        });
+        if ($wire.status != 0) {
+            Livewire.hook('morphed', ({
+                el,
+                component
+            }) => {
+                $('#partner').DataTable({
+                    destroy: true
+                })
+                $('#table-utilities').DataTable({
+                    destroy: true
+                })
+                $('#detail').DataTable({
+                    destroy: true
+                })
+                $('#table-delivery').DataTable({
+                    destroy: true
+                })
 
-        document.getElementById('btn-save-inversion').addEventListener('click', () => {
-            $wire.dispatch('saveInversion');
-        });
+                $(document).ready(function() {
+                    $('#table-transactions').DataTable({
+                        footerCallback: function(row, data, start, end, display) {
+                            var api = this.api();
 
+                            var intVal = function(i) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '') * 1 :
+                                    typeof i === 'number' ?
+                                    i : 0;
+                            };
 
-        document.getElementById('btn-remove').addEventListener('click', () => {
-            Swal.fire({
-                title: 'Esta Seguro?...',
-                text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: "#F7B924",
-                cancelButtonColor: "red",
-                confirmButtonText: "Si, deseo borrar!",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) $wire.remove();
+                            var totalIngresos = api
+                                .column(2, {
+                                    page: 'current'
+                                })
+                                .data()
+                                .reduce(function(a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+                            var totalEgresos = api
+                                .column(3, {
+                                    page: 'current'
+                                })
+                                .data()
+                                .reduce(function(a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0);
+
+                            $(api.column(2).footer()).html(totalIngresos.toFixed(2))
+                            $(api.column(3).footer()).html(totalEgresos.toFixed(2));
+                        }
+                    });
+                });
             })
-        });
+
+            document.getElementById('btn-searchable').addEventListener('click', () => {
+                document.getElementById('search').classList.toggle('d-none');
+            });
+            document.getElementById('btn-searchable1').addEventListener('click', () => {
+                document.getElementById('search1').classList.toggle('d-none');
+            });
+
+            document.getElementById('btn-save-inversion').addEventListener('click', () => {
+                $wire.dispatch('saveInversion');
+            });
+
+
+            document.getElementById('btn-remove').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Esta Seguro?...',
+                    text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#F7B924",
+                    cancelButtonColor: "red",
+                    confirmButtonText: "Si, deseo borrar!",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) $wire.remove();
+                })
+            });
+        }
     </script>
 @endscript

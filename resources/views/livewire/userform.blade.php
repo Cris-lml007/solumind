@@ -274,19 +274,21 @@
 
 @script
     <script>
-        document.getElementById('btn-remove').addEventListener('click', () => {
-            Swal.fire({
-                title: 'Esta Seguro?...',
-                text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: "#F7B924",
-                cancelButtonColor: "red",
-                confirmButtonText: "Si, deseo borrar!",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) $wire.remove();
-            })
-        });
+        if ($wire.status == 1) {
+            document.getElementById('btn-remove').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Esta Seguro?...',
+                    text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#F7B924",
+                    cancelButtonColor: "red",
+                    confirmButtonText: "Si, deseo borrar!",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) $wire.remove();
+                })
+            });
+        }
     </script>
 @endscript

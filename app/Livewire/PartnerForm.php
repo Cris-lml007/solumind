@@ -37,6 +37,8 @@ class PartnerForm extends Component
     public $pay_description;
     public $pay_amount;
 
+    public $status = 0;
+
     public function mount($id = null){
         if(!Gate::allows('partner-read'))
             abort('404');
@@ -50,6 +52,8 @@ class PartnerForm extends Component
             $this->organization = $this->partner->organization;
             $this->post = $this->partner->post;
             $this->person = $this->partner->person;
+
+            $this->status = 1;
         }catch(\Exception){
             $this->partner = new Partner();
             $this->person = new Person();

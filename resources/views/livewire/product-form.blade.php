@@ -136,23 +136,25 @@
 
 @script
     <script>
+        if ($wire.status == 1) {
+            document.getElementById('btn-remove').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Esta Seguro?...',
+                    text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: "#F7B924",
+                    cancelButtonColor: "red",
+                    confirmButtonText: "Si, deseo borrar!",
+                    cancelButtonText: "Cancelar"
+                }).then((result) => {
+                    if (result.isConfirmed) $wire.dispatch('remove');
+                })
+            });
+        }
+
         document.getElementById('btn-searchable').addEventListener('click', () => {
             document.getElementById('searchable').classList.toggle('d-none');
-        })
-
-        document.getElementById('btn-remove').addEventListener('click', () => {
-            Swal.fire({
-                title: 'Esta Seguro?...',
-                text: 'Este proceso borrara este registro logicamente, pero aun se podra recuperar',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: "#F7B924",
-                cancelButtonColor: "red",
-                confirmButtonText: "Si, deseo borrar!",
-                cancelButtonText: "Cancelar"
-            }).then((result) => {
-                if (result.isConfirmed) $wire.dispatch('remove');
-            })
         });
     </script>
 @endscript

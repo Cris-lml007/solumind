@@ -47,6 +47,8 @@ class ProductForm extends Component
     public $item_searchable;
     public $list = [];
 
+    public $status = 0;
+
     protected function rules(){
         return [
             'cod' => ['required', Rule::unique('products','cod')->ignore($this->product->id),Rule::unique('items','cod')]
@@ -69,6 +71,7 @@ class ProductForm extends Component
             $this->alias = $this->product->category->alias;
             $this->cod = $this->product->cod;
             $this->size = $this->product->size;
+            $this->status = 1;
 
 
             // $words = explode(' ', $this->name);

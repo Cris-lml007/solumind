@@ -20,6 +20,8 @@ class CategoryForm extends Component
     #[Locked]
     public Category $category;
 
+    public $status = 0;
+
     public function mount($id = null){
         if(!Gate::allows('config-permission',3))
             abort('404');
@@ -27,6 +29,7 @@ class CategoryForm extends Component
             $this->category = Category::where('id',$id)->firstOrFail();
             $this->alias = $this->category->alias;
             $this->name = $this->category->name;
+            $this->status = 1;
         } catch (\Exception) {
             $this->category = new Category();
         }

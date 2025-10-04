@@ -27,6 +27,7 @@ class ContractForm extends Component
 
     public $listeners = ['saveInversion'=> 'saveInversion'];
 
+    public $max_products = 0;
 
     public $searchable;
     public $clients = [];
@@ -82,6 +83,7 @@ class ContractForm extends Component
     public $delivery;
     public $partner;
     public ContractPartner $contract_partner;
+    public $status;
 
     public function mount($id = null){
         if(!Gate::allows('voucher-read'))
@@ -102,8 +104,10 @@ class ContractForm extends Component
             $this->contract_partner = new ContractPartner();
             $this->sale_price = Number::format(0, precision: 2);
             $this->purchase_price = Number::format(0, precision: 2);
+            $this->status = $this->contract->status->value;
         }catch(\Exception){
             $this->contract = new Contract();
+            $this->status = 0;
         }
     }
 
