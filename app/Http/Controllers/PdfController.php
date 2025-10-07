@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use NumberFormatter;
 
 class PdfController extends Controller
 {
@@ -61,10 +62,13 @@ class PdfController extends Controller
     }
 
     public function generateProof($id){
+        // return response()->json(Contract::find($id)->detail_contract->toArray());
+        $formater = new NumberFormatter('es',NumberFormatter::SPELLOUT);
         $pdf = Pdf::setOptions([
             'isHtmlParseEnabled' => true,
             'isRemoteEnabled' => true
         ])->loadView('pdf.proof',[
+            'formater' => $formater,
             'contract' => Contract::find($id),
             'logo' => 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png')))
         ]);

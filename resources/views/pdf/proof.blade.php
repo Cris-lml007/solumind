@@ -157,6 +157,9 @@
                 <td colspan="3" class="right"><strong>{{ Illuminate\Support\Number::format($total, precision: 2) }} Bs</strong></td>
             </tr>
             <tr>
+                <td colspan="5"><strong>{{ Str::upper($formater->format($total))}} BOLIVIANOS</strong></td>
+            </tr>
+            <tr>
                 <td colspan="5" style="height:40px;">
                     <strong>Observaciones:</strong><br>
                     {{$contract->description}}
