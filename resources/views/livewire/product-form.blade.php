@@ -45,8 +45,6 @@
                         {{ $message }}
                     @enderror
                 </div>
-            </div>
-            <div style="width: 50%; margin-left: 10px;">
                 <label for="price">Precio (Bs)</label>
                 <input type="number" name="price" class="form-control mb-1" placeholder="Ingrese precio del producto"
                     wire:model="price">
@@ -75,24 +73,27 @@
                     @enderror
                 </div>
             </div>
+            <div style="width: 50%; margin-left: 10px;">
+                <label>Imagen del Producto</label>
+                <div class="d-flex">
+                    <div style="width: 100%;">
+                        <input type="file" name="image1" class="form-control mb-1" wire:model="img">
+                    </div>
+                </div>
+
+                @if (!empty($product->id))
+                    <div class="d-flex justify-content-center">
+                        <img src="{{ $img }}" class="img-fluid" alt="Sin Imagen"
+                            style="width: auto;height: 280px;">
+                    </div>
+                @endif
+            </div>
         </div>
         <div>
             <label for="description">Descripción</label>
             <textarea class="form-control mb-1" name="description" rows="3" placeholder="Ingrese descripción del producto"
                 wire:model="description"></textarea>
         </div>
-        <h6><strong>Imagen del Producto</strong></h6>
-        <div class="d-flex">
-            <div style="width: 100%;">
-                <input type="file" name="image1" class="form-control mb-1" wire:model="img">
-            </div>
-        </div>
-
-        @if (!empty($product->id))
-            <div class="d-flex justify-content-center">
-                <img src="{{ $img }}" class="img-fluid" alt="Sin Imagen" style="width: auto;height: 300px;">
-            </div>
-        @endif
     </div>
     @can('product-permission', 3)
         @if (empty($product->id))

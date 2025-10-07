@@ -63,8 +63,6 @@
                             {{ $message }}
                         @enderror
                     </div>
-                </div>
-                <div style="width: 50%; margin-left: 10px;">
                     <label for="category">Nombre</label>
                     <input type="text" name="name" class="form-control mb-1"
                         placeholder="Ingrese nombre del ensamblaje" wire:model="name">
@@ -73,30 +71,32 @@
                             {{ $message }}
                         @enderror
                     </div>
+                    <div>
+                        <label for="description">Descripción</label>
+                        <textarea class="form-control mb-1" name="description" rows="3" placeholder="Ingrese descripción del producto"
+                            wire:model="description"></textarea>
+                        <div class="text-danger" style="height: 20px;">
+                            @error('description')
+                                {{ $message }}
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 50%; margin-left: 10px;">
+                    <label>Imagen del Producto</label>
+                    <div class="d-flex">
+                        <div style="width: 100%;">
+                            <input type="file" name="image1" class="form-control mb-3" wire:model="img">
+                        </div>
+                    </div>
+                    @if (!empty($item->id))
+                        <div class="d-flex justify-content-center">
+                            <img src="{{ $img }}" class="img-fluid" alt="Sin Imagen"
+                                style="width: auto;height: 220px;">
+                        </div>
+                    @endif
                 </div>
             </div>
-            <div>
-                <label for="description">Descripción</label>
-                <textarea class="form-control mb-1" name="description" rows="3" placeholder="Ingrese descripción del producto"
-                    wire:model="description"></textarea>
-                <div class="text-danger" style="height: 20px;">
-                    @error('description')
-                        {{ $message }}
-                    @enderror
-                </div>
-            </div>
-            <h6><strong>Imagen del Producto</strong></h6>
-            <div class="d-flex">
-                <div style="width: 100%;">
-                    <input type="file" name="image1" class="form-control mb-3" wire:model="img">
-                </div>
-            </div>
-            @if (!empty($item->id))
-                <div class="d-flex justify-content-center">
-                    <img src="{{ $img }}" class="img-fluid" alt="Sin Imagen"
-                        style="width: auto;height: 300px;">
-                </div>
-            @endif
             <div class="d-flex justify-content-between mb-3">
                 <h5 class="align-self-center m-0 p-0"><strong>Lista de Materiales</strong></h5>
                 @can('item-permission', 3)
