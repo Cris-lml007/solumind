@@ -33,6 +33,7 @@ class ProductForm extends Component
     #[Validate('required',as:'categoria')]
     public $category;
     public $img;
+    public $unit;
 
     public $cod;
     public $alias;
@@ -71,6 +72,7 @@ class ProductForm extends Component
             $this->alias = $this->product->category->alias;
             $this->cod = $this->product->cod;
             $this->size = $this->product->size;
+            $this->unit = $this->product->unit;
             $this->status = 1;
 
 
@@ -145,6 +147,7 @@ class ProductForm extends Component
         $this->product->description = $this->description;
         $this->product->category_id = $this->category;
         $this->product->size = $this->size;
+        $this->product->unit = $this->unit;
         $this->product->supplier_id = Supplier::where('nit', $this->nit)->first()->id; // Assuming nit is the supplier_id
         if($this->product->save() && $this->img != null && gettype($this->img) != 'string'){
             $this->img->storeAs(path: '.', name: $this->product->cod,options: 'imgProduct');

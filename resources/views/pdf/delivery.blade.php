@@ -81,7 +81,8 @@
         <thead>
             <tr>
                 <th>Producto</th>
-                <th>Cantidad Entregado (Ud.)</th>
+                <th>Cantidad Entregado</th>
+                <th>Unidad</th>
             </tr>
         </thead>
         <tbody>
@@ -89,6 +90,7 @@
             <tr>
                 <td>{{$item->detailable->name . ' ' . ($item->detailable->size ?? '')}}</td>
                 <td>{{$item->pivot->quantity}}</td>
+                <td>{{ $item->detailable->unit }}</td>
             </tr>
             @endforeach
         </tbody>

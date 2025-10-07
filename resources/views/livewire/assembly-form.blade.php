@@ -52,8 +52,16 @@
         <div>
             <div class="d-flex">
                 <div style="width: 50%;">
-                    <label for="code">Codigo</label>
+                    <label for="code">Categoria/Codigo</label>
                     <div class="input-group">
+                        <select class="form-select mb-1" name="category" wire:model.live="category"
+                            style="width: 40%;">
+                            <option>Seleccione una categoria</option>
+                            @foreach ($categories as $item)
+                                <option value="{{ $item->id }}">{{ $item->name . ' (' . $item->alias . ')' }}
+                                </option>
+                            @endforeach
+                        </select>
                         <span class="input-group-text" style="height: 38px;">{{ $alias }}</span>
                         <input type="text" name="code" class="form-control mb-1"
                             placeholder="Ingrese codigo del producto" wire:model="code">
@@ -71,6 +79,8 @@
                             {{ $message }}
                         @enderror
                     </div>
+                    <label for="description">Unidad de Medida</label>
+                    <input type="text" class="form-control" wire:model="unit">
                     <div>
                         <label for="description">Descripción</label>
                         <textarea class="form-control mb-1" name="description" rows="3" placeholder="Ingrese descripción del producto"
@@ -97,6 +107,7 @@
                     @endif
                 </div>
             </div>
+            <hr>
             <div class="d-flex justify-content-between mb-3">
                 <h5 class="align-self-center m-0 p-0"><strong>Lista de Materiales</strong></h5>
                 @can('item-permission', 3)

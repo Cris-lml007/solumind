@@ -129,6 +129,7 @@
             <tr>
                 <th class="center" style="width: 5%;">#</th>
                 <th class="center" style="width: 50%;">Descripción</th>
+                <th class="center">Unidad</th>
                 <th class="center" style="width: 15%;">Cantidad (Ud.)</th>
                 <th class="center" style="width: 15%;">Precio Unit.</th>
                 <th class="center" style="width: 15%;">Subtotal</th>
@@ -146,6 +147,7 @@
                     <td class="center">{{ $index + 1 }}</td>
                     <td>{{ $item->detailable->name . ' ' . $item->detailable->size }} -
                         {{ $item->detailable->description }}<br><strong>{{!empty($item->description) ? 'Observaciones' : ''}}</strong> @if(!empty($item->description)) <br>{{$item->description}} @endif</td>
+                    <td>{{ $item->detailable->unit }}</td>
                     <td class="center">{{ $item->quantity }}</td>
                     <td class="right">{{ Illuminate\Support\Number::format($item->sale_price, precision: 2) }}</td>
                     <td class="right">
@@ -153,14 +155,14 @@
                 </tr>
             @endforeach
             <tr>
-                <td colspan="2" class="right"><strong>Total</strong></td>
+                <td colspan="3" class="right"><strong>Total</strong></td>
                 <td colspan="3" class="right"><strong>{{ Illuminate\Support\Number::format($total, precision: 2) }} Bs</strong></td>
             </tr>
             <tr>
-                <td colspan="5"><strong>{{ Str::upper($formater->format($total))}} BOLIVIANOS</strong></td>
+                <td colspan="6"><strong>{{ Str::upper($formater->format($total))}} BOLIVIANOS</strong></td>
             </tr>
             <tr>
-                <td colspan="5" style="height:40px;">
+                <td colspan="6" style="height:40px;">
                     <strong>Observaciones:</strong><br>
                     {{$contract->description}}
                 </td>

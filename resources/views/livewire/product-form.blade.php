@@ -80,6 +80,8 @@
                 </div>
             </div>
             <div>
+                <label for="description">Unidad de Medida</label>
+                <input type="text" class="form-control" wire:model="unit">
                 <label for="description">Descripción</label>
                 <textarea class="form-control mb-1" name="description" rows="3" placeholder="Ingrese descripción del producto"
                     wire:model="description"></textarea>
@@ -168,6 +170,8 @@
                             {{ $message }}
                         @enderror
                     </div>
+                    <label for="description">Unidad de Medida</label>
+                    <input type="text" class="form-control" wire:model="unit">
                 </div>
                 <div style="width: 50%; margin-left: 10px;">
                     <label>Imagen del Producto</label>

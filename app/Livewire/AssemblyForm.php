@@ -30,6 +30,7 @@ class AssemblyForm extends Component
     public $category;
     public $alias;
     public $img;
+    public $unit;
 
     public $search;
     public $list;
@@ -64,6 +65,7 @@ class AssemblyForm extends Component
             $this->price = $this->item->price;
             $this->extra = $this->item->extra;
             $this->category = $this->item->category_id;
+            $this->unit = $this->item->unit;
             $data = Storage::disk('imgProduct')->get($this->item->cod);
             $this->img = 'data:image/png;base64,'.base64_encode($data);
             foreach ($this->item->detail_items()->withTrashed()->get() as $value) {
@@ -209,11 +211,13 @@ class AssemblyForm extends Component
             'code' => 'codigo',
             'name' => 'nombre'
         ])->validate();
+        $this->item->category_id = $this->category;
         $this->item->cod = $this->code;
         $this->item->name = $this->name;
         $this->item->price = $this->price;
         $this->item->extra = empty($this->extra) ? 0 : $this->extra;
         $this->item->description = $this->description;
+        $this->item->unit = $this->unit;
         // $this->item->save();
         if($this->item->save() && $this->img != null && gettype($this->img) != 'string'){
             $this->img->storeAs(path: '.', name: $this->item->cod,options: 'imgProduct');
