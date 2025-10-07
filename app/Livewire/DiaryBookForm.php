@@ -23,7 +23,7 @@ class DiaryBookForm extends Component
     #[Validate('integer', message: 'Seleccione un tipo')]
     #[Validate('between:1,2', message: 'Debe ser un Ingreso o Egreso')]
     public $type;
-    #[Validate('required|integer',as:'importe')]
+    #[Validate('required|numeric',as:'importe')]
     public $import;
     public $contract_id;
     #[Validate('required|string')]

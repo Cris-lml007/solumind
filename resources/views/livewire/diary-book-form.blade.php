@@ -115,6 +115,7 @@
                             if (!result.success) {
                                 throw new Error(result.message || 'Error al Actualizar');
                             }
+                            $wire.save();
                             return result;
                         }).catch(error => {
                             Swal.showValidationMessage(`Error: ${error.message}`);
