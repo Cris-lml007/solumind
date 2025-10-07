@@ -173,7 +173,7 @@ class DashboardController extends Controller
         if ($driver === 'mysql') {
             $deliveries = DB::table('deliveries')
                 ->select(
-                    DB::raw("DATE_FORMAT(created_at, '%Y-%m') as period"),
+                    DB::raw("DATE_FORMAT(created_at, '%Y-%m-%d') as period"),
                     DB::raw("COUNT(*) as total_deliveries")
                 )
                 ->groupBy('period')
@@ -182,7 +182,7 @@ class DashboardController extends Controller
         } elseif ($driver === 'sqlite') {
             $deliveries = DB::table('deliveries')
                 ->select(
-                    DB::raw("strftime('%Y-%m', created_at) as period"),
+                    DB::raw("strftime('%Y-%m-%d', created_at) as period"),
                     DB::raw("COUNT(*) as total_deliveries")
                 )
                 ->groupBy('period')

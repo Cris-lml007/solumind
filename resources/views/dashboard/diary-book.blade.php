@@ -26,7 +26,7 @@
                     @endphp
                     <tr onclick="edit({{ $item->id }})" class="item-table">
                         <td>{{ $item->id }}</td>
-                        <td>{{ $item->date }}</td>
+                        <td>{{ Carbon\Carbon::parse($item->date)->toDateString() }}</td>
                         <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}</td>
                         <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}</td>
                         <td>{{ $item->description }}</td>

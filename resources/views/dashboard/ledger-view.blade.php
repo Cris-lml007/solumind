@@ -18,7 +18,7 @@
                         $t_expense += $item->type == 2 ? $item->amount : 0;
                     @endphp
                     <tr onclick="edit({{ $item->id }})" class="item-table">
-                        <td>{{ $item->date }}</td>
+                        <td>{{ Carbon\Carbon::parse($item->date)->toDateString() }}</td>
                         <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
                         </td>
                         <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
@@ -135,9 +135,8 @@
 
                     // actualizar el footer
                     $(api.column(2).footer()).html(
-                        new Intl.NumberFormat('es-BO', {
+                        new Intl.NumberFormat('en-EN', {
                             minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
                         }).format(total) + ' Bs'
                     );
                 }
@@ -187,9 +186,9 @@
                     var diferencia = totalIngresos - totalEgresos;
 
                     // Insertar en el footer
-                    $('#total-ingreso').html(totalIngresos.toFixed(2) + ' Bs');
-                    $('#total-egreso').html(totalEgresos.toFixed(2) + ' Bs');
-                    $('#total-diferencia').html(diferencia.toFixed(2) + ' Bs');
+                    $('#total-ingreso').html(new Intl.NumberFormat("en-EN",{style: "currency",currency: "BOB"}).format(totalIngresos).slice(4) + ' Bs');
+                    $('#total-egreso').html(new Intl.NumberFormat("en-EN",{style: "currency",currency: "BOB"}).format(totalEgresos).slice(4) + ' Bs');
+                    $('#total-diferencia').html(new Intl.NumberFormat("en-EN",{style: "currency",currency: "BOB"}).format(diferencia).slice(4) + ' Bs');
                 },
                 initComplete: function() {
                     this.api()

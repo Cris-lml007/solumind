@@ -437,7 +437,7 @@
                             @endphp
                             <tr>
                                 <td>{{ $item->id }}</td>
-                                <td>{{ $item->date }}</td>
+                                <td>{{ Carbon\Carbon::parse($item->date)->toDateString() }}</td>
                                 <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
                                 </td>
                                 <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
@@ -820,7 +820,7 @@
                     confirmButtonText: "Si, deseo proceder!",
                     cancelButtonText: "Cancelar"
                 }).then((result) => {
-                    if (result.isConfirmed) $wire.approve();
+                    if (result.isConfirmed) $wire.aprove();
                 });
             });
         }
@@ -873,8 +873,8 @@
                                     return intVal(a) + intVal(b);
                                 }, 0);
 
-                            $(api.column(2).footer()).html(totalIngresos.toFixed(2))
-                            $(api.column(3).footer()).html(totalEgresos.toFixed(2));
+                            $(api.column(2).footer()).html(new Intl.NumberFormat("en-EN",{style: "currency",currency: "BOB"}).format(100000).slice(4) + ' Bs');
+                            $(api.column(3).footer()).html(new Intl.NumberFormat("en-EN",{style: "currency",currency: "BOB"}).format(totalEgresos).slice(4) + ' Bs');
                         }
                     });
                 });
