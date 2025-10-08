@@ -88,10 +88,17 @@
                         {{ $message }}
                     @enderror
                 </div>
-                <label for="">Plazo de Entrega (Dias)</label>
+                <label for="">Plazo de Entrega</label>
                 <input type="date" wire:model="delivery" class="form-control">
                 <div class="text-danger" style="height: 20px;">
                     @error('delivery')
+                        {{ $message }}
+                    @enderror
+                </div>
+                <label for="">Fecha de Firma</label>
+                <input type="date" wire:model="date_aprove" class="form-control">
+                <div class="text-danger" style="height: 20px;">
+                    @error('date_aprove')
                         {{ $message }}
                     @enderror
                 </div>

@@ -82,6 +82,7 @@ class ContractForm extends Component
     public $payment;
     public $delivery;
     public $partner;
+    public $date_aprove;
     public ContractPartner $contract_partner;
     public $status;
 
@@ -105,6 +106,7 @@ class ContractForm extends Component
             $this->sale_price = Number::format(0, precision: 2);
             $this->purchase_price = Number::format(0, precision: 2);
             $this->status = $this->contract->status->value;
+            $this->date_aprove = $this->contract->date_aprove;
         }catch(\Exception){
             $this->contract = new Contract();
             $this->status = 0;
@@ -308,6 +310,7 @@ class ContractForm extends Component
         $this->contract->payment = $this->payment;
         $this->contract->time_delivery = $this->delivery;
         $this->contract->time_valide = $this->valide;
+        $this->contract->date_aprove = $this->date_aprove;
         $this->contract->save();
         $this->js("Swal.fire({
             icon: 'success',

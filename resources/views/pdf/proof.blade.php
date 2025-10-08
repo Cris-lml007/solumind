@@ -2,17 +2,20 @@
 
 @section('type')
     @if ($contract->status->value < 3)
-    PRO-FORMA <div style="display: inline; color: #D8A300;">#{{ $contract->id }}</div>
+        PRO-FORMA <div style="display: inline; color: #D8A300;">#{{ $contract->id }}</div>
     @else
         CONTRATO <div style="display: inline; color: #D8A300;">{{ $contract->cod }}</div>
     @endif
 @endsection
 
 @section('extra')
-    <strong>
-        Validez:</strong> {{ $contract->time_valide }} días<br>
-    <strong>
-        Firma del Contrato:</strong> {{ $contract->time_valide }} días
+    @if ($contract->date_aprove != null)
+        <strong>
+            Firma del Contrato:</strong> {{ Carbon\Carbon::parse($contract->date_aprove)->toDateString() }}
+    @else
+        <strong>
+            Validez:</strong> {{ $contract->time_valide }} días<br>
+    @endif
 @endsection
 
 @section('info')
