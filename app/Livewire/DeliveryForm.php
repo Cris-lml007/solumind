@@ -5,9 +5,12 @@ namespace App\Livewire;
 use App\Models\Contract;
 use App\Models\Delivery;
 use App\Models\DetailContract;
+use App\Models\Transaction;
 use App\StatusContract;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Number;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -26,6 +29,8 @@ class DeliveryForm extends Component
     #[Validate('|required', as: 'recibido por')]
     public $receiver_by;
 
+    public $is_canceled = false;
+
     public $max_quantity;
 
     public $contracts =[];
@@ -33,17 +38,68 @@ class DeliveryForm extends Component
 
     public $balance;
 
-    public function mount(){
+    public $edit = 0;
+
+    public $delivery_id;
+
+    public function mount($id = null){
         if(!Gate::allows('delivery-read'))
             abort('404');
+        if(Delivery::where('id',$id)->exists()){
+            if(Delivery::find($id)->contract->status != StatusContract::CONTRACT)
+                abort('404');
+        }
         $this->contracts = Contract::where('status',StatusContract::CONTRACT)->get();
+
+        try {
+            $delivery = Delivery::findorFail($id);
+            $this->date = $delivery->date;
+            $this->contract_cod = $delivery->contract()->withTrashed()->first()->cod;
+            $this->receiver_by = $delivery->received_by;
+            $this->amount = Number::parseFloat($delivery->amount ?? 0);
+            $this->is_canceled = $delivery->is_canceled == 2 ? true : false;
+            $this->contract = $delivery->contract;
+
+            foreach ($delivery->detail_contract as $item) {
+                $this->list[] = [
+                    'name'     => $item->detailable->name . ' ' . ($item->detailable->size ?? ''),
+                    'id'       => $item->id,
+                    'quantity' => (int) $item->pivot->quantity,
+                ];
+                if($this->amount == 0)
+                    $this->amount += $item->sale_price * $item->pivot->quantity;
+            }
+            $this->edit = 1;
+            $this->delivery_id = $id;
+        } catch (\Throwable) {
+            # code...
+        }
+    }
+
+    public function canceled(){
+        $delivery = Delivery::find($this->delivery_id);
+        $delivery->amount = $this->amount;
+        $delivery->is_canceled = 2;
+        $delivery->save();
+        $this->balance =$this->contract?->detail_contract()?->sum(DB::raw('sale_price*quantity')) -
+            $this->contract->transactions()->where('type',1)->sum('amount');
+        Transaction::create([
+            'contract_id' => $delivery->contract_id,
+            'delivery_id' => $delivery->id,
+            'type' => 1,
+            'description' => "Pago parcial de {$this->amount} Bs a cuenta del contrato {$delivery->contract->cod}, referido a entrega N° {$delivery->id}. Saldo pendiente: ". ($this->balance - $this->amount) ."Bs.",
+            'account_id' => $delivery->contract->client->account->id,
+            'date' => Carbon::now(),
+            'amount' => $this->amount
+        ]);
+        return $this->redirect(route('dashboard.delivery'));
     }
 
     public function updatedContractCod(){
         $this->contract = Contract::where('cod',$this->contract_cod)->first();
         $this->products = $this?->contract?->detail_contract ?? [];
         $this->balance =$this->contract?->detail_contract()?->sum(DB::raw('sale_price*quantity')) -
-            $this->contract->transactions()->where('account_id',2)->sum('amount');
+            $this->contract->transactions()->where('type',1)->sum('amount');
     }
 
     public function updatedDetailId(){
@@ -105,6 +161,8 @@ class DeliveryForm extends Component
                 'quantity' => (int) $this->quantity,
             ];
 
+            $this->amount += $detail->sale_price * $this->quantity;
+
             $this->detail_id = null;
             $this->quantity = null;
     }
@@ -112,6 +170,7 @@ class DeliveryForm extends Component
     public function delete($id){
         foreach ($this->list as $key => $value) {
             if($value['id'] == $id){
+                $this->amount -= DetailContract::withTrashed()->find($id)->sale_price * $value['quantity'];
                 array_splice($this->list,$key,1);
                 return;
             }
@@ -133,20 +192,22 @@ class DeliveryForm extends Component
         $delivery->contract_id = $this->contract->id;
         $delivery->date = $this->date;
         $delivery->received_by = $this->receiver_by;
+        $delivery->amount = $this->amount;
+        $delivery->is_canceled = $this->is_canceled == true ? 2 : 1;
         $delivery->save();
         $delivery->detail_contract()->attach($l);
 
-        // if($this->amount != null || $this->amount >0){
-        //     Transaction::create([
-        //         'contract_id' => $this->contract->id,
-        //         'delivery_id' => $delivery->id,
-        //         'type' => 1,
-        //         'description' => "Pago parcial de {$this->amount} Bs a cuenta del contrato {$this->contract->id}, referido a entrega {$delivery->id}. Saldo pendiente: ". ($this->balance - $this->amount) ."Bs.",
-        //         'account_id' => 2,
-        //         'date' => $this->date,
-        //         'amount' => $this->amount
-        //     ]);
-        // }
+        if(($this->amount != null || $this->amount >0) && $this->is_canceled){
+            Transaction::create([
+                'contract_id' => $this->contract->id,
+                'delivery_id' => $delivery->id,
+                'type' => 1,
+                'description' => "Pago parcial de {$this->amount} Bs a cuenta del contrato {$this->contract->cod}, referido a entrega N° {$delivery->id}. Saldo pendiente: ". ($this->balance - $this->amount) ."Bs.",
+                'account_id' => $this->contract->client->account->id,
+                'date' => $this->date,
+                'amount' => $this->amount
+            ]);
+        }
         return $this->redirect(route('dashboard.delivery'));
     }
 

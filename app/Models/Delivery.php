@@ -16,4 +16,8 @@ class Delivery extends Model
     public function contract(){
         return $this->belongsTo(Contract::class);
     }
+
+    public function transaction(){
+        return $this->hasOne(Transaction::class);
+    }
 }
