@@ -18,6 +18,19 @@ class PdfController extends Controller
         if(!Gate::allows('voucher-permission',3))
             abort('404');
         $data = Transaction::find($id);
+        return view('pdf.voucher',[
+            'number' => $data->id,
+            'ci' => $data->contract_partner?->partner->person->ci ?? (Auth::user()?->person->ci ?? Auth::user()->id),
+            'name' => $data->contract_partner?->partner->person->name ?? (Auth::user()?->person->name ?? Auth::user()->email),
+            'account' => $data->account->name,
+            'amount' => $data->amount,
+            'type' => $data->type == 1 ? 'Ingreso' : 'Egreso',
+            'date' => Carbon::parse($data->date)->format('d/m/Y'),
+            'description' => $data->description,
+            'contract' => $data->contract?->cod ?? '',
+            'client' => $data->contract?->client->organization ?? $data->contract?->client->person->name ?? '',
+        ]);
+
         $pdf = Pdf::setOptions([
             'isHtmlParseEnabled' => true,
             'isRemoteEnabled' => true
@@ -43,6 +56,16 @@ class PdfController extends Controller
         if(!Gate::allows('delivery-permission',3))
             abort('404');
         $data = Delivery::find($id);
+        return view('pdf.delivery',[
+            'id' => $data->id,
+            'contract' => $data->contract->cod,
+            'date' => $data->date,
+            'received' => $data->received_by,
+            'name' => $data->contract->client->organization ?? $data->contract->client->person->name,
+            'nit' => $data->contract->client->nit ?? $data->contract->client->person->ci,
+            'data' => $data->detail_contract,
+        ]);
+
         $pdf = Pdf::setOptions([
             'isHtmlParseEnabled' => true,
             'isRemoteEnabled' => true
@@ -64,6 +87,11 @@ class PdfController extends Controller
     public function generateProof($id){
         // return response()->json(Contract::find($id)->detail_contract->toArray());
         $formater = new NumberFormatter('es',NumberFormatter::SPELLOUT);
+        return view('pdf.proof',[
+            'formater' => $formater,
+            'contract' => Contract::find($id)
+        ]);
+
         $pdf = Pdf::setOptions([
             'isHtmlParseEnabled' => true,
             'isRemoteEnabled' => true

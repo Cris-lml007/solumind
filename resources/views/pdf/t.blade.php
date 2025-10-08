@@ -34,9 +34,10 @@
 
         /* Lateral vertical */
         .vertical-text {
+            width: 500px;
             position: absolute;
-            left: -60px;
-            top: 50%;
+            left: -203px;
+            top: 430px;
             transform: translateY(-50%) rotate(-90deg);
             font-size: 32px;
             font-weight: 900;
@@ -150,13 +151,14 @@
 
         /* Numeración lateral */
         .folio {
+            width: 180px;
             position: absolute;
-            left: -65px;
-            top: 40px;
+            left: -38px;
+            top: 210px;
             transform: rotate(-90deg);
             color: #D8A300;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 20px;
             letter-spacing: 2px;
         }
 
@@ -175,91 +177,41 @@
                 left: -50px;
             }
         }
+
+        body,
+        .page {
+            background: #ffffff !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
     </style>
 </head>
 <body id="main">
-    <div class="page">
+    <div class="page" id="page" style="height: 25cm;">
         <div class="folio">@yield('id')</div>
         <div class="vertical-text">@yield('type')</div>
 
         <!-- Header -->
         <div class="header">
             <div class="info">
-                <strong>Unit. Dios es Amor, No 34 - Ed. 19</strong><br>
-                Tel: 2539377 — CEL: 73889159<br>
-                Email: <u>solumind@gmail.com</u><br>
+                <strong>Dirección: Urb. Dios es Amor, M-c16- 10</strong><br>
+                Telf. 25265721 Cel. 70415397 - 73819319<br>
+                Email: <u>solumind,or @gmail.com</u><br>
                 <br>
-                <strong>Fecha:</strong> @yield('date')
+                <strong>Fecha Emisión:</strong> {{ now()->format('d/m/Y H:i') }}<br>
+                @yield('extra')
             </div>
-            <img src="{{ $logo }}" class="logo" alt="Logo" style="width: 400px;border-radius: 5px;">
+            <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png'))) }}"
+                class="logo" alt="Logo" style="width: 400px;border-radius: 5px;">
         </div>
 
         <!-- Datos -->
         <div class="details">
             @yield('info')
-            <!-- <div> -->
-            <!--     <h4>Facturables a:</h4> -->
-            <!--     <p>Corporación Minera de Bolivia</p> -->
-            <!-- </div> -->
-            <!-- <div> -->
-            <!--     <h4>Entrega a:</h4> -->
-            <!--     <p>EMPRESA MINERA HUANUNI</p> -->
-            <!-- </div> -->
-            <!-- <div> -->
-            <!--     <h4>Observaciones:</h4> -->
-            <!--     <p>Material entregado en Almacén Enami</p> -->
-            <!--     <p>CONDICIONES DE ENTREGA: CIF Oruro</p> -->
-            <!--     <p>ORIGEN: CHINA</p> -->
-            <!-- </div> -->
         </div>
 
         <!-- Tabla -->
         @yield('content')
-        <!-- <table> -->
-        <!--     <thead> -->
-        <!--         <tr> -->
-        <!--             <th>ITEM</th> -->
-        <!--             <th>CANTIDAD</th> -->
-        <!--             <th>UNIDAD</th> -->
-        <!--             <th>DESCRIPCIÓN</th> -->
-        <!--             <th>P. UNIT.</th> -->
-        <!--             <th>SUBTOTAL</th> -->
-        <!--         </tr> -->
-        <!--     </thead> -->
-        <!--     <tbody> -->
-        <!--         <tr> -->
-        <!--             <td>1</td> -->
-        <!--             <td>35000</td> -->
-        <!--             <td>Metros</td> -->
-        <!--             <td> -->
-        <!--                 <strong>LÍNEAS DE CAUVILLE (RIELES) de 30 [lbs/yd] de 5 [m] de largo</strong><br><br> -->
-        <!--                 <strong>MARCA:</strong> SHANDONG ZEHONG STEEL<br> -->
-        <!--                 <strong>PAÍS DE ORIGEN:</strong> CHINA<br><br> -->
-        <!--                 <strong>DIMENSIONES:</strong><br> -->
-        <!--                 • Peso: 30 [lbs/yd]<br> -->
-        <!--                 • Longitud de riel: 5 [m]<br> -->
-        <!--                 • Cabeza: C = 42.90 [mm]<br> -->
-        <!--                 • Altura: A = 79.59 [mm]<br> -->
-        <!--                 • Alma: B = 9.00 [mm]<br> -->
-        <!--                 <br> -->
-        <!--                 <strong>COMPOSICIÓN QUÍMICA:</strong><br> -->
-        <!--                 • Carbono: C ≤ 0.57 %<br> -->
-        <!--                 • Silicio: Si ≤ 0.35 %<br> -->
-        <!--                 • Manganeso: Mn ≤ 0.75 %<br> -->
-        <!--                 • Fósforo: P = 0.029 %<br> -->
-        <!--                 • Azufre: S = 0.006 %<br> -->
-        <!--             </td> -->
-        <!--             <td>198.00</td> -->
-        <!--             <td>6,930,000.00</td> -->
-        <!--         </tr> -->
-        <!--     </tbody> -->
-        <!-- </table> -->
-
-        <!-- Total -->
-        <!-- <div class="total"> -->
-        <!--     <div class="literal">Son: Seis millones novecientos treinta mil 00/100 Bolivianos</div> -->
-        <!--     <div class="amount">6.930.000,00</div> -->
-        <!-- </div> -->
         <div style="display: flex;justify-content: between;margin-left: -35px; margin-top: 120px;margin-bottom: 40px;">
             <div style="width: 50%;display: flex; justify-content: center;">
                 <h5>Firma Cliente</h5>
@@ -270,22 +222,38 @@
         </div>
     </div>
     <script>
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     const element = document.getElementById('main');
-        //     window.html2pdf().from(element).set({
-        //         margin: 0,
-        //         filename: "proforma.pdf",
-        //         html2canvas: {
-        //             scale: 1
-        //         },
-        //         jsPDF: {
-        //             orientation: "portrait",
-        //             unit: "mm",
-        //             format: "letter"
-        //         }
-        //     }).save();
-        //
-        // })
+        document.addEventListener('DOMContentLoaded', () => {
+            const element = document.getElementById('main');
+            window.html2pdf().from(element).set({
+                margin: 0,
+                filename: "{{ Str::uuid() }}",
+                html2canvas: {
+                    scale: 2
+                },
+                jsPDF: {
+                    orientation: "portrait",
+                    unit: "mm",
+                    format: "letter"
+                }
+            }).outputPdf('blob').then((pdfBlob) => {
+                const pdfURL = URL.createObjectURL(pdfBlob);
+                document.getElementById('page').style.visibility = 'hidden';
+                let tab = window.open(pdfURL, '_blank');
+                setTimeout(() => {
+                    if (tab == null) {
+                        window.Swal.fire({
+                            icon: 'warning',
+                            title: 'Sin redirección?',
+                            html: 'por favor habilite la <a href="https://support.google.com/chrome/answer/95472">redirección</a> para este sitio'
+                        }).then((result) => {
+                            if (result.isConfirmed) window.location.reload()
+                        });
+                    } else {
+                        window.close();
+                    }
+                }, 1000);
+            });
+        })
     </script>
 </body>
 </html>

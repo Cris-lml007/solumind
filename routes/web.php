@@ -10,10 +10,12 @@ use App\Livewire\ProductForm;
 use App\Livewire\SupplierForm;
 use App\Livewire\ClientForm;
 use App\Livewire\ContractForm;
+use App\Livewire\DeliveryForm;
 use App\Livewire\DiaryBookForm;
 use App\Livewire\History;
 use App\Livewire\PersonForm;
 use App\Livewire\Userform;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +57,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('settings/user/{id}',Userform::class)->name('dashboard.settings.user.form');
     Route::get('settings/person/{id}',PersonForm::class)->name('dashboard.settings.person.form');
     Route::get('history',History::class)->name('dashboard.history');
+    Route::get('delivery/{id}',DeliveryForm::class)->name('dashboard.delivery.form');
 
     Route::get('proof/pdf/{id}',[PdfController::class,'generateVoucher'])->name('dashboard.proof.pdf');
     Route::get('delivery/pdf/{id}',[PdfController::class,'generateDelivery'])->name('dashboard.delivery.pdf');
@@ -66,6 +69,18 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
 
     Route::get('proof/{id}/pdf',[PdfController::class,'generateProof'])->name('dashboard.proof.form.pdf');
 
+    // Route::get('pdf',function(){
+    //     $logo = 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png')));
+    //     return view('pdf.t',compact(['logo']));
+    //     $pdf = Pdf::setOptions([
+    //         'isHtmlParseEnabled' => true,
+    //         'isRemoteEnabled' => true
+    //     ])->loadView('pdf.t');
+    //     $pdf->setPaper('letter');
+    //     $pdf->render();
+    //     return $pdf->stream();
+    // })->name('dashboard.pdf');
+
 
 
 
@@ -74,21 +89,21 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
 
 
 
-    Route::get('comprobante/form/design', function () {
-
-        return view('livewire.voucher-form-design');
-    })->name('dashboard.comprobante.form.design');
-
-
-    Route::get('proforma/form/design', function () {
-
-        return view('livewire.voucher-prof-form');
-    })->name('dashboard.proforma.form.design');
-
-
-    Route::get('contrato/form/design', function () {
-
-        return view('livewire.voucher-cont-form');
-    })->name('dashboard.contrato.form.design');
+    // Route::get('comprobante/form/design', function () {
+    //
+    //     return view('livewire.voucher-form-design');
+    // })->name('dashboard.comprobante.form.design');
+    //
+    //
+    // Route::get('proforma/form/design', function () {
+    //
+    //     return view('livewire.voucher-prof-form');
+    // })->name('dashboard.proforma.form.design');
+    //
+    //
+    // Route::get('contrato/form/design', function () {
+    //
+    //     return view('livewire.voucher-cont-form');
+    // })->name('dashboard.contrato.form.design');
 
 });

@@ -60,7 +60,7 @@
                                 <td><strong>{{ Illuminate\Support\Number::format($item->amount, precision: 2) }}</strong>
                                 </td>
                                 @can('voucher-permission', 3)
-                                    <td><a href="{{ route('dashboard.proof.pdf', $item->id) }}" class="btn btn-primary"><i
+                                    <td><a href="{{ route('dashboard.proof.pdf', $item->id) }}" class="btn btn-primary" target="_blank"><i
                                                 class="fa fa-file-pdf"></i> Exportar</a></td>
                                 @else
                                     <td></td>
@@ -90,7 +90,7 @@
                                 <td>
                                     <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
                                             class="fa fa-ellipsis-v"></i></a>
-                                    <a class="btn btn-secondary" href="{{route('dashboard.proof.form.pdf',$item->id)}}"><i class="fa fa-file"></i></a>
+                                    <a target="_blank" class="btn btn-secondary" href="{{route('dashboard.proof.form.pdf',$item->id)}}"><i class="fa fa-file"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -117,7 +117,7 @@
                                 <td>
                                     <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
                                             class="fa fa-ellipsis-v"></i></a>
-                                    <a class="btn btn-secondary" href="{{route('dashboard.proof.form.pdf',$item->id)}}"><i class="fa fa-file"></i></a>
+                                    <a target="_blank" class="btn btn-secondary" href="{{route('dashboard.proof.form.pdf',$item->id)}}"><i class="fa fa-file"></i></a>
                                 </td>
                             </tr>
                         @endforeach
