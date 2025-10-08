@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('contracts', function (Blueprint $table) {
             $table->date('date_aprove')->nullable();
+            $table->date('date_finish')->nullable();
         });
     }
 
@@ -23,6 +24,7 @@ return new class extends Migration
     {
         Schema::table('contracts', function (Blueprint $table) {
             $table->dropColumn('date_aprove');
+            $table->dropColumn('date_finish');
         });
     }
 };

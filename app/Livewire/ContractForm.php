@@ -11,6 +11,7 @@ use App\Models\Partner;
 use App\Models\Product;
 use App\Models\Transaction;
 use App\StatusContract;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
@@ -412,6 +413,7 @@ class ContractForm extends Component
         if(!Gate::allows('voucher-permission',3))
             abort('404');
         $this->contract->status = StatusContract::CONTRACT_COMPLETE->value;
+        $this->contract->date_finish = Carbon::now();
         $this->contract->save();
         $this->redirect(route('dashboard.proof'));
     }

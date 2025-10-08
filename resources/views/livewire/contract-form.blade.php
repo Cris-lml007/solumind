@@ -137,7 +137,7 @@
                             <button class="btn btn-secondary me-1" id="btn-proof-fail">Fallido</button>
                         @endif
 
-                        @if ($contract->status->value >= 3)
+                        @if ($contract->status->value >= 3 && $contract->date_finish == null)
                             <button class="btn btn-success me-1" id="btn-finish">Finalizar</button>
                             <button class="btn btn-secondary me-1" id="btn-contract-fail">Fallido</button>
                         @endif
@@ -397,12 +397,20 @@
                                     Carbon\Carbon::now()->diffInDays(Carbon\Carbon::parse($contract->time_delivery)) > 2,
                                 'bg-danger' =>
                                     Carbon\Carbon::now()->diffInDays(Carbon\Carbon::parse($contract->time_delivery)) <= 2,
+                                'bg-success' => $contract->date_finish,
                             ])>
                                 <div class="card-body">
-                                    <h6 style="text-align: end;"><i class="nf nf-weather-time_2"></i> Plazo de
-                                        Entrega:
-                                        {{ (int) Carbon\Carbon::now()->diffInDays(Carbon\Carbon::parse($contract->time_delivery)) }}
-                                        Días</h6>
+                                    @if ($contract->date_finish == null)
+                                        <h6 style="text-align: end;"><i class="nf nf-weather-time_2"></i> Plazo de
+                                            Entrega:
+                                            {{ (int) Carbon\Carbon::now()->diffInDays(Carbon\Carbon::parse($contract->time_delivery)) }}
+                                            Días</h6>
+                                    @else
+                                        <h6 style="text-align: end;"><i class="nf nf-weather-time_2"></i> Plazo de
+                                            Entrega:
+                                            {{ (int) Carbon\Carbon::parse($contract->date_finish)->diffInDays(Carbon\Carbon::parse($contract->time_delivery)) }}
+                                            Días</h6>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -502,7 +510,9 @@
                                                 <tr>
                                                     <th>Fecha</th>
                                                     <th>N° de Entrega</th>
-                                                    <th>Cantidad ({{ empty($item->detailable->unit) ? 'Unidad' : $item->detailable->unit }})</th>
+                                                    <th>Cantidad
+                                                        ({{ empty($item->detailable->unit) ? 'Unidad' : $item->detailable->unit }})
+                                                    </th>
                                                     <th>Recibido Por</th>
                                                 </tr>
                                             </thead>
