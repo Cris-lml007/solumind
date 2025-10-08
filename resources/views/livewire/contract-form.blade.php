@@ -467,19 +467,52 @@
                 tabindex="0" wire:ignore.self>
                 <div class="my-3">
                     <h5 class="mb-3"><strong>Productos Entregados</strong></h5>
-                    <x-adminlte.tool.datatable id="table-delivery" :heads="['ID', 'Codigo', 'Nombre', 'Cantidad', 'Entregado', 'Disponible']">
+                    <x-adminlte.tool.datatable id="table-delivery" :heads="['ID', 'Codigo', 'Nombre', 'Cantidad', 'Entregado', 'Disponible', '']">
                         @foreach ($contract->detail_contract ?? [] as $item)
-                            <tr>
+                            @php
+                                $total_entregado = $item->deliveries()->sum('quantity');
+                                $disponible = (int) $item->quantity - $total_entregado;
+                                $this->max_products += $disponible;
+                            @endphp
+
+                            <tr data-bs-toggle="collapse" data-bs-target="#collapse-{{ $item->id }}"
+                                class="accordion-toggle" style="cursor:pointer;">
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->detailable()->withTrashed()->first()?->cod }}</td>
                                 <td>{{ $item->detailable()->withTrashed()->first()?->name .' ' .$item->detailable()->withTrashed()->first()?->size }}
                                 </td>
                                 <td>{{ $item->quantity }}</td>
-                                <td>{{ $item->deliveries()->sum('quantity') }}</td>
-                                <td>{{ (int) $item->quantity - (int) $item->deliveries()->sum('quantity') }}</td>
-                                @php
-                                    $this->max_products += (int) $item->quantity - (int) $item->deliveries()->sum('quantity');
-                                @endphp
+                                <td>{{ $total_entregado }}</td>
+                                <td>{{ $disponible }}</td>
+                                <td><i class="fas fa-chevron-down"></i></td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="7" class="hiddenRow p-0">
+                                    <div id="collapse-{{ $item->id }}" class="collapse">
+                                        <table class="table table-sm table-bordered mb-0">
+                                            <thead class="table-secondary">
+                                                <tr>
+                                                    <th>Fecha</th>
+                                                    <th>N° de Entrega</th>
+                                                    <th>Cantidad ({{ empty($item->detailable->unit) ? 'Unidad' : $item->detailable->unit }})</th>
+                                                    <th>Recibido Por</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($item->deliveries as $delivery)
+                                                    <tr>
+                                                        <td>{{ Carbon\Carbon::parse($delivery->date)->toDateString() }}
+                                                        </td>
+                                                        <td>{{ $delivery->id }}</td>
+                                                        <td>{{ $delivery->pivot->quantity }}</td>
+                                                        <td>{{ $delivery->received_by }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
                             </tr>
                         @endforeach
                     </x-adminlte.tool.datatable>
@@ -794,7 +827,7 @@
                     if (result.isConfirmed) $wire.contractFail();
                 })
             });
-        } else if($wire.status>0 && $wire.status <3) {
+        } else if ($wire.status > 0 && $wire.status < 3) {
             document.getElementById('btn-proof-fail').addEventListener('click', () => {
                 Swal.fire({
                     title: 'Esta Seguro?...',
@@ -873,8 +906,14 @@
                                     return intVal(a) + intVal(b);
                                 }, 0);
 
-                            $(api.column(2).footer()).html(new Intl.NumberFormat("en-EN",{style: "currency",currency: "BOB"}).format(100000).slice(4) + ' Bs');
-                            $(api.column(3).footer()).html(new Intl.NumberFormat("en-EN",{style: "currency",currency: "BOB"}).format(totalEgresos).slice(4) + ' Bs');
+                            $(api.column(2).footer()).html(new Intl.NumberFormat("en-EN", {
+                                style: "currency",
+                                currency: "BOB"
+                            }).format(100000).slice(4) + ' Bs');
+                            $(api.column(3).footer()).html(new Intl.NumberFormat("en-EN", {
+                                style: "currency",
+                                currency: "BOB"
+                            }).format(totalEgresos).slice(4) + ' Bs');
                         }
                     });
                 });
