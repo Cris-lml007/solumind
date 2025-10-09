@@ -66,8 +66,8 @@ class DeliveryForm extends Component
                     'id'       => $item->id,
                     'quantity' => (int) $item->pivot->quantity,
                 ];
-                if($this->amount == 0)
-                    $this->amount += $item->sale_price * $item->pivot->quantity;
+                // if($this->amount == 0)
+                $this->amount += $item->sale_price * $item->pivot->quantity;
             }
             $this->edit = 1;
             $this->delivery_id = $id;
