@@ -124,7 +124,7 @@ class DashboardController extends Controller
     public function delivery(){
         if(!Gate::allows('delivery-read'))
             abort('404');
-        $heads = ['Fecha','ID','Codigo de Contrato','Generar'];
+        $heads = ['Fecha','ID','Codigo de Contrato','Importe (Bs)','Generar'];
         $data = Delivery::all();
         return view('dashboard.delivery-view',compact(['heads','data']));
     }

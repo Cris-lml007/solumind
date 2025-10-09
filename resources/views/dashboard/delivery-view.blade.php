@@ -15,14 +15,21 @@
         <div class="card-body">
             <x-adminlte.tool.datatable id="table" :heads="$heads">
                 @foreach ($data as $item)
+                    @php
+                        $amount = 0;
+                        foreach ($item->detail_contract as $item1) {
+                            $amount += $item1->sale_price * $item1->pivot->quantity;
+                        }
+                    @endphp
                     <tr>
                         <td>{{ $item->date }}</td>
                         <td>{{ $item->id }}</td>
                         <td>{{ $item->contract->cod }}</td>
+                        <td>{{ Number::format($amount, precision: 2) }}</td>
                         @can('delivery-permission', 3)
                             <td>
-                                <a target="_blank" href="{{ route('dashboard.delivery.pdf', $item->id) }}" class="btn btn-primary"><i
-                                        class="fa fa-file"></i></a>
+                                <a target="_blank" href="{{ route('dashboard.delivery.pdf', $item->id) }}"
+                                    class="btn btn-primary"><i class="fa fa-file"></i></a>
                                 @if ($item->is_canceled == 1 && $item->contract->status->value == 3)
                                     <a href="{{ route('dashboard.delivery.form', $item->id) }}" class="btn btn-secondary"><i
                                             class="fa fa-pen"></i></a>
