@@ -27,8 +27,10 @@
                     <tr onclick="edit({{ $item->id }})" class="item-table">
                         <td>{{ $item->id }}</td>
                         <td>{{ Carbon\Carbon::parse($item->date)->toDateString() }}</td>
-                        <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}</td>
-                        <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}</td>
+                        <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
+                        </td>
+                        <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
+                        </td>
                         <td>{{ $item->description }}</td>
                         <td>{{ $item->contract->cod ?? '' }}</td>
                         <td>{{ $item->account->name ?? '' }}</td>
@@ -47,7 +49,8 @@
                         <td colspan="2" style="text-align: center;"
                             class="{{ $t_income - $t_expense >= 0 ? 'bg-success' : 'bg-danger' }}">
                             <strong>{{ Illuminate\Support\Number::format($t_income - $t_expense, precision: 2) }}
-                                Bs</strong></td>
+                                Bs</strong>
+                        </td>
                     </tr>
                 </tfoot>
             </x-adminlte.tool.datatable>
@@ -76,3 +79,78 @@
         }
     </script>
 @endsection
+
+
+@push('js')
+    <script>
+        $(document).ready(function() {
+            $('#table-diary').DataTable().destroy();
+
+            $('#table-diary').DataTable({
+                dom: 'Bfrtip',
+                buttons: [{
+                        extend: 'pdfHtml5',
+                        text: '<i class="fas fa-file-pdf"></i> PDF',
+                        title: '',
+                        filename: 'Libro_Diario {{ now() }}',
+                        orientation: 'portrait',
+                        pageSize: 'A4',
+                        customize: function(doc) {
+                            // --- Insertar título centrado debajo del logo ---
+                            doc.content.unshift({
+                                text: 'LIBRO DIARIO',
+                                alignment: 'center',
+                                margin: [0, 10, 0, 15],
+                                fontSize: 16,
+                                bold: true
+                            });
+                            // --- Insertar logo arriba a la derecha ---
+                            doc.content.unshift({
+                                image: '{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png'))) }}',
+                                width: 100,
+                                alignment: 'right',
+                                margin: [0, 0, 0, 10] // [left, top, right, bottom]
+                            });
+
+
+                            // --- Ajustar estilos generales de la tabla ---
+                            doc.styles.tableHeader.fillColor = '#007bff';
+                            doc.styles.tableHeader.color = 'white';
+                            doc.styles.tableHeader.alignment = 'center';
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        title: 'Libro Diario',
+                        filename: 'Libro_Diario {{ now() }}',
+                        customize: function(xlsx) {
+                            const sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            // Insertar texto o imagen es más limitado en Excel
+                            // Pero puedes insertar una fila adicional arriba:
+                            const firstRow = $('row:first', sheet);
+                            firstRow.before(`
+                        <row r="1">
+                            <c t="inlineStr" r="A1"><is><t>LIBRO DIARIO - Movimientos Económicos</t></is></c>
+                        </row>
+                    `);
+                        }
+                    }, {
+                        extend: 'print',
+                        text: '<i class="fas fa-print"></i> Imprimir',
+                        customize: function(win) {
+                            $(win.document.body).prepend(`
+                    <div style="display: flex; justify-content: end; align-items: center; margin-bottom: 20px;">
+                        <div>
+                            <img src="{{ asset('img/logo.png') }}" style="height: 60px;">
+                        </div>
+                    </div>
+                `);
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+@endpush

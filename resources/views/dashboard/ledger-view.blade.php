@@ -25,7 +25,7 @@
                         </td>
                         <td>{{ $item->description }}</td>
                         <td>{{ $item->contract->cod ?? '' }}</td>
-                        <td>{{ $item->account->name ?? ''}}</td>
+                        <td>{{ $item->account->name ?? '' }}</td>
                     </tr>
                 @endforeach
                 <tfoot>
@@ -105,12 +105,68 @@
                 paging: false,
                 searching: false,
                 dom: '<"d-flex justify-content-end align-items-center"fB>rtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    'print'
+
+                buttons: [{
+                        extend: 'pdfHtml5',
+                        text: '<i class="fas fa-file-pdf"></i> PDF',
+                        title: '',
+                        filename: 'Libro_Mayor {{ now() }}',
+                        orientation: 'portrait',
+                        pageSize: 'A4',
+                        customize: function(doc) {
+                            // --- Insertar título centrado debajo del logo ---
+                            doc.content.unshift({
+                                text: 'LIBRO MAYOR',
+                                alignment: 'center',
+                                margin: [0, 10, 0, 15],
+                                fontSize: 16,
+                                bold: true
+                            });
+                            // --- Insertar logo arriba a la derecha ---
+                            doc.content.unshift({
+                                image: '{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png'))) }}',
+                                width: 100,
+                                alignment: 'right',
+                                margin: [0, 0, 0, 10] // [left, top, right, bottom]
+                            });
+
+
+                            // --- Ajustar estilos generales de la tabla ---
+                            doc.styles.tableHeader.fillColor = '#007bff';
+                            doc.styles.tableHeader.color = 'white';
+                            doc.styles.tableHeader.alignment = 'center';
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        title: 'Libro Mayor',
+                        filename: 'Libro_Mayor {{ now() }}',
+                        customize: function(xlsx) {
+                            const sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            // Insertar texto o imagen es más limitado en Excel
+                            // Pero puedes insertar una fila adicional arriba:
+                            const firstRow = $('row:first', sheet);
+                            firstRow.before(`
+                        <row r="1">
+                            <c t="inlineStr" r="A1"><is><t>LIBRO MAYOR - Movimientos Económicos</t></is></c>
+                        </row>
+                    `);
+                        }
+                    }, {
+                        extend: 'print',
+                        text: '<i class="fas fa-print"></i> Imprimir',
+                        customize: function(win) {
+                            $(win.document.body).prepend(`
+                    <div style="display: flex; justify-content: end; align-items: center; margin-bottom: 20px;">
+                        <div>
+                            <img src="{{ asset('img/logo.png') }}" style="height: 60px;">
+                        </div>
+                    </div>
+                `);
+                        }
+                    }
                 ],
                 footerCallback: function(row, data, start, end, display) {
                     var api = this.api();
@@ -147,12 +203,68 @@
             $('#table').DataTable({
                 // dom: '', // Required to display the buttons
                 dom: '<"d-flex justify-content-between align-items-center"fB>rtip',
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    'print'
+
+                buttons: [{
+                        extend: 'pdfHtml5',
+                        text: '<i class="fas fa-file-pdf"></i> PDF',
+                        title: '',
+                        filename: 'Libro_MAYOR {{ now() }}',
+                        orientation: 'portrait',
+                        pageSize: 'A4',
+                        customize: function(doc) {
+                            // --- Insertar título centrado debajo del logo ---
+                            doc.content.unshift({
+                                text: 'LIBRO MAYOR',
+                                alignment: 'center',
+                                margin: [0, 10, 0, 15],
+                                fontSize: 16,
+                                bold: true
+                            });
+                            // --- Insertar logo arriba a la derecha ---
+                            doc.content.unshift({
+                                image: '{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png'))) }}',
+                                width: 100,
+                                alignment: 'right',
+                                margin: [0, 0, 0, 10] // [left, top, right, bottom]
+                            });
+
+
+                            // --- Ajustar estilos generales de la tabla ---
+                            doc.styles.tableHeader.fillColor = '#007bff';
+                            doc.styles.tableHeader.color = 'white';
+                            doc.styles.tableHeader.alignment = 'center';
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fas fa-file-excel"></i> Excel',
+                        title: 'Libro MAYOR',
+                        filename: 'Libro_MAYOR {{ now() }}',
+                        customize: function(xlsx) {
+                            const sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                            // Insertar texto o imagen es más limitado en Excel
+                            // Pero puedes insertar una fila adicional arriba:
+                            const firstRow = $('row:first', sheet);
+                            firstRow.before(`
+                        <row r="1">
+                            <c t="inlineStr" r="A1"><is><t>LIBRO MAYOR - Movimientos Económicos</t></is></c>
+                        </row>
+                    `);
+                        }
+                    }, {
+                        extend: 'print',
+                        text: '<i class="fas fa-print"></i> Imprimir',
+                        customize: function(win) {
+                            $(win.document.body).prepend(`
+                    <div style="display: flex; justify-content: end; align-items: center; margin-bottom: 20px;">
+                        <div>
+                            <img src="{{ asset('img/logo.png') }}" style="height: 60px;">
+                        </div>
+                    </div>
+                `);
+                        }
+                    }
                 ],
                 paging: false,
                 footerCallback: function(row, data, start, end, display) {
@@ -186,9 +298,18 @@
                     var diferencia = totalIngresos - totalEgresos;
 
                     // Insertar en el footer
-                    $('#total-ingreso').html(new Intl.NumberFormat("en-EN",{style: "currency",currency: "BOB"}).format(totalIngresos).slice(4) + ' Bs');
-                    $('#total-egreso').html(new Intl.NumberFormat("en-EN",{style: "currency",currency: "BOB"}).format(totalEgresos).slice(4) + ' Bs');
-                    $('#total-diferencia').html(new Intl.NumberFormat("en-EN",{style: "currency",currency: "BOB"}).format(diferencia).slice(4) + ' Bs');
+                    $('#total-ingreso').html(new Intl.NumberFormat("en-EN", {
+                        style: "currency",
+                        currency: "BOB"
+                    }).format(totalIngresos).slice(4) + ' Bs');
+                    $('#total-egreso').html(new Intl.NumberFormat("en-EN", {
+                        style: "currency",
+                        currency: "BOB"
+                    }).format(totalEgresos).slice(4) + ' Bs');
+                    $('#total-diferencia').html(new Intl.NumberFormat("en-EN", {
+                        style: "currency",
+                        currency: "BOB"
+                    }).format(diferencia).slice(4) + ' Bs');
                 },
                 initComplete: function() {
                     this.api()
