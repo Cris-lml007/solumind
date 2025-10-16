@@ -1,7 +1,7 @@
 @extends('pdf.t')
 
 @section('type')
-NOTA DE REMISIÓN <div style="display: inline;color: #D8A300;">#{{ $id }}</div>
+    NOTA DE REMISIÓN <div style="display: inline;color: #D8A300;">#{{ $id }}</div>
 @endsection
 
 @section('info')
@@ -24,23 +24,25 @@ NOTA DE REMISIÓN <div style="display: inline;color: #D8A300;">#{{ $id }}</div>
 @endsection
 
 @section('content')
-    <h3>Productos Entregados</h3>
-    <table style="min-height: 350px;">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad Entregado</th>
-                <th>Unidad</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $item)
+    <div style="min-height: 380px;">
+        <h3>Productos Entregados</h3>
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ $item->detailable->name . ' ' . ($item->detailable->size ?? '') }}</td>
-                    <td>{{ $item->pivot->quantity }}</td>
-                    <td>{{ $item->detailable->unit }}</td>
+                    <th>Producto</th>
+                    <th>Cantidad Entregado</th>
+                    <th>Unidad</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($data as $item)
+                    <tr>
+                        <td>{{ $item->detailable->name . ' ' . ($item->detailable->size ?? '') }}</td>
+                        <td>{{ $item->pivot->quantity }}</td>
+                        <td>{{ $item->detailable->unit }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @endsection

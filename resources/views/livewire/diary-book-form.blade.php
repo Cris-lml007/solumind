@@ -11,7 +11,17 @@
                 </div>
                 <label>Importe</label>
                 <div class="input-group">
-                    <input type="number" class="form-control" placeholder="Ingrese importe" wire:model="import">
+                    <input type="number"
+                        placeholder="{{ App\Models\Contract::where('id', $this->contract_id)->exists() ? 'Total: ' . Number::format($this->balance, precision: 2) . ' Bs' : 'Ingrese Importe' }}"
+                        wire:model.live="import" @class([
+                            'form-control',
+                            'bg-danger' =>
+                                $this->balance - (empty($this->import) ? 0 : $this->import) < 0 &&
+                                App\Models\Contract::where('id', $this->contract_id)->exists(),
+                            'bg-success' =>
+                                $this->balance - (empty($this->import) ? 0 : $this->import) >= 0 &&
+                                App\Models\Contract::where('id', $this->contract_id)->exists(),
+                        ])>
                     <span class="input-group-text">Bs</span>
                 </div>
                 <div class="text-danger" style="height: 20px;">
@@ -34,7 +44,7 @@
                 </div>
                 <label>Contrato</label>
                 <div class="input-group">
-                    <select name="search-item" class="form-select" style="height: 38px;" wire:model="contract_id">
+                    <select name="search-item" class="form-select" style="height: 38px;" wire:model.live="contract_id">
                         <option value="null">Seleccione contrato</option>
                         @foreach ($contracts as $item)
                             <option value="{{ $item->id }}">{{ $item->cod . ' - ' . $item->client->person->name }}
@@ -74,6 +84,13 @@
                 {{ $message }}
             @enderror
         </div>
+        @if(Number::parse($this->import ?? 0) > $this->balance && App\Models\Contract::where('id', $this->contract_id)->exists())
+        <div class="card">
+            <div class="card-body bg-warning">
+                <i class="nf nf-cod-warning"></i> Presupuesto Superado.
+            </div>
+        </div>
+        @endif
     </div>
     @can('transaction-permission', 3)
         @if ($transaction->id == null)

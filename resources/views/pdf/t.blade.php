@@ -184,10 +184,27 @@
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
         }
+
+
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            opacity: 0.1;
+            /* controla la intensidad del fondo */
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
     </style>
 </head>
 <body id="main">
     <div class="page" id="page" style="height: 25cm;">
+        <img src="{{ 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png'))) }}"
+            alt="Marca de agua" class="watermark">
+
         <div class="folio">@yield('id')</div>
         <div class="vertical-text">@yield('type')</div>
 

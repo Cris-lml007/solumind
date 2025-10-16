@@ -116,7 +116,7 @@
                         <label>Saldo</label>
                         <div class="input-group">
                             <input type="text"
-                                class="form-control {{ $contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('account_id', 2)->sum('amount') >=0? 'bg-success': 'bg-danger' }}"
+                                class="form-control {{ $contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('type', 2)->sum('amount') >=0? 'bg-success': 'bg-danger' }}"
                                 value="{{ Illuminate\Support\Number::format($contract->detail_contract()->sum('purchase_total') -$contract->transactions()->where('type', 2)->sum('amount'),precision: 2) }}"
                                 disabled>
                             <span class="input-group-text">Bs</span>
@@ -463,10 +463,12 @@
                         @endforeach
                         <tfoot>
                             <tr>
-                                <th colspan="2" style="text-align:right">Totales:</th>
+                                <th></th> {{-- total ingresos --}}
+                                <th>Totales:</th>
                                 <th></th> {{-- total ingresos --}}
                                 <th></th> {{-- total egresos --}}
-                                <th colspan="2"></th>
+                                <th></th>
+                                <th></th> {{-- total egresos --}}
                             </tr>
                         </tfoot>
                     </x-adminlte.tool.datatable>
@@ -482,7 +484,16 @@
                 tabindex="0" wire:ignore.self>
                 <div class="my-3">
                     <h5 class="mb-3"><strong>Productos Entregados</strong></h5>
-                    <x-adminlte.tool.datatable id="table-delivery" :heads="['ID', 'Codigo', 'Nombre', 'Cantidad', 'Entregado', 'Disponible', '']">
+                    <table id="table-delivery" class="table table-striped">
+                        <thead>
+                            <th>ID</th>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Entregado</th>
+                            <th>Disponible</th>
+                            <th></th>
+                        </thead>
                         @foreach ($contract->detail_contract ?? [] as $item)
                             @php
                                 $total_entregado = $item->deliveries()->sum('quantity');
@@ -532,7 +543,7 @@
                                 </td>
                             </tr>
                         @endforeach
-                    </x-adminlte.tool.datatable>
+                    </table>
                 </div>
             </div>
         </div>
@@ -887,9 +898,6 @@
                     destroy: true
                 })
                 $('#detail').DataTable({
-                    destroy: true
-                })
-                $('#table-delivery').DataTable({
                     destroy: true
                 })
 

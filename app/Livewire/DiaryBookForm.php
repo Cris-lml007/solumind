@@ -4,11 +4,16 @@ namespace App\Livewire;
 
 use App\Models\Account;
 use App\Models\Contract;
+use App\Models\DetailContract;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Number;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -40,6 +45,7 @@ class DiaryBookForm extends Component
     public $listeners = ['remove' => 'remove'];
 
     public $status = 0;
+    public $balance = 0;
 
     public function updatedSearchContract(){
         if(!empty($this->search_contract)){
@@ -88,12 +94,27 @@ class DiaryBookForm extends Component
         $this->redirect(route('dashboard.diary_book'));
     }
 
+    public function updatedImport(){
+        if(Contract::where('id',$this->contract_id)->exists()){
+            $this->balance = DetailContract::where('contract_id',$this->contract_id)->sum(DB::raw('sale_price*quantity')) -
+                Transaction::where('contract_id',$this->contract_id)->where('type',2)->sum('amount');
+        }else{
+            $this->balance = 0;
+        }
+        // dd($this->balance,Number::parse($this->import ?? 0),Number::parse($this->import ?? 0) <= $this->balance);
+    }
+
+    public function updatedContractId(){
+        $this->updatedImport();
+    }
 
 
     public function save(){
         if(!Gate::allows('transaction-permission',3))
             abort('404');
         $this->validate();
+        // dd($this->balance-$this->import);
+        // Validator::make(['balance' => $this->balance],['balance' => 'gte:'.($this->import)])->validate();
         $this->transaction->description = $this->description;
         $this->transaction->amount = $this->import;
         $this->transaction->type = $this->type;

@@ -41,54 +41,56 @@
 
 @section('content')
     <!-- Detalle de productos -->
-    <table class="bordered mt-20" style="min-height: 380px;">
-        <thead>
-            <tr>
-                <th class="center" style="width: 5%;">#</th>
-                <th class="center" style="width: 50%;">Descripción</th>
-                <th class="center">Unidad</th>
-                <th class="center" style="width: 15%;">Cantidad (Ud.)</th>
-                <th class="center" style="width: 15%;">Precio Unit.</th>
-                <th class="center" style="width: 15%;">Subtotal</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-                $total = 0;
-            @endphp
-            @foreach ($contract->detail_contract as $index => $item)
-                @php
-                    $total += $item->sale_price * $item->quantity;
-                @endphp
+    <div style="min-height: 380px;">
+        <table class="bordered mt-20">
+            <thead>
                 <tr>
-                    <td class="center">{{ $index + 1 }}</td>
-                    <td>{{ $item->detailable->name . ' ' . $item->detailable->size }} -
-                        {{ $item->detailable->description }}<br><strong>{{ !empty($item->description) ? 'Observaciones' : '' }}</strong>
-                        @if (!empty($item->description))
-                            <br>{{ $item->description }}
-                        @endif
-                    </td>
-                    <td>{{ $item->detailable->unit }}</td>
-                    <td class="center">{{ $item->quantity }}</td>
-                    <td class="right">{{ Illuminate\Support\Number::format($item->sale_price, precision: 2) }}</td>
-                    <td class="right">
-                        {{ Illuminate\Support\Number::format($item->sale_price * $item->quantity, precision: 2) }}</td>
+                    <th class="center" style="width: 5%;">#</th>
+                    <th class="center" style="width: 50%;">Descripción</th>
+                    <th class="center">Unidad</th>
+                    <th class="center" style="width: 15%;">Cantidad (Ud.)</th>
+                    <th class="center" style="width: 15%;">Precio Unit.</th>
+                    <th class="center" style="width: 15%;">Subtotal</th>
                 </tr>
-            @endforeach
-            <tr>
-                <td colspan="3" class="right"><strong>Total</strong></td>
-                <td colspan="3" class="right"><strong>{{ Illuminate\Support\Number::format($total, precision: 2) }}
-                        Bs</strong></td>
-            </tr>
-            <tr>
-                <td colspan="6"><strong>{{ Str::upper($formater->format($total)) }} BOLIVIANOS</strong></td>
-            </tr>
-            <tr>
-                <td colspan="6" style="height:40px;">
-                    <strong>Observaciones:</strong><br>
-                    {{ $contract->description }}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @php
+                    $total = 0;
+                @endphp
+                @foreach ($contract->detail_contract as $index => $item)
+                    @php
+                        $total += $item->sale_price * $item->quantity;
+                    @endphp
+                    <tr>
+                        <td class="center">{{ $index + 1 }}</td>
+                        <td>{{ $item->detailable->name . ' ' . $item->detailable->size }} -
+                            {{ $item->detailable->description }}<br><strong>{{ !empty($item->description) ? 'Observaciones' : '' }}</strong>
+                            @if (!empty($item->description))
+                                <br>{{ $item->description }}
+                            @endif
+                        </td>
+                        <td>{{ $item->detailable->unit }}</td>
+                        <td class="center">{{ $item->quantity }}</td>
+                        <td class="right">{{ Illuminate\Support\Number::format($item->sale_price, precision: 2) }}</td>
+                        <td class="right">
+                            {{ Illuminate\Support\Number::format($item->sale_price * $item->quantity, precision: 2) }}</td>
+                    </tr>
+                @endforeach
+                <tr>
+                    <td colspan="3" class="right"><strong>Total</strong></td>
+                    <td colspan="3" class="right"><strong>{{ Illuminate\Support\Number::format($total, precision: 2) }}
+                            Bs</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="6"><strong>{{ Str::upper($formater->format($total)) }} BOLIVIANOS</strong></td>
+                </tr>
+                <tr>
+                    <td colspan="6" style="height:40px;">
+                        <strong>Observaciones:</strong><br>
+                        {{ $contract->description }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 @endsection

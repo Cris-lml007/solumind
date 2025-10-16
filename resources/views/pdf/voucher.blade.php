@@ -1,7 +1,7 @@
 @extends('pdf.t')
 
 @section('type')
-COMPROBANTE <div style="display: inline;color: #D8A300;">#{{ $number ?? '' }}</div>
+    COMPROBANTE <div style="display: inline;color: #D8A300;">#{{ $number ?? '' }}</div>
 @endsection
 
 @section('extra')
@@ -29,14 +29,16 @@ COMPROBANTE <div style="display: inline;color: #D8A300;">#{{ $number ?? '' }}</d
 
 @section('content')
     <!-- DETALLE EXTRA -->
-    <table style="min-height: 370px;">
-        <thead>
-            <th style="font-size: 18px;text-align: center;">Descripción</th>
-        </thead>
-        <tbody>
-            <tr>
-                <td>{{ $description ?? '---' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div style="min-height: 380px;">
+        <table style="min-height: 370px;">
+            <thead>
+                <th style="font-size: 18px;text-align: center;">Descripción</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $description ?? '---' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 @endsection
