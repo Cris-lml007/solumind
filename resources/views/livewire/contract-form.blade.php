@@ -474,7 +474,7 @@
                     </x-adminlte.tool.datatable>
                     <div class="card">
                         <div class="card-body  {{ $ti - $te > 0 ? 'bg-success' : 'bg-danger' }}">
-                            <div><strong>Total Ganancia:</strong>
+                            <div><strong>Total Utilidad:</strong>
                                 {{ Illuminate\Support\Number::format($ti - $te, precision: 2) }} Bs</div>
                         </div>
                     </div>
@@ -934,7 +934,7 @@
                             $(api.column(2).footer()).html(new Intl.NumberFormat("en-EN", {
                                 style: "currency",
                                 currency: "BOB"
-                            }).format(100000).slice(4) + ' Bs');
+                            }).format(totalIngresos).slice(4) + ' Bs');
                             $(api.column(3).footer()).html(new Intl.NumberFormat("en-EN", {
                                 style: "currency",
                                 currency: "BOB"
