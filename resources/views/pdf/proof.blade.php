@@ -32,7 +32,7 @@
         <h4>Cliente</h4>
         <p style="margin-bottom: 5px;">{{ $contract->client->organization ?? $contract->client->person->name }}</p>
         <h4>Correo</h4>
-        <p style="margin-bottom: 5px;height: 14px;">
+        <p style="margin-bottom: 5px;height: 14px;width: 250px;">
             {{ !empty($contract->client->email) ? $contract->client->email : $contract->client->person->email }}</p>
         <h4>Plazo de Entrega</h4>
         <p>{{ Carbon\Carbon::parse($contract->time_delivery)->toFormattedDateString() }}</p>

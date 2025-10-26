@@ -211,9 +211,9 @@
         <!-- Header -->
         <div class="header">
             <div class="info">
-                <strong>Dirección: Urb. Dios es Amor, M-c16- 10</strong><br>
+                <strong>Dirección: Urb. Dios es Amor, M-C16- 10</strong><br>
                 Telf. 25265721 Cel. 70415397 - 73819319<br>
-                Email: <u>solumind,or @gmail.com</u><br>
+                Email: solumind,or @gmail.com<br>
                 <br>
                 <strong>Fecha Emisión:</strong> {{ now()->format('d/m/Y H:i') }}<br>
                 @yield('extra')

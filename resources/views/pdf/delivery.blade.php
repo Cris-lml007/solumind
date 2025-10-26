@@ -17,7 +17,7 @@
         <h4>Contrato</h4>
         <p style="margin-bottom: 5px;">{{ $contract ?? '' }}</p>
         <h4>Cliente</h4>
-        <p style="margin-bottom: 5px;height: 14px;">{{ $name }}</p>
+        <p style="margin-bottom: 5px;height: 14px;width: 250px;">{{ $name }}</p>
         <h4>Autorizado por</h4>
         <p>{{ Auth::user()->person->name ?? Auth::user()->email }}</p>
     </div>
