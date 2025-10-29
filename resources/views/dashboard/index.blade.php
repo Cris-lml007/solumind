@@ -41,7 +41,7 @@
                 <tr>
                     <td>{{ $item->id }}</td>
                     <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount,precision:2) : '' }}</td>
-                    <td>{{ $item->type == 2 ? '' : Illuminate\Support\Number::format($item->amount,precision:2) }}</td>
+                    <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount,precision:2) : ''}}</td>
                     <td>{{ $item->contract->cod ?? '' }}</td>
                 </tr>
                 @endforeach
