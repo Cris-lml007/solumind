@@ -33,19 +33,20 @@
                         </td>
                         <td>{{ $item->description }}</td>
                         <td>{{ $item->contract->cod ?? '' }}</td>
+                        <td>{{ __('messages.'.$item->assigned->name) }}</td>
                         <td>{{ $item->account->name ?? '' }}</td>
                     </tr>
                 @endforeach
                 <tfoot>
                     <tr>
-                        <th>TOTAL</th>
+                        <th colspan="2">TOTAL</th>
                         <td class="bg-primary"><strong>{{ Illuminate\Support\Number::format($t_income, precision: 2) }}
                                 Bs</strong></td>
                         <td class="bg-secondary"><strong>{{ Illuminate\Support\Number::format($t_expense, precision: 2) }}
                                 Bs</strong></td>
                     </tr>
                     <tr>
-                        <th>SALDO EFECTIVO</th>
+                        <th colspan="2">SALDO EFECTIVO</th>
                         <td colspan="2" style="text-align: center;"
                             class="{{ $t_income - $t_expense >= 0 ? 'bg-success' : 'bg-danger' }}">
                             <strong>{{ Illuminate\Support\Number::format($t_income - $t_expense, precision: 2) }}
@@ -57,7 +58,7 @@
         </div>
     </div>
 
-    <x-modal id="modal-transaction" title="Nuevo Asiento" class="">
+    <x-modal id="modal-transaction" title="Nuevo Asiento" class="modal-lg">
         <livewire:diary-book-form>
         </livewire:diary-book-form>
     </x-modal>

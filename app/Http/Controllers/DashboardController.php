@@ -97,7 +97,7 @@ class DashboardController extends Controller
     public function diaryBook(){
         if(!Gate::allows('transaction-read'))
             abort('404');
-        $heads = ['ID', 'Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato', 'Cuenta'];
+        $heads = ['ID', 'Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato','a Fondo', 'a Cuenta'];
         $data = Transaction::orderBy('date','asc')->get();
         return view('dashboard.diary-book',compact(['heads','data']));
     }

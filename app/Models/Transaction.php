@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\AssignedTransaction;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Number;
@@ -44,7 +45,8 @@ class Transaction extends Model
     protected function casts(): array{
         return [
             'amount' => 'decimal:2',
-            'date' => 'date'
+            'date' => 'date',
+            'assigned' => AssignedTransaction::class
         ];
     }
 }

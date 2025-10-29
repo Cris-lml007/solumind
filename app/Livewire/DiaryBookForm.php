@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Number;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -38,7 +37,9 @@ class DiaryBookForm extends Component
     public $account_id;
 
     public $search_contract;
+    public $search_account;
     public $contracts = [];
+    public $accounts = [];
 
     public Transaction $transaction;
 
@@ -46,6 +47,8 @@ class DiaryBookForm extends Component
 
     public $status = 0;
     public $balance = 0;
+
+    public $assigned = 0;
 
     public function updatedSearchContract(){
         if(!empty($this->search_contract)){
@@ -55,11 +58,20 @@ class DiaryBookForm extends Component
         }
     }
 
+    public function updatedSearchAccount(){
+        if(!empty($this->search_account)){
+            $this->accounts = Account::where('name','like','%'.$this->search_account.'%')->get();
+        }else{
+            $this->accounts = Account::all();
+        }
+    }
+
     public function mount($id = null){
         if(!Gate::allows('transaction-read'))
             abort('404');
         try{
             $this->contracts = Contract::where('status',3)->orWhere('status',1)->get();
+            $this->accounts = Account::all();
             $this->transaction = Transaction::findOrFail($id);
             $this->date =  Carbon::parse($this->transaction->date)->toDateString();
             $this->description = $this->transaction->description;
@@ -67,6 +79,7 @@ class DiaryBookForm extends Component
             $this->type = $this->transaction->type;
             $this->contract_id = $this->transaction->contract_id;
             $this->account_id = $this->transaction->account_id;
+            $this->assigned = $this->transaction->assigned->value;
             $this->status = 1;
         }catch(\Exception){
             $this->transaction = new Transaction();
@@ -94,18 +107,59 @@ class DiaryBookForm extends Component
         $this->redirect(route('dashboard.diary_book'));
     }
 
-    public function updatedImport(){
+    public function updatedAssigned(){
+        if(Contract::where('id',$this->contract_id)->exists() && $this->assigned != 0){
+            $contract = Contract::find($this->contract_id);
+            switch($this->assigned){
+            case 1:
+                $value = $contract->detail_contract->sum(function ($item) {
+                    return Number::parse($item->sale_price) * ((float) ($item->bill ?? 0) / 100) * (float) $item->quantity;
+                });
+                break;
+            case 2:
+                $value = $contract->detail_contract->sum(function ($item) {
+                    return Number::parse($item->sale_price) * ((float) $item->operating / 100) * (float) $item->quantity;
+                });
+                break;
+            case 3:
+                $value = $contract->detail_contract->sum(function ($item) {
+                    return Number::parse($item->sale_price) * ((float) ($item->comission ?? 0) / 100) * (float) $item->quantity;
+                });
+                break;
+            case 4:
+                $value = $contract->detail_contract->sum(function ($item) {
+                    return Number::parse($item->sale_price) * ((float) ($item->bank ?? 0) / 100) * (float) $item->quantity;
+                });
+                break;
+            case 5:
+                $value = $contract->detail_contract->sum(function ($item) {
+                    return Number::parse($item->purchase_price) * ((float) ($item->interest ?? 0) / 100) * (float) $item->quantity;
+                });
+                break;
+            case 6:
+                $value = $contract->detail_contract->sum(function ($item) {
+                    return Number::parse($item->sale_price) * ((float) ($item->unexpected ?? 0) / 100) * (float) $item->quantity;
+                });
+                break;
+            }
+            $this->balance = $value - Transaction::where('contract_id',$this->contract_id)->where('type',2)->where('assigned',$this->assigned)->sum('amount');
+        }else{
+            $this->updatedContractId();
+        }
+    }
+
+    //public function updatedImport(){
+        // dd($this->balance,Number::parse($this->import ?? 0),Number::parse($this->import ?? 0) <= $this->balance); //esto es solo validacion
+    //}
+
+    public function updatedContractId(){
         if(Contract::where('id',$this->contract_id)->exists()){
             $this->balance = DetailContract::where('contract_id',$this->contract_id)->sum(DB::raw('sale_price*quantity')) -
                 Transaction::where('contract_id',$this->contract_id)->where('type',2)->sum('amount');
         }else{
             $this->balance = 0;
         }
-        // dd($this->balance,Number::parse($this->import ?? 0),Number::parse($this->import ?? 0) <= $this->balance);
-    }
-
-    public function updatedContractId(){
-        $this->updatedImport();
+        //$this->updatedImport();
     }
 
 
@@ -114,13 +168,15 @@ class DiaryBookForm extends Component
             abort('404');
         $this->validate();
         // dd($this->balance-$this->import);
-        // Validator::make(['balance' => $this->balance],['balance' => 'gte:'.($this->import)])->validate();
+        if($this->type == 2)
+            Validator::make(['balance' => $this->balance],['balance' => 'gte:'.($this->import)])->validate();
         $this->transaction->description = $this->description;
         $this->transaction->amount = $this->import;
         $this->transaction->type = $this->type;
         $this->transaction->contract_id = $this->contract_id == 'null' ? null : $this->contract_id;
         $this->transaction->account_id = $this->account_id;
         $this->transaction->date = $this->date;
+        $this->transaction->assigned = $this->assigned;
         $this->transaction->save();
         $this->redirect(route('dashboard.diary_book'));
     }
