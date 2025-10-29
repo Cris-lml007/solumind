@@ -42,6 +42,18 @@ class DeliveryForm extends Component
 
     public $delivery_id;
 
+    public $search_product;
+
+    public function updatedSearchProduct(){
+        if(!empty($this->search_product)){
+            $this->products = $this->contract->detail_contract()->whereHas('detailable', function($query){
+                $query->where('name','like','%'.$this->search_product.'%');
+            })->get();
+        }else{
+            $this->products = $this->contract->detail_contract;
+        }
+    }
+
     public function mount($id = null){
         if(!Gate::allows('delivery-read'))
             abort('404');

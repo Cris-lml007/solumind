@@ -58,43 +58,52 @@
             <div class="d-flex mb-3">
                 <div class="w-50">
                     <label for="">Producto</label>
-                    <select name="" id="detail_id" class="form-select" wire:model.live="detail_id"
-                        @if ($edit == 1) disabled @endif>
-                        <option value="0">Selecione Producto</option>
-                        @foreach ($products as $item)
-                            @php
-                                $words = explode(
-                                    ' ',
-                                    $item
-                                        ?->detailable()
-                                        ?->withTrashed()
-                                        ?->first()?->cod,
-                                );
-                                $s = 0;
-                                foreach ($words as $word) {
-                                    if (strlen($word) > 2) {
-                                        $s += 3;
-                                    }
-                                }
-                                $size = substr(
-                                    $item
-                                        ?->detailable()
-                                        ?->withTrashed()
-                                        ?->first()?->cod,
-                                    $s,
-                                    strlen(
+                    <div class="input-group">
+                        <select name="" id="detail_id" class="form-select" wire:model.live="detail_id"
+                            @if ($edit == 1) disabled @endif>
+                            <option value="0">Selecione Producto</option>
+                            @foreach ($products as $item)
+                                @php
+                                    $words = explode(
+                                        ' ',
                                         $item
-                                            ->detailable()
-                                            ->withTrashed()
-                                            ->first()?->cod,
-                                    ),
-                                );
-                            @endphp
-                            <option value="{{ $item?->id }}">
-                                {{ ($item?->detailable()?->withTrashed()?->first()?->name ??' ') .' - ' .$size }}
-                            </option>
-                        @endforeach
-                    </select>
+                                            ?->detailable()
+                                            ?->withTrashed()
+                                            ?->first()?->cod,
+                                    );
+                                    $s = 0;
+                                    foreach ($words as $word) {
+                                        if (strlen($word) > 2) {
+                                            $s += 3;
+                                        }
+                                    }
+                                    $size = substr(
+                                        $item
+                                            ?->detailable()
+                                            ?->withTrashed()
+                                            ?->first()?->cod,
+                                        $s,
+                                        strlen(
+                                            $item
+                                                ->detailable()
+                                                ->withTrashed()
+                                                ->first()?->cod,
+                                        ),
+                                    );
+                                @endphp
+                                <option value="{{ $item?->id }}">
+                                    {{ ($item?->detailable()?->withTrashed()?->first()?->name ??' ') .' - ' .$size }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        <button id="btn-search-product" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    </div>
+                    <div id="search-product" class="d-none p-1 glow-border" wire:ignore.self>
+                        <label for="search">Buscar Producto</label>
+                        <input type="text" name="search" class="form-control mb-3" wire:model.live="search_product"
+                            placeholder="Buscar producto">
+                    </div>
                 </div>
                 <div class="w-50 ms-1">
                     <label for="">Cantidad</label>
@@ -150,6 +159,9 @@
 
 @script
     <script>
+        document.getElementById('btn-search-product').addEventListener('click', function() {
+            document.getElementById('search-product').classList.toggle('d-none');
+        });
         let products = [];
 
         function deleteProduct(cod) {
