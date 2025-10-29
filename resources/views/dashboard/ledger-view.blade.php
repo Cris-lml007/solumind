@@ -25,6 +25,7 @@
                         </td>
                         <td>{{ $item->description }}</td>
                         <td>{{ $item->contract->cod ?? '' }}</td>
+                        <td>{{ __('messages.' . $item->assigned->name) }}</td>
                         <td>{{ $item->account->name ?? '' }}</td>
                     </tr>
                 @endforeach
@@ -35,18 +36,19 @@
                         <th>Egreso</th>
                         <th>Descripción</th>
                         <th>Contrato</th>
+                        <th>Fondo</th>
                         <th>Cuenta</th>
                     </tr>
                     <tr>
                         <th style="text-align:right">Totales:</th>
                         <th id="total-ingreso"></th>
                         <th id="total-egreso"></th>
-                        <th colspan="3"></th>
+                        <th colspan="4"></th>
                     </tr>
                     <tr>
                         <th style="text-align:right">Patrimonio:</th>
                         <th colspan="2" id="total-diferencia"></th>
-                        <th colspan="3"></th>
+                        <th colspan="4"></th>
                     </tr>
                 </tfoot>
             </x-adminlte.tool.datatable>
@@ -299,19 +301,42 @@
 
                     // Insertar en el footer
                     $('#total-ingreso').html(new Intl.NumberFormat("en-EN", {
-                        style: "currency",
-                        currency: "BOB"
-                    }).format(totalIngresos).slice(4) + ' Bs');
+                        // style: "currency",
+                        // currency: "BOB"
+                        minimumFractionDigits: 2
+                    }).format(totalIngresos) + ' Bs');
                     $('#total-egreso').html(new Intl.NumberFormat("en-EN", {
-                        style: "currency",
-                        currency: "BOB"
-                    }).format(totalEgresos).slice(4) + ' Bs');
+                        // style: "currency",
+                        // currency: "BOB"
+                        minimumFractionDigits: 2
+                    }).format(totalEgresos) + ' Bs');
                     $('#total-diferencia').html(new Intl.NumberFormat("en-EN", {
-                        style: "currency",
-                        currency: "BOB"
-                    }).format(diferencia).slice(4) + ' Bs');
+                        // style: "currency",
+                        // currency: "BOB"
+                        minimumFractionDigits: 2
+                    }).format(diferencia) + ' Bs');
                 },
                 initComplete: function() {
+                    let api = this.api();
+
+                    // ====== CABECERA (thead) ======
+                    // Clona la fila de encabezado para añadir inputs debajo
+                    $('#table thead tr').clone(true).addClass('filters').appendTo('#table thead');
+
+                    api.columns().every(function(colIdx) {
+                        let cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+                        let title = $(cell).text();
+
+                        $(cell).html('<input type="text" placeholder="' + title.trim() +
+                            '" style="width: 100%; font-size: 0.85em; padding: 3px;" />');
+
+                        $('input', cell).on('keyup change', function() {
+                            if (api.column(colIdx).search() !== this.value) {
+                                api.column(colIdx).search(this.value).draw();
+                            }
+                        });
+                    });
+
                     this.api()
                         .columns()
                         .every(function() {

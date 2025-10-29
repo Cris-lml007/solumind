@@ -105,7 +105,7 @@ class DashboardController extends Controller
     public function ledger(){
         if(!Gate::allows('ledger-read'))
             abort('404');
-        $heads = ['Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato', 'Cuenta'];
+        $heads = ['Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato', 'a Fondo','a Cuenta'];
         $data = Transaction::orderBy('date','asc')->get();
         $data1 = DB::table('transactions')
             ->join('accounts','accounts.id','=','transactions.account_id')

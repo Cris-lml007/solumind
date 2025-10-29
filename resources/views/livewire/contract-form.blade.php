@@ -444,7 +444,7 @@
                         $te = 0;
                     @endphp
                     <h5 class="my-3"><strong> Movimientos Libro Diario</strong></h5>
-                    <x-adminlte.tool.datatable id="table-transactions" :heads="['ID', 'Fecha', 'Ingreso (Bs)', 'Egreso (Bs)', 'Descripctión', 'Cuenta']">
+                    <x-adminlte.tool.datatable id="table-transactions" :heads="['ID', 'Fecha', 'Ingreso (Bs)', 'Egreso (Bs)', 'Descripctión', 'a Fondo','a Cuenta']">
                         @foreach ($transactions as $item)
                             @php
                                 $ti += $item->type == 1 ? $item->amount : 0;
@@ -458,6 +458,7 @@
                                 <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
                                 </td>
                                 <td>{{ $item->description }}</td>
+                                <td>{{ __('messages.'.$item->assigned->name) }}</td>
                                 <td>{{ $item->account->name }}</td>
                             </tr>
                         @endforeach
@@ -467,6 +468,7 @@
                                 <th>Totales:</th>
                                 <th></th> {{-- total ingresos --}}
                                 <th></th> {{-- total egresos --}}
+                                <th></th>
                                 <th></th>
                                 <th></th> {{-- total egresos --}}
                             </tr>
