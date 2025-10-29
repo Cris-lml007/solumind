@@ -10,5 +10,9 @@ return [
     'BANK' => 'Bancario',
     'INTEREST' => 'Intereses',
     'UNEXPECTED' => 'Imprevistos',
-
+    'PROFORMA' => 'Proforma',
+    'PROFORMA_FAIL' => 'Fallo de Proforma',
+    'CONTRACT' => 'Contrato',
+    'CONTRACT_FAIL' => 'Fallo de Contrato',
+    'CONTRACT_COMPLETE' => 'Contrato Completo',
 ];

@@ -112,7 +112,7 @@
                                 <td>{{ $item->client->person->name }}</td>
                                 <td>{{ $item->time_delivery }}</td>
                                 <td><span
-                                        class="badge {{ $item->status->value == 3 || $item->status->value == 5 ? 'badge-success' : 'badge-danger' }}">{{ __($item->status->name) }}</span>
+                                        class="badge {{ $item->status->value == 3 || $item->status->value == 5 ? 'badge-success' : 'badge-danger' }}">{{ __('messages.'.$item->status->name) }}</span>
                                 </td>
                                 <td>
                                     <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
