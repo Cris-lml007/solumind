@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Account;
 use App\Models\Contract;
+use App\Models\ContractPartner;
 use App\Models\DetailContract;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -49,6 +50,8 @@ class DiaryBookForm extends Component
     public $balance = 0;
 
     public $assigned = 0;
+    public $partner_id = null;
+    public $partners = [];
 
     public function updatedSearchContract(){
         if(!empty($this->search_contract)){
@@ -107,6 +110,20 @@ class DiaryBookForm extends Component
         $this->redirect(route('dashboard.diary_book'));
     }
 
+    public function updatedPartnerId(){
+        if($this->partner_id != null && Contract::where('id',$this->contract_id)->exists()){
+            $contract = Contract::find($this->contract_id);
+            $utility = $contract->detail_contract()->sum(DB::raw('sale_price * quantity')) - $contract->detail_contract()->sum('purchase_total');
+            $value = $utility * ((float) ($contract->partners()->where('partner_id',$this->partner_id)->first()->pivot->interest ?? 0) / 100);
+            $this->balance = $value - Transaction::where('contract_id',$this->contract_id)->where('type',2)->where('contract_partner_id',$this->partner_id)->sum('amount');
+
+            $this->account_id = $contract->partners()->where('partner_id',$this->partner_id)->first()->account->id;
+            // dd($this->account_id);
+        }else{
+            $this->updatedContractId();
+        }
+    }
+
     public function updatedAssigned(){
         if(Contract::where('id',$this->contract_id)->exists() && $this->assigned != 0){
             $contract = Contract::find($this->contract_id);
@@ -140,6 +157,13 @@ class DiaryBookForm extends Component
                 $value = $contract->detail_contract->sum(function ($item) {
                     return Number::parse($item->sale_price) * ((float) ($item->unexpected ?? 0) / 100) * (float) $item->quantity;
                 });
+                break;
+            case 7:
+                $value = $contract->detail_contract()->sum(DB::raw('purchase_total'));
+                break;
+            case 8:
+                $this->partners = $contract->partners;
+                $value = 0;
                 break;
             }
             $this->balance = $value - Transaction::where('contract_id',$this->contract_id)->where('type',2)->where('assigned',$this->assigned)->sum('amount');
@@ -178,6 +202,11 @@ class DiaryBookForm extends Component
         $this->transaction->date = $this->date;
         $this->transaction->assigned = $this->assigned;
         $this->transaction->save();
+
+        if($this->assigned == 8){
+            $this->transaction->contract_partner_id = ContractPartner::where('contract_id',$this->contract_id)->where('partner_id',$this->partner_id)->first()->id;
+            $this->transaction->save();
+        }
         $this->redirect(route('dashboard.diary_book'));
     }
 

@@ -10,6 +10,8 @@ return [
     'BANK' => 'Bancario',
     'INTEREST' => 'Intereses',
     'UNEXPECTED' => 'Imprevistos',
+    'PURCHASE_TOTAL' => 'Adquisición',
+    'UTILITY' => 'Utilidad',
     'PROFORMA' => 'Proforma',
     'PROFORMA_FAIL' => 'Fallo de Proforma',
     'CONTRACT' => 'Contrato',

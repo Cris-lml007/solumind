@@ -11,4 +11,6 @@ enum AssignedTransaction: int
     case BANK = 4;
     case INTEREST = 5;
     case UNEXPECTED = 6;
+    case PURCHASE_TOTAL = 7;
+    case UTILITY = 8;
 }

@@ -58,7 +58,7 @@
         </div>
     </div>
 
-    <x-modal id="modal-transaction" title="Nuevo Asiento" class="modal-lg">
+    <x-modal id="modal-transaction" title="Nuevo Asiento" class="modal-xl">
         <livewire:diary-book-form>
         </livewire:diary-book-form>
     </x-modal>
