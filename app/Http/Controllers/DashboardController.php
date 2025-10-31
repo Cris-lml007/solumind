@@ -115,6 +115,7 @@ class DashboardController extends Controller
                 DB::raw("SUM(CASE WHEN transactions.type = 1 THEN amount ELSE 0 END) -
                 SUM(CASE WHEN transactions.type = 2 THEN amount ELSE 0 END) as balance")
             )
+            ->where('transactions.deleted_at',null)
             ->groupBy('account_id', 'accounts.name')
             ->get();
         // dd($data1[0]);
