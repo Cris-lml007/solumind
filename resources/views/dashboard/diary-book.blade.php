@@ -83,11 +83,166 @@
 
 
 @push('js')
+
+<!-- DataTables principal -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script>
+
+<!-- Extensiones de Buttons -->
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap4.min.js"></script>
+
+<!-- Dependencias para exportar -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+<!-- Botones de exportación -->
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+<!-- Plugin de paginación con input -->
+<script src="https://cdn.datatables.net/plug-ins/1.13.8/pagination/input.js"></script>
+
+
+
+
+<!-- DataTables actualizado -->
+{{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css"> --}}
+{{-- <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script> --}}
+{{-- <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script> --}}
+{{-- <script src="https://cdn.datatables.net/plug-ins/1.13.8/pagination/input.js"></script> --}}
+
+<style>
+/* Contenedor principal de la paginación */
+.dataTables_paginate {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* alinea a la derecha (como DataTables por defecto) */
+    flex-wrap: wrap;
+    gap: 6px; /* espacio entre elementos */
+    margin-top: 0.5rem;
+}
+
+/* Botones de paginación */
+.page-item,
+.paginate_button {
+    cursor: pointer;
+    background-color: #F7B924;
+    color: black !important;
+    border-radius: 5px;
+    border: 1px solid white;
+    padding: 5px 10px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.paginate_button:hover:not(.disabled),
+.page-item:hover:not(.disabled) {
+    background-color: #ffca3a;
+}
+
+.paginate_button.disabled,
+.page-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Input de número de página */
+.paginate_input {
+    width: 60px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    font-weight: 500;
+}
+
+.paginate_input:focus {
+    border-color: #F7B924;
+    box-shadow: 0 0 3px #f7b924aa;
+}
+
+/* Texto "Page", "of", etc. */
+.dataTables_paginate span {
+    font-weight: 500;
+    color: #333;
+}
+
+/* Alineación del bloque informativo (opcional, para mantenerlo junto) */
+.dataTables_info {
+    margin-right: auto;
+    align-self: center;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    /* Contenedor principal: línea horizontal con scroll */
+    .dataTables_paginate {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 6px;
+        overflow-x: auto;
+        padding: 6px 0;
+        scrollbar-width: thin;
+        scrollbar-color: #F7B924 transparent;
+    }
+
+    /* Mejora el desplazamiento en móviles */
+    .dataTables_paginate::-webkit-scrollbar {
+        height: 6px;
+    }
+    .dataTables_paginate::-webkit-scrollbar-thumb {
+        background-color: #F7B924;
+        border-radius: 4px;
+    }
+
+    /* Elementos en línea */
+    .dataTables_paginate span,
+    .dataTables_paginate .paginate_input,
+    .dataTables_paginate .paginate_button {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 2px;
+    }
+
+    /* Texto informativo arriba y centrado */
+    .dataTables_info {
+        text-align: center;
+        width: 100%;
+        margin-bottom: 8px;
+        font-size: 0.85rem;
+    }
+
+    /* Ajustes visuales */
+    .paginate_input {
+        width: 45px;
+        font-size: 0.9rem;
+        padding: 4px;
+    }
+
+    .paginate_button,
+    .page-item {
+        font-size: 0.9rem;
+        padding: 4px 8px;
+    }
+}
+</style>
+
     <script>
         $(document).ready(function() {
             $('#table-diary').DataTable().destroy();
 
             $('#table-diary').DataTable({
+                pagingType: 'input',
                 dom: 'Bfrtip',
                 buttons: [{
                         extend: 'pdfHtml5',
@@ -96,6 +251,7 @@
                         filename: 'Libro_Diario {{ now() }}',
                         orientation: 'portrait',
                         pageSize: 'A4',
+                        footer: true,
                         customize: function(doc) {
                             // --- Insertar título centrado debajo del logo ---
                             doc.content.unshift({
@@ -140,6 +296,7 @@
                     }, {
                         extend: 'print',
                         text: '<i class="fas fa-print"></i> Imprimir',
+                        footer: true,
                         customize: function(win) {
                             $(win.document.body).prepend(`
                     <div style="display: flex; justify-content: end; align-items: center; margin-bottom: 20px;">
