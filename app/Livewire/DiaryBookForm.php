@@ -192,7 +192,7 @@ class DiaryBookForm extends Component
             abort('404');
         $this->validate();
         // dd($this->balance-$this->import);
-        if($this->type == 2)
+        if($this->type == 2 && $this->contract_id != null)
             Validator::make(['balance' => $this->balance],['balance' => 'gte:'.($this->import)])->validate();
         $this->transaction->description = $this->description;
         $this->transaction->amount = $this->import;
