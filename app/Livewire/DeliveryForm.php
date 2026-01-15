@@ -68,18 +68,21 @@ class DeliveryForm extends Component
             $this->date = $delivery->date;
             $this->contract_cod = $delivery->contract()->withTrashed()->first()->cod;
             $this->receiver_by = $delivery->received_by;
+            // dd($delivery);
             $this->amount = Number::parseFloat($delivery->amount ?? 0);
             $this->is_canceled = $delivery->is_canceled == 2 ? true : false;
             $this->contract = $delivery->contract;
 
+            // dd($delivery->detail_contract[0]->pivot->quantity * $delivery->detail_contract[0]->sale_price);
             foreach ($delivery->detail_contract as $item) {
                 $this->list[] = [
                     'name'     => $item->detailable->name . ' ' . ($item->detailable->size ?? ''),
                     'id'       => $item->id,
                     'quantity' => (int) $item->pivot->quantity,
                 ];
-                // if($this->amount == 0)
-                $this->amount += $item->sale_price * $item->pivot->quantity;
+                // dd($this->amount);
+                if($this->amount == 0)
+                    $this->amount += $item->sale_price * $item->pivot->quantity;
             }
             $this->edit = 1;
             $this->delivery_id = $id;
