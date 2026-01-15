@@ -69,7 +69,7 @@ class DeliveryForm extends Component
             $this->contract_cod = $delivery->contract()->withTrashed()->first()->cod;
             $this->receiver_by = $delivery->received_by;
             // dd($delivery);
-            $this->amount = Number::parseFloat($delivery->amount ?? 0);
+            // $this->amount = Number::parseFloat($delivery->amount ?? 0);
             $this->is_canceled = $delivery->is_canceled == 2 ? true : false;
             $this->contract = $delivery->contract;
 
@@ -81,7 +81,7 @@ class DeliveryForm extends Component
                     'quantity' => (int) $item->pivot->quantity,
                 ];
                 // dd($this->amount);
-                if($this->amount == 0)
+                // if($this->amount == 0)
                     $this->amount += $item->sale_price * $item->pivot->quantity;
             }
             $this->edit = 1;
