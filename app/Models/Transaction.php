@@ -19,7 +19,8 @@ class Transaction extends Model
         'description',
         'account_id',
         'amount',
-        'date'
+        'date',
+        'assigned'
     ];
 
     public function contract(){

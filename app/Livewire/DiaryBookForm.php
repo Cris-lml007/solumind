@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\AssignedTransaction;
 use App\Models\Account;
 use App\Models\Contract;
 use App\Models\ContractPartner;
@@ -165,6 +166,8 @@ class DiaryBookForm extends Component
                 $this->partners = $contract->partners;
                 $value = 0;
                 break;
+            case 9:
+                $value = $contract?->detail_contract()?->sum(DB::raw('sale_price*quantity')) - $contract->transactions()->where('type',1)->where('assigned',AssignedTransaction::PAYMENT)->sum('amount');
             }
             $this->balance = $value - Transaction::where('contract_id',$this->contract_id)->where('type',2)->where('assigned',$this->assigned)->sum('amount');
         }else{

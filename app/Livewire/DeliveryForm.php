@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\AssignedTransaction;
 use App\Models\Contract;
 use App\Models\Delivery;
 use App\Models\DetailContract;
@@ -95,17 +96,19 @@ class DeliveryForm extends Component
         $delivery = Delivery::find($this->delivery_id);
         $delivery->amount = $this->amount;
         $delivery->is_canceled = 2;
-        $delivery->save();
         $this->balance =$this->contract?->detail_contract()?->sum(DB::raw('sale_price*quantity')) -
-            $this->contract->transactions()->where('type',1)->sum('amount');
+            $this->contract->transactions()->where('type',1)->where('assigned',AssignedTransaction::PAYMENT)->sum('amount');
+        // dd($this->balance);
+        $delivery->save();
         Transaction::create([
             'contract_id' => $delivery->contract_id,
             'delivery_id' => $delivery->id,
             'type' => 1,
-            'description' => "Pago parcial de {$this->amount} Bs a cuenta del contrato {$delivery->contract->cod}, referido a entrega N° {$delivery->id}. Saldo pendiente: ". ($this->balance - $this->amount) ."Bs.",
+            'description' => "Pago parcial de {$this->amount} Bs a cuenta del contrato {$delivery->contract->cod}, referido a entrega N° {$delivery->id}. Saldo pendiente: ". ($this->balance - $this->amount) ." Bs.",
             'account_id' => $delivery->contract->client->account->id,
             'date' => Carbon::now(),
-            'amount' => $this->amount
+            'amount' => $this->amount,
+            'assigned' => AssignedTransaction::PAYMENT
         ]);
         return $this->redirect(route('dashboard.delivery'));
     }
