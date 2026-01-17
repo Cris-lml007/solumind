@@ -11,6 +11,7 @@ use App\Models\Supplier;
 use App\Models\Client;
 use App\Models\Contract;
 use App\Models\Delivery;
+use App\Models\DeliveryDetailContract;
 use App\Models\DetailContract;
 use App\Models\Person;
 use App\Models\Transaction;
@@ -125,7 +126,7 @@ class DashboardController extends Controller
     public function delivery(){
         if(!Gate::allows('delivery-read'))
             abort('404');
-        $heads = ['Fecha','ID','Codigo de Contrato','Importe (Bs)','Generar'];
+        $heads = ['ID','Fecha','Codigo de Contrato','Importe (Bs)','Generar'];
         $data = Delivery::all();
         return view('dashboard.delivery-view',compact(['heads','data']));
     }
@@ -208,5 +209,15 @@ class DashboardController extends Controller
 
     public function support(){
         return view('dashboard.support-view');
+    }
+
+    public function removeDelivery(Delivery $delivery){
+        // dd($delivery);
+        if($delivery->id != null){
+            $delivery->transaction()->forceDelete();
+            DeliveryDetailContract::where('delivery_id',$delivery->id)->forceDelete();
+            $delivery->forceDelete();
+        }
+        return redirect()->back();
     }
 }

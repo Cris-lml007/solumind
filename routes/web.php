@@ -36,6 +36,8 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         Route::get('ledger','ledger')->name('dashboard.ledger');
         Route::get('delivery','delivery')->name('dashboard.delivery');
 
+        Route::get('delivery/delete/{delivery?}','removeDelivery')->name('dashboard.delivery.remove');
+
         Route::get('client','client')->name('dashboard.client');
 
         Route::get('proof', 'proof')->name('dashboard.proof');

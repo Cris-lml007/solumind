@@ -140,7 +140,7 @@
         <hr>
         <div class="d-flex justify-content-end">
             <button class="btn btn-primary" wire:click="canceled">Cobrar</button>
-            <a class="btn btn-danger ms-1" href="{{ route('dashboard.delivery') }}">Cancelar</a>
+            <a class="btn btn-secondary ms-1" href="{{ route('dashboard.delivery') }}">Cancelar</a>
         </div>
     @else
         <div class="modal-footer">
