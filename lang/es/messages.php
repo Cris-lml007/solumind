@@ -17,4 +17,5 @@ return [
     'CONTRACT' => 'Contrato',
     'CONTRACT_FAIL' => 'Fallo de Contrato',
     'CONTRACT_COMPLETE' => 'Contrato Completo',
+    'PAYMENT' => 'Percibido'
 ];
