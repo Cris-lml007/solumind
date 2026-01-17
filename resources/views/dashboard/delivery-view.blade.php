@@ -16,9 +16,13 @@
             <x-adminlte.tool.datatable id="table" :heads="$heads" :config="['order' => [0, 'desc']]">
                 @foreach ($data as $item)
                     @php
-                        $amount = 0;
-                        foreach ($item->detail_contract as $item1) {
-                            $amount += $item1->sale_price * $item1->pivot->quantity;
+                    $amount = 0;
+                        if ($item->is_canceled == 1) {
+                            foreach ($item->detail_contract as $item1) {
+                                $amount += $item1->sale_price * $item1->pivot->quantity;
+                            }
+                        } else {
+                            $amount = $item->transaction->amount ?? 0;
                         }
                     @endphp
                     <tr>
