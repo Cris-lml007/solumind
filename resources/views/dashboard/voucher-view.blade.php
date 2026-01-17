@@ -48,7 +48,7 @@
                         @foreach ($data['comprobantes'] as $item)
                             <tr>
                                 <td><strong>{{ $item->id }}</strong></td>
-                                <td>{{ \Carbon\Carbon::parse($item->date)->format('d/m/Y') }}</td>
+                                <td class="col-fecha">{{ \Carbon\Carbon::parse($item->date)->format('Y-m-d') }}</td>
                                 <td>
                                     @if ($item->type == 1)
                                         <span class="badge badge-success">Ingreso</span>
@@ -60,8 +60,8 @@
                                 <td><strong>{{ Illuminate\Support\Number::format($item->amount, precision: 2) }}</strong>
                                 </td>
                                 @can('voucher-permission', 3)
-                                    <td><a href="{{ route('dashboard.proof.pdf', $item->id) }}" class="btn btn-primary" target="_blank"><i
-                                                class="fa fa-file-pdf"></i> Exportar</a></td>
+                                    <td><a href="{{ route('dashboard.proof.pdf', $item->id) }}" class="btn btn-primary"
+                                            target="_blank"><i class="fa fa-file-pdf"></i> Exportar</a></td>
                                 @else
                                     <td></td>
                                 @endcan
@@ -90,7 +90,9 @@
                                 <td>
                                     <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
                                             class="fa fa-ellipsis-v"></i></a>
-                                    <a target="_blank" class="btn btn-secondary" href="{{route('dashboard.proof.form.pdf',$item->id)}}"><i class="fa fa-file"></i></a>
+                                    <a target="_blank" class="btn btn-secondary"
+                                        href="{{ route('dashboard.proof.form.pdf', $item->id) }}"><i
+                                            class="fa fa-file"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -112,12 +114,14 @@
                                 <td>{{ $item->client->person->name }}</td>
                                 <td>{{ $item->time_delivery }}</td>
                                 <td><span
-                                        class="badge {{ $item->status->value == 3 || $item->status->value == 5 ? 'badge-success' : 'badge-danger' }}">{{ __('messages.'.$item->status->name) }}</span>
+                                        class="badge {{ $item->status->value == 3 || $item->status->value == 5 ? 'badge-success' : 'badge-danger' }}">{{ __('messages.' . $item->status->name) }}</span>
                                 </td>
                                 <td>
                                     <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
                                             class="fa fa-ellipsis-v"></i></a>
-                                    <a target="_blank" class="btn btn-secondary" href="{{route('dashboard.proof.form.pdf',$item->id)}}"><i class="fa fa-file"></i></a>
+                                    <a target="_blank" class="btn btn-secondary"
+                                        href="{{ route('dashboard.proof.form.pdf', $item->id) }}"><i
+                                            class="fa fa-file"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -145,6 +149,11 @@
 
         table td.simpleline {
             vertical-align: middle;
+        }
+
+        .col-fecha {
+            width: 120px;
+            white-space: nowrap;
         }
     </style>
 @endsection

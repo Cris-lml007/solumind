@@ -77,7 +77,7 @@ class DashboardController extends Controller
     public function proof(){
         if(!Gate::allows('voucher-read'))
             abort('404');
-        $config = ['columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
+        $config = ['order' => [0,'desc'],'columns' => [null, null, null, null, null, ['orderable' => false, 'searchable' => false]]];
         $data = [
             'comprobantes' => Transaction::all(),
             'proformas' => Contract::Where('status','<',StatusContract::CONTRACT->value)->get(),
@@ -98,7 +98,7 @@ class DashboardController extends Controller
         if(!Gate::allows('transaction-read'))
             abort('404');
         $heads = ['ID', 'Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato','a Fondo', 'a Cuenta'];
-        $data = Transaction::orderBy('date','asc')->get();
+        $data = Transaction::orderBy('date','desc')->get();
         return view('dashboard.diary-book',compact(['heads','data']));
     }
 

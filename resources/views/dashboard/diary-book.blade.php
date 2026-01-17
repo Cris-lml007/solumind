@@ -26,7 +26,7 @@
                     @endphp
                     <tr onclick="edit({{ $item->id }})" class="item-table">
                         <td>{{ $item->id }}</td>
-                        <td>{{ Carbon\Carbon::parse($item->date)->toDateString() }}</td>
+                        <td class="col-fecha">{{ Carbon\Carbon::parse($item->date)->toDateString() }}</td>
                         <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
                         </td>
                         <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
@@ -116,6 +116,14 @@
 {{-- <script src="https://cdn.datatables.net/plug-ins/1.13.8/pagination/input.js"></script> --}}
 
 <style>
+
+
+.col-fecha {
+    width: 120px;
+    white-space: nowrap;
+}
+
+
 /* Contenedor principal de la paginación */
 .dataTables_paginate {
     display: flex;
@@ -242,6 +250,7 @@
             $('#table-diary').DataTable().destroy();
 
             $('#table-diary').DataTable({
+                order: [0, 'desc'],
                 pagingType: 'input',
                 dom: 'Bfrtip',
                 buttons: [{
