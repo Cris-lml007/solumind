@@ -104,7 +104,7 @@ class DeliveryForm extends Component
             'contract_id' => $delivery->contract_id,
             'delivery_id' => $delivery->id,
             'type' => 1,
-            'description' => "Pago parcial de {$this->amount} Bs a cuenta del contrato {$delivery->contract->cod}, referido a entrega N° {$delivery->id}. Saldo pendiente: ". ($this->balance - $this->amount) ." Bs.",
+            'description' => "Pago parcial de ". Number::format($this->amount, precision: 2) ." Bs a cuenta del contrato {$delivery->contract->cod}, referido a entrega N° {$delivery->id}. Saldo pendiente: ". Number::format(($this->balance - $this->amount), precision: 2) ." Bs.",
             'account_id' => $delivery->contract->client->account->id,
             'date' => Carbon::now(),
             'amount' => $this->amount,
@@ -117,7 +117,7 @@ class DeliveryForm extends Component
         $this->contract = Contract::where('cod',$this->contract_cod)->first();
         $this->products = $this?->contract?->detail_contract ?? [];
         $this->balance =$this->contract?->detail_contract()?->sum(DB::raw('sale_price*quantity')) -
-            $this->contract->transactions()->where('type',1)->sum('amount');
+            $this->contract->transactions()->where('type',1)->where('assigned',AssignedTransaction::PAYMENT)->sum('amount');
     }
 
     public function updatedDetailId(){
@@ -206,6 +206,7 @@ class DeliveryForm extends Component
         foreach ($this->list as $value) {
             $l[$value['id']] = ['quantity' => $value['quantity']];
         }
+        // dd($this->balance);
         $delivery = new Delivery();
         $delivery->contract_id = $this->contract->id;
         $delivery->date = $this->date;
@@ -220,10 +221,11 @@ class DeliveryForm extends Component
                 'contract_id' => $this->contract->id,
                 'delivery_id' => $delivery->id,
                 'type' => 1,
-                'description' => "Pago parcial de {$this->amount} Bs a cuenta del contrato {$this->contract->cod}, referido a entrega N° {$delivery->id}. Saldo pendiente: ". ($this->balance - $this->amount) ."Bs.",
+                'description' => "Pago parcial de ". Number::format($this->amount, precision: 2) ." Bs a cuenta del contrato {$delivery->contract->cod}, referido a entrega N° {$delivery->id}. Saldo pendiente: ". Number::format(($this->balance - $this->amount), precision: 2) ." Bs.",
                 'account_id' => $this->contract->client->account->id,
                 'date' => $this->date,
-                'amount' => $this->amount
+                'amount' => $this->amount,
+                'assigned' => AssignedTransaction::PAYMENT
             ]);
         }
         return $this->redirect(route('dashboard.delivery'));
