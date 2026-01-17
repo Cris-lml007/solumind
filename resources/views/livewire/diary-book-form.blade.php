@@ -94,6 +94,9 @@
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-8"
                             wire:model.lazy="assigned" value="8">
                         <label class="btn btn-outline-primary" for="btn-check-8">Utilidad</label>
+                        <input type="radio" autocomplete="off" class="btn-check" id="btn-check-9"
+                            wire:model.lazy="assigned" value="9" @if($type != 1) disabled @endif>
+                        <label class="btn btn-outline-primary" for="btn-check-9">Percibir</label>
                     </div>
                 </div>
                 <div id="partner" @class(['w-100','mb-3','glow-border','p-2','d-none'=> $this->assigned != 8])>
@@ -112,7 +115,7 @@
                     <label>Importe</label>
                     <div class="input-group">
                         <input type="number"
-                            placeholder="{{ App\Models\Contract::where('id', $this->contract_id)->exists() && $this->type == 2 ? 'Total: ' . Number::format($this->balance, precision: 2) . ' Bs' : 'Ingrese Importe' }}"
+                               placeholder="{{ App\Models\Contract::where('id', $this->contract_id)->exists() && ($this->type == 2 || $this->assigned == 9) ? 'Total: ' . Number::format($this->balance, precision: 2) . ' Bs' : 'Ingrese Importe' }}"
                             wire:model.live="import" @class([
                                 'form-control',
                                 'bg-danger' =>
