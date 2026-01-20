@@ -1,6 +1,11 @@
+@if ($item->id != null)
 <x-slot name="path_dir">
+    <h1>{{ $title ?? 'Dashboard' }}</h1>
     <strong>Dashboard > Ensamblaje > {{ $alias . $code }}</strong>
 </x-slot>
+
+@endif
+
 
 <div>
     @if ($item->id == null)
