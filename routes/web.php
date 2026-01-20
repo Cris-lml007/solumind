@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PdfController;
 use App\Livewire\AccountForm;
 use App\Livewire\AssemblyForm;
+use App\Livewire\AssemblyView;
 use App\Livewire\CategoryForm;
 use App\Livewire\PartnerForm;
 use App\Livewire\ProductForm;
@@ -31,7 +32,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         Route::get('/','index')->name('dashboard.index');
         Route::get('supplier','supplier')->name('dashboard.supplier');
         Route::get('product','product')->name('dashboard.product');
-        Route::get('assembly','assembly')->name('dashboard.assembly');
+        //Route::get('assembly','assembly')->name('dashboard.assembly');
         Route::get('partner','partner')->name('dashboard.partner');
         Route::get('ledger','ledger')->name('dashboard.ledger');
         Route::get('delivery','delivery')->name('dashboard.delivery');
@@ -47,6 +48,12 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         Route::get('report','report')->name('dashboard.report');
         // Route::get('support','support')->name('dashboard.support');
     });
+
+    Route::get('assembly',AssemblyView::class)->name('dashboard.assembly');
+
+
+
+
     Route::get('supplier/{id}',SupplierForm::class)->name('dashboard.supplier.form');
     Route::get('product/{id}',ProductForm::class)->name('dashboard.product.form');
     Route::get('assembly/{code}',AssemblyForm::class)->name('dashboard.assembly.form');

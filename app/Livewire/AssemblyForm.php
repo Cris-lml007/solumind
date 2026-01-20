@@ -193,7 +193,13 @@ class AssemblyForm extends Component
         $this->item->name = $this->name;
         $this->item->category_id = $this->category;
         $this->item->save();
-        $this->redirect(route('dashboard.assembly'));
+        $this->item = new Item();
+
+        $this->code = '';
+        $this->name = '';
+        $this->category = null;
+        $this->dispatch('render')->to(AssemblyView::class);
+        // $this->redirect(route('dashboard.assembly'));
     }
 
     public function save(){
