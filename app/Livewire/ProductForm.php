@@ -153,7 +153,7 @@ class ProductForm extends Component
             $this->img->storeAs(path: '.', name: $this->product->cod,options: 'imgProduct');
         }
         session()->flash('message', 'Producto guardado exitosamente.');
-        return redirect()->route('dashboard.product');
+        return $this->redirect(route('dashboard.product'), navigate: true);
     }
 
     public function remove(){
@@ -161,7 +161,7 @@ class ProductForm extends Component
             abort('404');
         Storage::disk('imgProduct')->delete($this->product->cod);
         $this->product->delete();
-        $this->redirect(route('dashboard.product'));
+        $this->redirect(route('dashboard.product'), navigate: true);
     }
 
     public function render()
