@@ -241,7 +241,9 @@ class AssemblyForm extends Component
             $data,
             ['id']
         );
-        $this->redirect(route('dashboard.assembly'));
+        $this->redirect(route('dashboard.assembly'),navigate: true);
+        // $this->dispatch('render')->to(AssemblyView::class);
+        // redirect()->route('dashboard.assembly');
     }
 
     public function remove(){
@@ -249,7 +251,7 @@ class AssemblyForm extends Component
             abort('404');
         Storage::disk('imgProduct')->delete($this->item->cod);
         $this->item->delete();
-        $this->redirect(route('dashboard.assembly'));
+        $this->redirect(route('dashboard.assembly'), navigate: true);
     }
 
 

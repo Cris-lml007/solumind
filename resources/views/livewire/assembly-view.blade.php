@@ -21,7 +21,7 @@
                         <td><strong>{{ $item->name }}</strong><br></td>
                         <td><strong>{{ Illuminate\Support\Number::format($item->price + $item->extra, precision: 2) }}</strong>
                         </td>
-                        <td><a href="{{ route('dashboard.assembly.form', $item->cod) }}" class="btn btn-primary"><i
+                        <td><a wire:navigate href="{{ route('dashboard.assembly.form', $item->cod) }}" class="btn btn-primary"><i
                                     class="fa fa-ellipsis-v"></i></a>
                         </td>
                     </tr>
