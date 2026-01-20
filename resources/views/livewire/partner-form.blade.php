@@ -1,6 +1,10 @@
-<x-slot name="path_dir">Dashboard > Proveedores > {{ $ci }}</x-slot>
-
 <div>
+    @if ($partner->id != null)
+    <div class="mb-3">
+        <h1 style="color: #F7B924;">Información de Socio</h1>
+        <strong>Dashboard > Proveedores > {{ $ci }}</strong>
+    </div>
+    @endif
     <div class="modal-body">
         <h6><strong>Información Personal</strong></h6>
         <div class="d-flex">

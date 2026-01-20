@@ -97,14 +97,14 @@ class PartnerForm extends Component
                 'accountable_id' => $this->partner->id
             ]);
 
-        $this->redirect(route('dashboard.partner'));
+        $this->redirect(route('dashboard.partner'), navigate: true);
     }
 
     public function remove(){
         if(!Gate::allows('partner-permission',3))
             abort('404');
         $this->partner->delete();
-        $this->redirect(route('dashboard.partner'));
+        $this->redirect(route('dashboard.partner'), navigate: true);
     }
 
     public function payUtility(){
@@ -131,7 +131,7 @@ class PartnerForm extends Component
             'amount' => $this->pay_amount,
             'account_id' => $this->partner->account->id
         ]);
-        return $this->redirect(route('dashboard.partner.form',$this->partner->id));
+        return $this->redirect(route('dashboard.partner.form',$this->partner->id), navigate: true);
     }
 
     public function render()

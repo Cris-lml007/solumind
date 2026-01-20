@@ -14,6 +14,7 @@ use App\Livewire\ContractForm;
 use App\Livewire\DeliveryForm;
 use App\Livewire\DiaryBookForm;
 use App\Livewire\History;
+use App\Livewire\PartnerView;
 use App\Livewire\PersonForm;
 use App\Livewire\ProductView;
 use App\Livewire\SupplierView;
@@ -35,7 +36,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         // Route::get('supplier','supplier')->name('dashboard.supplier');
         // Route::get('product','product')->name('dashboard.product');
         //Route::get('assembly','assembly')->name('dashboard.assembly');
-        Route::get('partner','partner')->name('dashboard.partner');
+        // Route::get('partner','partner')->name('dashboard.partner');
         Route::get('ledger','ledger')->name('dashboard.ledger');
         Route::get('delivery','delivery')->name('dashboard.delivery');
 
@@ -54,6 +55,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('assembly',AssemblyView::class)->name('dashboard.assembly');
     Route::get('product',ProductView::class)->name('dashboard.product');
     Route::get('supplier',SupplierView::class)->name('dashboard.supplier');
+    Route::get('partner',PartnerView::class)->name('dashboard.partner');
 
 
 
