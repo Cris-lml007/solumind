@@ -1,12 +1,3 @@
-@if ($item->id != null)
-<x-slot name="path_dir">
-    <h1>{{ $title ?? 'Dashboard' }}</h1>
-    <strong>Dashboard > Ensamblaje > {{ $alias . $code }}</strong>
-</x-slot>
-
-@endif
-
-
 <div>
     @if ($item->id == null)
         <div class="modal-body">
@@ -53,7 +44,11 @@
                 <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             @endcan
         </div>
-    @else
+        @else
+        <div class="mb-3">
+            <h1 style="color: #F7B924;">Ensamblaje</h1>
+            <strong>Dashboard > Ensamblaje > {{ $alias . $code }}</strong>
+        </div>
         <div>
             <div class="d-flex">
                 <div style="width: 50%;">
