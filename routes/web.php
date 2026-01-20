@@ -16,6 +16,7 @@ use App\Livewire\DiaryBookForm;
 use App\Livewire\History;
 use App\Livewire\PersonForm;
 use App\Livewire\ProductView;
+use App\Livewire\SupplierView;
 use App\Livewire\Userform;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,7 @@ Auth::routes();
 Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::controller(DashboardController::class)->group(function(){
         Route::get('/','index')->name('dashboard.index');
-        Route::get('supplier','supplier')->name('dashboard.supplier');
+        // Route::get('supplier','supplier')->name('dashboard.supplier');
         // Route::get('product','product')->name('dashboard.product');
         //Route::get('assembly','assembly')->name('dashboard.assembly');
         Route::get('partner','partner')->name('dashboard.partner');
@@ -51,7 +52,8 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     });
 
     Route::get('assembly',AssemblyView::class)->name('dashboard.assembly');
-        Route::get('product',ProductView::class)->name('dashboard.product');
+    Route::get('product',ProductView::class)->name('dashboard.product');
+    Route::get('supplier',SupplierView::class)->name('dashboard.supplier');
 
 
 

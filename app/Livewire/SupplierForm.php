@@ -114,14 +114,14 @@ class SupplierForm extends Component
                 'accountable_type' => Supplier::class,
                 'accountable_id' => $this->supplier->id
             ]);
-        $this->redirect(route('dashboard.supplier'));
+        $this->redirect(route('dashboard.supplier'), navigate: true);
     }
 
     public function remove(){
         if(!Gate::allows('supplier-permission',3))
             abort('404');
         $this->supplier->delete();
-        $this->redirect(route('dashboard.supplier'));
+        $this->redirect(route('dashboard.supplier'), navigate: true);
     }
 
     public function render()
