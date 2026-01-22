@@ -24,8 +24,11 @@
                         $t_income += $item->type == 1 ? $item->amount : 0;
                         $t_expense += $item->type == 2 ? $item->amount : 0;
                     @endphp
-                    <tr onclick="edit({{ $item->id }})" class="item-table">
-                        <td>{{ $item->id }}</td>
+                    <tr>
+                        <td>
+                            <a href="{{ route('dashboard.diary_book.form',$item->id) }}" wire:navigate class="stretched-link"></a>
+                            {{ $item->id }}
+                        </td>
                         <td class="col-fecha">{{ Carbon\Carbon::parse($item->date)->toDateString() }}</td>
                         <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
                         </td>
@@ -33,7 +36,7 @@
                         </td>
                         <td>{{ $item->description }}</td>
                         <td>{{ $item->contract->cod ?? '' }}</td>
-                        <td>{{ __('messages.'.$item->assigned->name) }}</td>
+                        <td>{{ __('messages.' . $item->assigned->name) }}</td>
                         <td>{{ $item->account->name ?? '' }}</td>
                     </tr>
                 @endforeach
@@ -55,6 +58,15 @@
                     </tr>
                 </tfoot>
             </x-adminlte.tool.datatable>
+            <div class="d-flex justify-content-end">
+                <div class="d-flex align-items-center mb-2">
+                    <button id="prev-page" class="btn btn-primary me-2">Anterior</button>
+                    <input type="number" id="page-number" min="1" value="1"
+                        style="width: 60px; text-align:center;">
+                    <button id="next-page" class="btn btn-primary ms-2">Siguiente</button>
+                    <span id="total-pages" class="ms-2"></span>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -83,176 +95,178 @@
 
 
 @push('js')
+    <!-- DataTables principal -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script>
 
-<!-- DataTables principal -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css">
-<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script>
+    <!-- Extensiones de Buttons -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap4.min.js"></script>
 
-<!-- Extensiones de Buttons -->
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap4.min.css">
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap4.min.js"></script>
+    <!-- Dependencias para exportar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 
-<!-- Dependencias para exportar -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <!-- Botones de exportación -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
 
-<!-- Botones de exportación -->
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
-
-<!-- Plugin de paginación con input -->
-<script src="https://cdn.datatables.net/plug-ins/1.13.8/pagination/input.js"></script>
-
+    <!-- Plugin de paginación con input -->
+    <script src="https://cdn.datatables.net/plug-ins/1.13.8/pagination/input.js"></script>
 
 
 
-<!-- DataTables actualizado -->
-{{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css"> --}}
-{{-- <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script> --}}
-{{-- <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script> --}}
-{{-- <script src="https://cdn.datatables.net/plug-ins/1.13.8/pagination/input.js"></script> --}}
 
-<style>
+    <!-- DataTables actualizado -->
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap4.min.css"> --}}
+    {{-- <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script> --}}
+    {{-- <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap4.min.js"></script> --}}
+    {{-- <script src="https://cdn.datatables.net/plug-ins/1.13.8/pagination/input.js"></script> --}}
+
+    <style>
+        .col-fecha {
+            width: 120px;
+            white-space: nowrap;
+        }
 
 
-.col-fecha {
-    width: 120px;
-    white-space: nowrap;
-}
+        /* Contenedor principal de la paginación */
+        .dataTables_paginate {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            /* alinea a la derecha (como DataTables por defecto) */
+            flex-wrap: wrap;
+            gap: 6px;
+            /* espacio entre elementos */
+            margin-top: 0.5rem;
+        }
 
+        /* Botones de paginación */
+        .page-item,
+        .paginate_button {
+            cursor: pointer;
+            background-color: #F7B924;
+            color: black !important;
+            border-radius: 5px;
+            border: 1px solid white;
+            padding: 5px 10px;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
 
-/* Contenedor principal de la paginación */
-.dataTables_paginate {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end; /* alinea a la derecha (como DataTables por defecto) */
-    flex-wrap: wrap;
-    gap: 6px; /* espacio entre elementos */
-    margin-top: 0.5rem;
-}
+        .paginate_button:hover:not(.disabled),
+        .page-item:hover:not(.disabled) {
+            background-color: #ffca3a;
+        }
 
-/* Botones de paginación */
-.page-item,
-.paginate_button {
-    cursor: pointer;
-    background-color: #F7B924;
-    color: black !important;
-    border-radius: 5px;
-    border: 1px solid white;
-    padding: 5px 10px;
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-}
+        .paginate_button.disabled,
+        .page-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
-.paginate_button:hover:not(.disabled),
-.page-item:hover:not(.disabled) {
-    background-color: #ffca3a;
-}
+        /* Input de número de página */
+        .paginate_input {
+            width: 60px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+            outline: none;
+            font-weight: 500;
+        }
 
-.paginate_button.disabled,
-.page-item.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
+        .paginate_input:focus {
+            border-color: #F7B924;
+            box-shadow: 0 0 3px #f7b924aa;
+        }
 
-/* Input de número de página */
-.paginate_input {
-    width: 60px;
-    text-align: center;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 5px;
-    outline: none;
-    font-weight: 500;
-}
+        /* Texto "Page", "of", etc. */
+        .dataTables_paginate span {
+            font-weight: 500;
+            color: #333;
+        }
 
-.paginate_input:focus {
-    border-color: #F7B924;
-    box-shadow: 0 0 3px #f7b924aa;
-}
+        /* Alineación del bloque informativo (opcional, para mantenerlo junto) */
+        .dataTables_info {
+            margin-right: auto;
+            align-self: center;
+            font-size: 0.9rem;
+            color: #555;
+        }
 
-/* Texto "Page", "of", etc. */
-.dataTables_paginate span {
-    font-weight: 500;
-    color: #333;
-}
+        @media (max-width: 768px) {
 
-/* Alineación del bloque informativo (opcional, para mantenerlo junto) */
-.dataTables_info {
-    margin-right: auto;
-    align-self: center;
-    font-size: 0.9rem;
-    color: #555;
-}
+            /* Contenedor principal: línea horizontal con scroll */
+            .dataTables_paginate {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 6px;
+                overflow-x: auto;
+                padding: 6px 0;
+                scrollbar-width: thin;
+                scrollbar-color: #F7B924 transparent;
+            }
 
-@media (max-width: 768px) {
-    /* Contenedor principal: línea horizontal con scroll */
-    .dataTables_paginate {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 6px;
-        overflow-x: auto;
-        padding: 6px 0;
-        scrollbar-width: thin;
-        scrollbar-color: #F7B924 transparent;
-    }
+            /* Mejora el desplazamiento en móviles */
+            .dataTables_paginate::-webkit-scrollbar {
+                height: 6px;
+            }
 
-    /* Mejora el desplazamiento en móviles */
-    .dataTables_paginate::-webkit-scrollbar {
-        height: 6px;
-    }
-    .dataTables_paginate::-webkit-scrollbar-thumb {
-        background-color: #F7B924;
-        border-radius: 4px;
-    }
+            .dataTables_paginate::-webkit-scrollbar-thumb {
+                background-color: #F7B924;
+                border-radius: 4px;
+            }
 
-    /* Elementos en línea */
-    .dataTables_paginate span,
-    .dataTables_paginate .paginate_input,
-    .dataTables_paginate .paginate_button {
-        flex: 0 0 auto;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 2px;
-    }
+            /* Elementos en línea */
+            .dataTables_paginate span,
+            .dataTables_paginate .paginate_input,
+            .dataTables_paginate .paginate_button {
+                flex: 0 0 auto;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 2px;
+            }
 
-    /* Texto informativo arriba y centrado */
-    .dataTables_info {
-        text-align: center;
-        width: 100%;
-        margin-bottom: 8px;
-        font-size: 0.85rem;
-    }
+            /* Texto informativo arriba y centrado */
+            .dataTables_info {
+                text-align: center;
+                width: 100%;
+                margin-bottom: 8px;
+                font-size: 0.85rem;
+            }
 
-    /* Ajustes visuales */
-    .paginate_input {
-        width: 45px;
-        font-size: 0.9rem;
-        padding: 4px;
-    }
+            /* Ajustes visuales */
+            .paginate_input {
+                width: 45px;
+                font-size: 0.9rem;
+                padding: 4px;
+            }
 
-    .paginate_button,
-    .page-item {
-        font-size: 0.9rem;
-        padding: 4px 8px;
-    }
-}
-</style>
+            .paginate_button,
+            .page-item {
+                font-size: 0.9rem;
+                padding: 4px 8px;
+            }
+        }
+    </style>
 
     <script>
         $(document).ready(function() {
             $('#table-diary').DataTable().destroy();
 
-            $('#table-diary').DataTable({
+            const table = $('#table-diary').DataTable({
                 order: [0, 'desc'],
-                pagingType: 'input',
-                dom: 'Bfrtip',
+                {{-- pagingType: 'input', --}}
+                {{-- paging: false, --}}
+                dom: 'Bfrti',
                 buttons: [{
                         extend: 'pdfHtml5',
                         text: '<i class="fas fa-file-pdf"></i> PDF',
@@ -317,6 +331,47 @@
                         }
                     }
                 ]
+            });
+            const $input = $('#page-number');
+            const $total = $('#total-pages');
+
+            // --- Función para actualizar input y total ---
+            function updatePageInput() {
+                const info = table.page.info();
+                $input.val(info.page + 1); // páginas son 0-indexadas
+                $total.text('/ ' + info.pages);
+            }
+
+            updatePageInput(); // inicial
+
+            // --- Input cambia ---
+            $input.on('change', function() {
+                let page = parseInt($input.val(), 10) - 1;
+                const info = table.page.info();
+                if (isNaN(page) || page < 0) page = 0;
+                if (page >= info.pages) page = info.pages - 1;
+                table.page(page).draw(false);
+            });
+
+            // --- Botón anterior ---
+            $('#prev-page').on('click', function() {
+                const info = table.page.info();
+                let page = table.page() - 1;
+                if (page < 0) page = 0;
+                table.page(page).draw(false);
+            });
+
+            // --- Botón siguiente ---
+            $('#next-page').on('click', function() {
+                const info = table.page.info();
+                let page = table.page() + 1;
+                if (page >= info.pages) page = info.pages - 1;
+                table.page(page).draw(false);
+            });
+
+            // --- Detectar cambio de página con DataTables (scroll/input manual, botones de DataTable) ---
+            table.on('page.dt', function() {
+                updatePageInput();
             });
         });
     </script>

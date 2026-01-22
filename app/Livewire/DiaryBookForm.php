@@ -108,7 +108,7 @@ class DiaryBookForm extends Component
         if(!Gate::allows('transaction-permission',3))
             abort('404');
         $this->transaction->delete();
-        $this->redirect(route('dashboard.diary_book'));
+        $this->redirect(route('dashboard.diary_book'),navigate: true);
     }
 
     public function updatedPartnerId(){
@@ -210,7 +210,7 @@ class DiaryBookForm extends Component
             $this->transaction->contract_partner_id = ContractPartner::where('contract_id',$this->contract_id)->where('partner_id',$this->partner_id)->first()->id;
             $this->transaction->save();
         }
-        $this->redirect(route('dashboard.diary_book'));
+        $this->redirect(route('dashboard.diary_book'), navigate: true);
     }
 
     public function render()
