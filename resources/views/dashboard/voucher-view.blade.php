@@ -88,7 +88,7 @@
                                 </td>
                                 {{-- <td class="text-right"><strong>{{ number_format($item->total, 2, ',', '.') }}</strong></td> --}}
                                 <td>
-                                    <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
+                                    <a wire:navigate href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
                                             class="fa fa-ellipsis-v"></i></a>
                                     <a target="_blank" class="btn btn-secondary"
                                         href="{{ route('dashboard.proof.form.pdf', $item->id) }}"><i
@@ -117,7 +117,7 @@
                                         class="badge {{ $item->status->value == 3 || $item->status->value == 5 ? 'badge-success' : 'badge-danger' }}">{{ __('messages.' . $item->status->name) }}</span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
+                                    <a wire:navigate href="{{ route('dashboard.proof.form', $item->id) }}" class="btn btn-primary"><i
                                             class="fa fa-ellipsis-v"></i></a>
                                     <a target="_blank" class="btn btn-secondary"
                                         href="{{ route('dashboard.proof.form.pdf', $item->id) }}"><i

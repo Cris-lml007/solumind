@@ -444,7 +444,7 @@
                         $te = 0;
                     @endphp
                     <h5 class="my-3"><strong> Movimientos Libro Diario</strong></h5>
-                    <x-adminlte.tool.datatable id="table-transactions" :heads="['ID', 'Fecha', 'Ingreso (Bs)', 'Egreso (Bs)', 'Descripctión', 'a Fondo','a Cuenta']">
+                    <x-adminlte.tool.datatable id="table-transactions" :heads="['ID', 'Fecha', 'Ingreso (Bs)', 'Egreso (Bs)', 'Descripctión', 'a Fondo', 'a Cuenta']">
                         @foreach ($transactions as $item)
                             @php
                                 $ti += $item->type == 1 ? $item->amount : 0;
@@ -458,7 +458,7 @@
                                 <td>{{ $item->type == 2 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
                                 </td>
                                 <td>{{ $item->description }}</td>
-                                <td>{{ __('messages.'.$item->assigned->name) }}</td>
+                                <td>{{ __('messages.' . $item->assigned->name) }}</td>
                                 <td>{{ $item->account->name }}</td>
                             </tr>
                         @endforeach
@@ -903,47 +903,48 @@
                     destroy: true
                 })
 
-                $(document).ready(function() {
-                    $('#table-transactions').DataTable({
-                        footerCallback: function(row, data, start, end, display) {
-                            var api = this.api();
+                // $(document).ready(function() {
+                $('#table-transactions').DataTable({
+                    destroy: true,
+                    footerCallback: function(row, data, start, end, display) {
+                        var api = this.api();
 
-                            var intVal = function(i) {
-                                return typeof i === 'string' ?
-                                    i.replace(/[\$,]/g, '') * 1 :
-                                    typeof i === 'number' ?
-                                    i : 0;
-                            };
+                        var intVal = function(i) {
+                            return typeof i === 'string' ?
+                                i.replace(/[\$,]/g, '') * 1 :
+                                typeof i === 'number' ?
+                                i : 0;
+                        };
 
-                            var totalIngresos = api
-                                .column(2, {
-                                    page: 'current'
-                                })
-                                .data()
-                                .reduce(function(a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0);
+                        var totalIngresos = api
+                            .column(2, {
+                                page: 'current'
+                            })
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
 
-                            var totalEgresos = api
-                                .column(3, {
-                                    page: 'current'
-                                })
-                                .data()
-                                .reduce(function(a, b) {
-                                    return intVal(a) + intVal(b);
-                                }, 0);
+                        var totalEgresos = api
+                            .column(3, {
+                                page: 'current'
+                            })
+                            .data()
+                            .reduce(function(a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
 
-                            $(api.column(2).footer()).html(new Intl.NumberFormat("en-EN", {
-                                style: "currency",
-                                currency: "BOB"
-                            }).format(totalIngresos).slice(4) + ' Bs');
-                            $(api.column(3).footer()).html(new Intl.NumberFormat("en-EN", {
-                                style: "currency",
-                                currency: "BOB"
-                            }).format(totalEgresos).slice(4) + ' Bs');
-                        }
-                    });
+                        $(api.column(2).footer()).html(new Intl.NumberFormat("en-EN", {
+                            style: "currency",
+                            currency: "BOB"
+                        }).format(totalIngresos).slice(4) + ' Bs');
+                        $(api.column(3).footer()).html(new Intl.NumberFormat("en-EN", {
+                            style: "currency",
+                            currency: "BOB"
+                        }).format(totalEgresos).slice(4) + ' Bs');
+                    }
                 });
+                // });
             })
 
             document.getElementById('btn-searchable').addEventListener('click', () => {

@@ -1,6 +1,4 @@
-@extends('adminlte::page')
-@section('title', 'Entregas')
-@section('content')
+<div>
     <div class="d-flex justify-content-between mb-3 p-0" style="align-items: center;">
         <div>
             <h1 class="m-0">Lista de Entregas</h1>
@@ -16,7 +14,7 @@
             <x-adminlte.tool.datatable id="table" :heads="$heads" :config="['order' => [0, 'desc']]">
                 @foreach ($data as $item)
                     @php
-                    $amount = 0;
+                        $amount = 0;
                         if ($item->is_canceled == 1) {
                             foreach ($item->detail_contract as $item1) {
                                 $amount += $item1->sale_price * $item1->pivot->quantity;
@@ -34,11 +32,11 @@
                             <td>
                                 <a target="_blank" href="{{ route('dashboard.delivery.pdf', $item->id) }}"
                                     class="btn btn-primary"><i class="fa fa-file"></i></a>
-                                <button onclick="remove({{ $item->id }})" class="btn btn-danger"><i
+                                <button wire:click="remove({{ $item->id }})" class="btn btn-danger"><i
                                         class="fa fa-trash"></i></button>
                                 @if ($item->is_canceled == 1 && $item->contract->status->value == 3)
-                                    <a href="{{ route('dashboard.delivery.form', $item->id) }}" class="btn btn-secondary"><i
-                                            class="fa fa-pen"></i></a>
+                                    <a wire:navigate href="{{ route('dashboard.delivery.form', $item->id) }}"
+                                        class="btn btn-secondary"><i class="fa fa-pen"></i></a>
                                 @endif
                             </td>
                         @else
@@ -53,11 +51,11 @@
     <x-modal id="modal" class="modal-lg" title="Registrar Entrega">
         <livewire:delivery-form></livewire:delivery-form>
     </x-modal>
-@endsection
+</div>
 
-@section('js')
+@script
     <script>
-        function remove(id) {
+        $wire.on('deliveryDeleted', (id) => {
             window.Swal.fire({
                 title: "Esta Seguro?...",
                 icon: 'warning',
@@ -65,13 +63,26 @@
                 showCancelButton: true,
                 confirmButtonColor: "green",
                 cancelButtonColor: "red",
+                inputLabel: 'Ingrese su contraseña',
+                input: 'password',
                 confirmButtonText: "¡Sí, bórralo!",
-                cancelButtonText: "Cancelar"
-        }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.replace("{{ route('dashboard.delivery.remove') }}" + '/' + id);
+                cancelButtonText: "Cancelar",
+                preConfirm: async (password) => {
+                    return $wire.valideWithPassword(password)
+                        .then(result => {
+                            if (!result.success) {
+                                throw new Error(result.message || 'Error al validar');
+                            } else {
+                                $wire.removeDelivery(id);
+                            }
+                        })
+                        .catch(error => {
+                            Swal.showValidationMessage(`Error: ${error.message}`);
+                        });
                 }
-            });
-        }
+            })
+        })
+
+        function remove(id) {}
     </script>
-@endsection
+@endscript

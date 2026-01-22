@@ -110,7 +110,7 @@ class DeliveryForm extends Component
             'amount' => $this->amount,
             'assigned' => AssignedTransaction::PAYMENT
         ]);
-        return $this->redirect(route('dashboard.delivery'));
+        return $this->redirect(route('dashboard.delivery'), navigate: true);
     }
 
     public function updatedContractCod(){
@@ -228,7 +228,7 @@ class DeliveryForm extends Component
                 'assigned' => AssignedTransaction::PAYMENT
             ]);
         }
-        return $this->redirect(route('dashboard.delivery'));
+        return $this->redirect(route('dashboard.delivery'), navigate:true);
     }
 
 

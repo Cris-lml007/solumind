@@ -289,7 +289,7 @@ class ContractForm extends Component
         $this->contract->client_id = $this->searchable_item;
         $this->contract->description = $this->description;
         $this->contract->save();
-        $this->redirect(route('dashboard.proof'));
+        $this->redirect(route('dashboard.proof'), navigate:true);
     }
 
     public function save(){
@@ -406,7 +406,7 @@ class ContractForm extends Component
             abort('404');
         $this->contract->status = StatusContract::CONTRACT->value;
         $this->contract->save();
-        $this->redirect(route('dashboard.proof'));
+        $this->redirect(route('dashboard.proof'), navigate: true);
     }
 
     public function finish(){
@@ -415,7 +415,7 @@ class ContractForm extends Component
         $this->contract->status = StatusContract::CONTRACT_COMPLETE->value;
         $this->contract->date_finish = Carbon::now();
         $this->contract->save();
-        $this->redirect(route('dashboard.proof'));
+        $this->redirect(route('dashboard.proof'), navigate: true);
     }
 
     public function proofFail(){
@@ -423,7 +423,7 @@ class ContractForm extends Component
             abort('404');
         $this->contract->status = StatusContract::PROFORMA_FAIL->value;
         $this->contract->save();
-        $this->redirect(route('dashboard.proof'));
+        $this->redirect(route('dashboard.proof'), navigate: true);
     }
 
     public function contractFail(){
@@ -431,7 +431,7 @@ class ContractForm extends Component
             abort('404');
         $this->contract->status = StatusContract::CONTRACT_FAIL->value;
         $this->contract->save();
-        $this->redirect(route('dashboard.proof'));
+        $this->redirect(route('dashboard.proof'), navigate: true);
     }
 
 
@@ -439,7 +439,7 @@ class ContractForm extends Component
         if(!Gate::allows('voucher-permission',3))
             abort('404');
         $this->contract->delete();
-        $this->redirect(route('dashboard.proof'));
+        $this->redirect(route('dashboard.proof'), navigate: true);
     }
 
     public function delete($id){
