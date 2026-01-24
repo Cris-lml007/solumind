@@ -5,7 +5,10 @@
                 <div class="d-flex">
                     <div class="w-50">
                         <label>Fecha</label>
-                        <input type="date" class="form-control" wire:model="date">
+                        <div class="input-group">
+                            <input type="date" class="form-control" wire:model="date">
+                            <button class="btn btn-primary" wire:click="setNow()">Hoy</button>
+                        </div>
                         <div class="text-danger" style="height: 20px;">
                             @error('date')
                                 {{ $message }}
@@ -95,16 +98,24 @@
                             wire:model.lazy="assigned" value="8">
                         <label class="btn btn-outline-primary" for="btn-check-8">Utilidad</label>
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-9"
-                            wire:model.lazy="assigned" value="9" @if($type != 1) disabled @endif>
+                            wire:model.lazy="assigned" value="9"
+                            @if ($type != 1) disabled @endif>
                         <label class="btn btn-outline-primary" for="btn-check-9">Percibir</label>
                     </div>
                 </div>
-                <div id="partner" @class(['w-100','mb-3','glow-border','p-2','d-none'=> $this->assigned != 8])>
+                <div id="partner" @class([
+                    'w-100',
+                    'mb-3',
+                    'glow-border',
+                    'p-2',
+                    'd-none' => $this->assigned != 8,
+                ])>
                     <label>Socio</label>
                     <select class="form-select" wire:model.live="partner_id">
                         <option>Seleccione Socio</option>
                         @foreach ($partners as $item)
-                            <option value="{{ $item->id }}">{{ $item->person->name . ' - '.$item->organization }}</option>
+                            <option value="{{ $item->id }}">{{ $item->person->name . ' - ' . $item->organization }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -115,7 +126,7 @@
                     <label>Importe</label>
                     <div class="input-group">
                         <input type="number"
-                               placeholder="{{ App\Models\Contract::where('id', $this->contract_id)->exists() && ($this->type == 2 || $this->assigned == 9) ? 'Total: ' . Number::format($this->balance, precision: 2) . ' Bs' : 'Ingrese Importe' }}"
+                            placeholder="{{ App\Models\Contract::where('id', $this->contract_id)->exists() && ($this->type == 2 || $this->assigned == 9) ? 'Total: ' . Number::format($this->balance, precision: 2) . ' Bs' : 'Ingrese Importe' }}"
                             wire:model.live="import" @class([
                                 'form-control',
                                 'bg-danger' =>
@@ -144,7 +155,7 @@
             </div>
             <label>Cuenta</label>
             <div class="input-group">
-                <select class="form-select" wire:model="account_id" @if($assigned == 8) disabled @endif>
+                <select class="form-select" wire:model="account_id" @if ($assigned == 8) disabled @endif>
                     <option>Selecione una cuenta</option>
                     @foreach ($accounts as $item)
                         <option value="{{ $item->id }}">{{ $item->name }}</option>

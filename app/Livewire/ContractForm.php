@@ -114,6 +114,18 @@ class ContractForm extends Component
         }
     }
 
+
+    public function setDeliveryNow(){
+        $this->delivery = Carbon::now()->format('Y-m-d');
+    }
+
+    public function setAproveNow(){
+        $this->date_aprove = Carbon::now()->format('Y-m-d');
+    }
+
+
+
+
     public function updatedPurchasePrice(){
         try{
             $this->purchase_price = Number::parse($this->purchase_price);

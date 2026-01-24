@@ -19,8 +19,11 @@
             </div>
             <div class="w-50 ms-1">
                 <label for="">Fecha</label>
-                <input type="date" class="form-control" wire:model="date"
-                    @if ($edit == 1) disabled @endif>
+                <div class="input-group">
+                    <input type="date" class="form-control" wire:model="date"
+                                       @if ($edit == 1) disabled @endif>
+                    <button class="btn btn-primary" wire:click="setNow">Hoy</button>
+                </div>
                 <div class="date" style="height: 20px;">
                     @error('email')
                         {{ $message }}

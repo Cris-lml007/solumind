@@ -54,6 +54,11 @@ class DiaryBookForm extends Component
     public $partner_id = null;
     public $partners = [];
 
+
+    public function setNow(){
+        $this->date = Carbon::now()->format('Y-m-d');
+    }
+
     public function updatedSearchContract(){
         if(!empty($this->search_contract)){
             $this->contracts = Contract::where('cod','like',$this->search_contract.'%')->get();

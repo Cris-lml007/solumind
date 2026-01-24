@@ -45,6 +45,10 @@ class DeliveryForm extends Component
 
     public $search_product;
 
+    public function setNow(){
+        $this->date = Carbon::now()->format('Y-m-d');
+    }
+
     public function updatedSearchProduct(){
         if(!empty($this->search_product)){
             $this->products = $this->contract->detail_contract()->whereHas('detailable', function($query){
