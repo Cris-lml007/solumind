@@ -51,7 +51,7 @@
                 <div style="width: 50%; margin-left: 10px;">
                     <label for="price">Precio (Bs)</label>
                     <input type="number" name="price" class="form-control mb-1"
-                        placeholder="Ingrese precio del producto" wire:model="price">
+                        placeholder="Ingrese precio del producto" wire:model.live="price">
                     <div class="text-danger" style="height: 20px;">
                         @error('price')
                             {{ $message }}
@@ -67,7 +67,7 @@
                             @endforeach
                         </select>
                         <span class="input-group-text" style="height: 38px;">{{ $alias }}</span>
-                        <input type="text" class="form-control" wire:model="cod">
+                        <input type="text" class="form-control" wire:model.live="cod">
                     </div>
                     <div class="text-danger" style="height: 20px;">
                         @error('category')
@@ -81,15 +81,15 @@
             </div>
             <div>
                 <label for="description">Unidad de Medida</label>
-                <input type="text" class="form-control" wire:model="unit">
+                <input type="text" class="form-control" wire:model.live="unit">
                 <label for="description">Descripción</label>
                 <textarea class="form-control mb-1" name="description" rows="3" placeholder="Ingrese descripción del producto"
-                    wire:model="description"></textarea>
+                    wire:model.live="description"></textarea>
             </div>
             <h6><strong>Imagen del Producto</strong></h6>
             <div class="d-flex">
                 <div style="width: 100%;">
-                    <input type="file" name="image1" class="form-control mb-1" wire:model="img">
+                    <input type="file" name="image1" class="form-control mb-1" wire:model.live="img">
                 </div>
             </div>
             @if (!empty($product->id))
@@ -143,7 +143,7 @@
                     </div>
                     <label for="price">Precio (Bs)</label>
                     <input type="number" name="price" class="form-control mb-1"
-                        placeholder="Ingrese precio del producto" wire:model="price">
+                        placeholder="Ingrese precio del producto" wire:model.live="price">
                     <div class="text-danger" style="height: 20px;">
                         @error('price')
                             {{ $message }}
@@ -160,7 +160,7 @@
                             @endforeach
                         </select>
                         <span class="input-group-text" style="height: 38px;">{{ $alias }}</span>
-                        <input type="text" class="form-control" wire:model="cod">
+                        <input type="text" class="form-control" wire:model.live="cod">
                     </div>
                     <div class="text-danger" style="height: 20px;">
                         @error('category')
@@ -171,13 +171,13 @@
                         @enderror
                     </div>
                     <label for="description">Unidad de Medida</label>
-                    <input type="text" class="form-control" wire:model="unit">
+                    <input type="text" class="form-control" wire:model.live="unit">
                 </div>
                 <div style="width: 50%; margin-left: 10px;">
                     <label>Imagen del Producto</label>
                     <div class="d-flex">
                         <div style="width: 100%;">
-                            <input type="file" name="image1" class="form-control mb-1" wire:model="img">
+                            <input type="file" name="image1" class="form-control mb-1" wire:model.live="img">
                         </div>
                     </div>
 

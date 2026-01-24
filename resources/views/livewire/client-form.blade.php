@@ -12,7 +12,7 @@
                 </div>
                 <label for="email">Correo</label>
                 <input type="email" name="email" class="form-control mb-1" placeholder="Ingrese correo"
-                    wire:model="email">
+                    wire:model.live="email">
                 <div class="text-danger" style="height: 20px;">
                     @error('email')
                         {{ $message }}
@@ -22,7 +22,7 @@
             <div style="width: 50%; margin-left: 10px;">
                 <label for="name">Nombre Completo</label>
                 <input type="text" name="name" class="form-control mb-1" placeholder="Ingrese nombre completo"
-                    wire:model="name">
+                    wire:model.live="name">
                 <div class="text-danger" style="height: 20px;">
                     @error('name')
                         {{ $message }}
@@ -30,7 +30,7 @@
                 </div>
                 <label for="phone">Celular</label>
                 <input type="tel" name="phone" class="form-control mb-1" placeholder="Ingrese número de celular"
-                    wire:model="phone">
+                    wire:model.live="phone">
                 <div class="text-danger" style="height: 20px;">
                     @error('phone')
                         {{ $message }}
@@ -42,7 +42,7 @@
         <div class="d-flex">
             <div class="w-50">
                 <label for="nit">NIT</label>
-                <input type="text" class="form-control mb-1" wire:model="nit" name="nit">
+                <input type="text" class="form-control mb-1" wire:model.live="nit" name="nit">
                 <div class="text-danger" style="height: 20px;">
                     @error('nit')
                         {{ $message }}
@@ -51,7 +51,7 @@
             </div>
             <div class="w-50 ms-1">
                 <label for="organization">Nombre de Organización</label>
-                <input wire:model.defer="organization" type="text" class="form-control mb-1"
+                <input wire:model="organization" type="text" class="form-control mb-1"
                     placeholder="Ingrese nombre de organización" name="organization">
                 <div class="text-danger" style="height: 20px;">
                     @error('organization')
@@ -64,12 +64,12 @@
             <div class="w-50">
                 <label for="email">Correo</label>
                 <input type="email" name="email" class="form-control mb-3" placeholder="Ingrese correo"
-                    wire:model="bussiness_email">
+                    wire:model.live="bussiness_email">
             </div>
             <div class="w-50 ms-1">
                 <label for="phone">Celular</label>
                 <input type="tel" name="phone" class="form-control mb-3" placeholder="Ingrese número de celular"
-                    wire:model="bussiness_phone">
+                    wire:model.live="bussiness_phone">
             </div>
         </div>
     </div>

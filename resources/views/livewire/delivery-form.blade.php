@@ -20,7 +20,7 @@
             <div class="w-50 ms-1">
                 <label for="">Fecha</label>
                 <div class="input-group">
-                    <input type="date" class="form-control" wire:model="date"
+                    <input type="date" class="form-control" wire:model.live="date"
                                        @if ($edit == 1) disabled @endif>
                     <button class="btn btn-primary" wire:click="setNow">Hoy</button>
                 </div>
@@ -34,7 +34,7 @@
         <div class="d-flex">
             <div class="w-50">
                 <label for="">Recibido por</label>
-                <input type="text" class="form-control" wire:model="receiver_by"
+                <input type="text" class="form-control" wire:model.live="receiver_by"
                     @if ($edit == 1) disabled @endif>
                 <div class="text-danger" style="height: 20px;">
                     @error('receiver_by')
@@ -45,7 +45,7 @@
             <div class="w-50 ms-1">
                 <label for="">Importe</label>
                 <div class="input-group">
-                    <input type="number" class="form-control" placeholder="Ingrese importe" wire:model="amount">
+                    <input type="number" class="form-control" placeholder="Ingrese importe" wire:model.live="amount">
                     <span class="input-group-text">Bs</span>
                 </div>
                 <div class="text-danger" style="height: 20px;">
@@ -112,7 +112,7 @@
                     <label for="">Cantidad</label>
                     <div class="input-group">
                         <input type="number" class="form-control" placeholder="max: {{ $max_quantity }}"
-                            wire:model="quantity" @if ($edit == 1) disabled @endif>
+                            wire:model.live="quantity" @if ($edit == 1) disabled @endif>
                         <button wire:click="add" class="btn btn-primary"
                             @if ($edit == 1) disabled @endif><i class="fa fa-plus"></i> Añadir</button>
                     </div>
@@ -150,7 +150,7 @@
             @can('delivery-permission', 3)
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault"
-                        wire:model="is_canceled">
+                        wire:model.live="is_canceled">
                     <label class="form-check-label" for="switchCheckDefault">Cobrado</label>
                 </div>
                 <button class="btn btn-primary" wire:click="save">Guardar</button>

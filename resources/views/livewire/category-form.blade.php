@@ -3,7 +3,7 @@
         <div class="d-flex">
             <div class="w-50">
                 <label for="alias">Identificador</label>
-                <input type="text" class="form-control" wire:model="alias">
+                <input type="text" class="form-control" wire:model.live="alias">
                 <div class="text-danger" style="height: 20px;">
                     @error('alias')
                         {{ $message }}
@@ -12,7 +12,7 @@
             </div>
             <div class="w-50 ms-1">
                 <label for="alias">Nombre</label>
-                <input type="text" class="form-control" wire:model="name">
+                <input type="text" class="form-control" wire:model.live="name">
                 <div class="text-danger" style="height: 20px;">
                     @error('name')
                         {{ $message }}

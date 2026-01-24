@@ -6,7 +6,7 @@
                     <div class="w-50">
                         <label>Fecha</label>
                         <div class="input-group">
-                            <input type="date" class="form-control" wire:model="date">
+                            <input type="date" class="form-control" wire:model.live="date">
                             <button class="btn btn-primary" wire:click="setNow()">Hoy</button>
                         </div>
                         <div class="text-danger" style="height: 20px;">
@@ -17,7 +17,7 @@
                     </div>
                     <div class="w-50 ms-1">
                         <label>Tipo</label>
-                        <select class="form-select" wire:model.lazy="type">
+                        <select class="form-select" wire:model.blur="type">
                             <option value="null">Selecione Tipo</option>
                             <option value="1">Ingreso</option>
                             <option value="2">Egreso</option>
@@ -63,42 +63,42 @@
                 <div class="w-100 d-flex justify-content-center">
                     <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-0"
-                            wire:model.lazy="assigned" value="0">
+                            wire:model.blur="assigned" value="0">
                         <label class="btn btn-outline-primary" for="btn-check-0">Ninguno</label>
 
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-1"
-                            wire:model.lazy="assigned" value="1">
+                            wire:model.blur="assigned" value="1">
                         <label class="btn btn-outline-primary" for="btn-check-1">Facturación</label>
 
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-2"
-                            wire:model.lazy="assigned" value="2">
+                            wire:model.blur="assigned" value="2">
                         <label class="btn btn-outline-primary" for="btn-check-2">Funcionamiento</label>
 
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-3"
-                            wire:model.lazy="assigned" value="3">
+                            wire:model.blur="assigned" value="3">
                         <label class="btn btn-outline-primary" for="btn-check-3">Comisión</label>
 
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-4"
-                            wire:model.lazy="assigned" value="4">
+                            wire:model.blur="assigned" value="4">
                         <label class="btn btn-outline-primary" for="btn-check-4">Banco</label>
 
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-5"
-                            wire:model.lazy="assigned" value="5">
+                            wire:model.blur="assigned" value="5">
                         <label class="btn btn-outline-primary" for="btn-check-5">Interes</label>
 
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-6"
-                            wire:model.lazy="assigned" value="6">
+                            wire:model.blur="assigned" value="6">
                         <label class="btn btn-outline-primary" for="btn-check-6">Imprevistos</label>
 
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-7"
-                            wire:model.lazy="assigned" value="7">
+                            wire:model.blur="assigned" value="7">
                         <label class="btn btn-outline-primary" for="btn-check-7">Adquisición</label>
 
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-8"
-                            wire:model.lazy="assigned" value="8">
+                            wire:model.blur="assigned" value="8">
                         <label class="btn btn-outline-primary" for="btn-check-8">Utilidad</label>
                         <input type="radio" autocomplete="off" class="btn-check" id="btn-check-9"
-                            wire:model.lazy="assigned" value="9"
+                            wire:model.blur="assigned" value="9"
                             @if ($type != 1) disabled @endif>
                         <label class="btn btn-outline-primary" for="btn-check-9">Percibir</label>
                     </div>
@@ -147,7 +147,7 @@
                 </div>
             </div>
             <label>Descripción</label>
-            <textarea class="form-control" wire:model="description"></textarea>
+            <textarea class="form-control" wire:model.live="description"></textarea>
             <div class="text-danger" style="height: 20px;">
                 @error('description')
                     {{ $message }}
@@ -155,7 +155,7 @@
             </div>
             <label>Cuenta</label>
             <div class="input-group">
-                <select class="form-select" wire:model="account_id" @if ($assigned == 8) disabled @endif>
+                <select class="form-select" wire:model.live="account_id" @if ($assigned == 8) disabled @endif>
                     <option>Selecione una cuenta</option>
                     @foreach ($accounts as $item)
                         <option value="{{ $item->id }}">{{ $item->name }}</option>

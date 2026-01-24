@@ -37,7 +37,7 @@
                 tabindex="0" wire:ignore.self>
                 <h5 class="mt-3"><strong>Información General</strong></h5>
                 <label for="code">Codigo</label>
-                <input type="text" wire:model="code" class="form-control">
+                <input type="text" wire:model.live="code" class="form-control">
                 <div class="text-danger" style="height: 20px;">
                     @error('code')
                         {{ $message }}
@@ -68,21 +68,21 @@
                         wire:model.live="searchable">
                 </div>
                 <label for="description">Observación</label>
-                <textarea id="description" class="form-control mb-1" wire:model="description"></textarea>
+                <textarea id="description" class="form-control mb-1" wire:model.live="description"></textarea>
                 <div class="text-danger" style="height: 20px;">
                     @error('description')
                         {{ $message }}
                     @enderror
                 </div>
                 <label for="">Tipo de Pago</label>
-                <input type="text" wire:model="payment" class="form-control">
+                <input type="text" wire:model.live="payment" class="form-control">
                 <div class="text-danger" style="height: 20px;">
                     @error('payment')
                         {{ $message }}
                     @enderror
                 </div>
                 <label for="">Validez (Dias)</label>
-                <input type="number" wire:model="valide" class="form-control">
+                <input type="number" wire:model.live="valide" class="form-control">
                 <div class="text-danger" style="height: 20px;">
                     @error('valide')
                         {{ $message }}
@@ -90,7 +90,7 @@
                 </div>
                 <label for="">Plazo de Entrega</label>
                 <div class="input-group">
-                    <input type="date" wire:model="delivery" class="form-control">
+                    <input type="date" wire:model.live="delivery" class="form-control">
                     <button class="btn btn-primary" wire:click="setDeliveryNow()">Hoy</button>
                 </div>
                 <div class="text-danger" style="height: 20px;">
@@ -100,7 +100,7 @@
                 </div>
                 <label for="">Fecha de Firma</label>
                 <div class="input-group">
-                    <input type="date" wire:model="date_aprove" class="form-control">
+                    <input type="date" wire:model.live="date_aprove" class="form-control">
                     <button class="btn btn-primary" wire:click="setAproveNow()">Hoy</button>
                 </div>
                 <div class="text-danger" style="height: 20px;">
@@ -580,7 +580,7 @@
                 </div>
                 <label for="">Interes</label>
                 <div class="input-group">
-                    <input type="number" class="form-control" wire:model="partner_interest"
+                    <input type="number" class="form-control" wire:model.live="partner_interest"
                         placeholder="Disponible: {{ 100 - $contract->inversions()->sum('interest') }} %">
                     <span class="input-group-text">%</span>
                 </div>
@@ -619,7 +619,7 @@
                     <div class="w-50 ms-1">
                         <label for="product">Nombre de Producto</label>
                         <input type="text" class="form-control mb-3" placeholder="Nombre de producto" disabled
-                            wire:model="name_product">
+                            wire:model.live="name_product">
                     </div>
                 </div>
                 <div id="search1" class="glow-border p-1 d-none mb-3" wire:ignore.self>
@@ -648,7 +648,7 @@
                         <label for="purchase-price">Precio Adquisición</label>
                         <div class="input-group">
                             <input type="text" class="form-control mb-3"
-                                placeholder="Ingrese precio de Adquisición" wire:model.lazy="purchase_price">
+                                placeholder="Ingrese precio de Adquisición" wire:model.blur="purchase_price">
                             <span class="input-group-text" style="height: 38px;">Bs</span>
                         </div>
                         <div class="text-danger" style="height: 20px;">
@@ -661,7 +661,7 @@
                         <label for="sale-price">Precio Venta</label>
                         <div class="input-group">
                             <input type="text" class="form-control mb-3" placeholder="Ingrese precio de Venta"
-                                wire:model.lazy="sale_price">
+                                wire:model.blur="sale_price">
                             <span class="input-group-text" style="height: 38px;">Bs</span>
                         </div>
                         <div class="text-danger" style="height: 20px;">
@@ -673,7 +673,7 @@
                     <div class="col-4 pe-0 ms-0 ps-1">
                         <label for="sale-price">Cantidad</label>
                         <input type="number" class="form-control mb-3" placeholder="Ingrese cantidad"
-                            wire:model.lazy="quantity">
+                            wire:model.blur="quantity">
                         <div class="text-danger" style="height: 20px;">
                             @error('quantity')
                                 {{ $message }}
@@ -683,7 +683,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="description">Observación</label>
-                    <textarea class="form-control" rows="4" wire:model="description_product"></textarea>
+                    <textarea class="form-control" rows="4" wire:model.live="description_product"></textarea>
                 </div>
                 <h6><strong>Desglose Financiero</strong></h6>
                 <div class="d-flex">
@@ -786,7 +786,7 @@
         <div class="modal-body">
             <h6><strong>Información General</strong></h6>
             <label for="code">Codigo</label>
-            <input type="text" wire:model="code" class="form-control">
+            <input type="text" wire:model.live="code" class="form-control">
             <div class="text-danger" style="height: 20px;">
                 @error('code')
                     {{ $message }}
@@ -817,7 +817,7 @@
                     wire:model.live="searchable">
             </div>
             <label for="description">Observación</label>
-            <textarea id="description" class="form-control mb-1" wire:model="description"></textarea>
+            <textarea id="description" class="form-control mb-1" wire:model.live="description"></textarea>
             <div class="text-danger" style="height: 20px;">
                 @error('description')
                     {{ $message }}

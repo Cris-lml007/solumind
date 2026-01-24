@@ -1,7 +1,7 @@
 <div>
     <div class="modal-body">
         <label for="alias">Nombre</label>
-        <input type="text" wire:model="name" class="form-control">
+        <input type="text" wire:model.live="name" class="form-control">
         @error('name')
             <span class="text-danger">{{ $message }}</span>
         @enderror

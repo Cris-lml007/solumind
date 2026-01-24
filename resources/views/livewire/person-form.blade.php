@@ -11,7 +11,7 @@
                 </div>
                 <label for="email">Correo</label>
                 <input type="email" name="email" class="form-control mb-1" placeholder="Ingrese correo"
-                    wire:model="email">
+                    wire:model.live="email">
                 <div class="text-danger" style="height: 20px;">
                     @error('email')
                         {{ $message }}
@@ -21,7 +21,7 @@
             <div style="width: 50%;">
                 <label for="name">Nombre Completo</label>
                 <input type="text" name="name" class="form-control mb-1" placeholder="Ingrese nombre completo"
-                    wire:model="name">
+                    wire:model.live="name">
                 <div class="text-danger" style="height: 20px;">
                     @error('name')
                         {{ $message }}
@@ -29,7 +29,7 @@
                 </div>
                 <label for="cellular">Celular</label>
                 <input type="tel" name="cellular" class="form-control mb-1" placeholder="Ingrese número de celular"
-                    wire:model="phone">
+                    wire:model.live="phone">
                 <div class="text-danger" style="height: 20px;">
                     @error('phone')
                         {{ $message }}

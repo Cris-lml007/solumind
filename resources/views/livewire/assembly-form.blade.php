@@ -20,7 +20,7 @@
                     <label for="code">Codigo</label>
                     <div class="input-group">
                         <span class="input-group-text" style="height: 38px;">{{ $alias ?? '' }}</span>
-                        <input type="text" name="code" class="form-control" wire:model="code">
+                        <input type="text" name="code" class="form-control" wire:model.live="code">
                     </div>
                     <div class="text-danger" style="height: 20px;">
                         @error('code')
@@ -64,7 +64,7 @@
                         </select>
                         <span class="input-group-text" style="height: 38px;">{{ $alias }}</span>
                         <input type="text" name="code" class="form-control mb-1"
-                            placeholder="Ingrese codigo del producto" wire:model="code">
+                            placeholder="Ingrese codigo del producto" wire:model.live="code">
                     </div>
                     <div class="text-danger" style="height: 20px;">
                         @error('code')
@@ -73,18 +73,18 @@
                     </div>
                     <label for="category">Nombre</label>
                     <input type="text" name="name" class="form-control mb-1"
-                        placeholder="Ingrese nombre del ensamblaje" wire:model="name">
+                        placeholder="Ingrese nombre del ensamblaje" wire:model.live="name">
                     <div class="text-danger" style="height: 20px;">
                         @error('name')
                             {{ $message }}
                         @enderror
                     </div>
                     <label for="description">Unidad de Medida</label>
-                    <input type="text" class="form-control" wire:model="unit">
+                    <input type="text" class="form-control" wire:model.live="unit">
                     <div>
                         <label for="description">Descripción</label>
                         <textarea class="form-control mb-1" name="description" rows="3" placeholder="Ingrese descripción del producto"
-                            wire:model="description"></textarea>
+                            wire:model.live="description"></textarea>
                         <div class="text-danger" style="height: 20px;">
                             @error('description')
                                 {{ $message }}
@@ -96,7 +96,7 @@
                     <label>Imagen del Producto</label>
                     <div class="d-flex">
                         <div style="width: 100%;">
-                            <input type="file" name="image1" class="form-control mb-3" wire:model="img">
+                            <input type="file" name="image1" class="form-control mb-3" wire:model.live="img">
                         </div>
                     </div>
                     @if (!empty($item->id))
@@ -153,7 +153,7 @@
                 <div class="w-50">
                     <label for="price">Imprevistos (Bs)</label>
                     <input type="number" name="price" class="form-control mb-3" placeholder="Ingrese imprevistos"
-                        wire:model.lazy="extra">
+                        wire:model.blur="extra">
                 </div>
                 <div class="w-50">
                     <label for="price">Precio (Bs)</label>
@@ -181,12 +181,12 @@
 
                         <div class="modal-body">
                             <label for="search">Buscar</label>
-                            <input type="text" wire:model.lazy="search" class="form-control mb-3">
+                            <input type="text" wire:model.blur="search" class="form-control mb-3">
                             <div class="d-flex">
-                                <input type="number" id="ipd" class="d-none" wire:model="ipd">
+                                <input type="number" id="ipd" class="d-none" wire:model.live="ipd">
                                 <div class="w-50 me-1">
                                     <label for="n">Producto</label>
-                                    <select id="n" class="form-select mb-3" wire:model.lazy="na">
+                                    <select id="n" class="form-select mb-3" wire:model.blur="na">
                                         <option>Seleccione Producto</option>
                                         @foreach ($list as $item)
                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -194,14 +194,14 @@
                                     </select>
                                     <label for="q">Cantidad</label>
                                     <input type="number" id="q" class="form-control mb-3"
-                                        wire:model.lazy="q">
+                                        wire:model.blur="q">
                                 </div>
                                 <div class="w-50">
                                     <label for="supplier">Proveedor</label>
-                                    <input type="text" disabled class="form-control mb-3" wire:model="s" disabled>
+                                    <input type="text" disabled class="form-control mb-3" wire:model.live="s" disabled>
                                     <label for="p">Precio (Bs)</label>
                                     <input type="number" id="p" class="form-control mb-3"
-                                        wire:model.lazy="p">
+                                        wire:model.blur="p">
                                 </div>
                             </div>
                         </div>
