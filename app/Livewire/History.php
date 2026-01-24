@@ -230,7 +230,7 @@ class History extends Component
     {
         $user = User::withTrashed()->find($id);
         $user?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'),navigate: true);
     }
 
     // 🔹 Transactions
@@ -244,7 +244,7 @@ class History extends Component
     {
         $transaction = Transaction::withTrashed()->find($id);
         $transaction?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Products
@@ -258,7 +258,7 @@ class History extends Component
     {
         $product = Product::withTrashed()->find($id);
         $product?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Partners
@@ -272,7 +272,7 @@ class History extends Component
     {
         $partner = Partner::withTrashed()->find($id);
         $partner?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Clients
@@ -286,7 +286,7 @@ class History extends Component
     {
         $client = Client::withTrashed()->find($id);
         $client?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Contracts
@@ -300,7 +300,7 @@ class History extends Component
     {
         $contract = Contract::withTrashed()->find($id);
         $contract?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Detail Contracts
@@ -314,7 +314,7 @@ class History extends Component
     {
         $detail_contract = DetailContract::withTrashed()->find($id);
         $detail_contract?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Item Details
@@ -328,7 +328,7 @@ class History extends Component
     {
         $item_detail = DetailItem::withTrashed()->find($id);
         $item_detail?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Categories
@@ -342,7 +342,7 @@ class History extends Component
     {
         $category = Category::withTrashed()->find($id);
         $category?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Accounts
@@ -356,7 +356,7 @@ class History extends Component
     {
         $account = Account::withTrashed()->find($id);
         $account?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Suppliers
@@ -370,7 +370,7 @@ class History extends Component
     {
         $supplier = Supplier::withTrashed()->find($id);
         $supplier?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Contract Partners
@@ -384,7 +384,7 @@ class History extends Component
     {
         $contract_partner = ContractPartner::withTrashed()->find($id);
         $contract_partner?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
     // 🔹 Assemblies (Items)
@@ -398,7 +398,7 @@ class History extends Component
     {
         $item = Item::withTrashed()->find($id);
         $item?->forceDelete();
-        $this->redirect(route('dashboard.history'));
+        $this->redirect(route('dashboard.history'), navigate: true);
     }
 
 

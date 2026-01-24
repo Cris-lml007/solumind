@@ -26,8 +26,8 @@
                     @endphp
                     <tr>
                         <td>
-                            <a href="{{ route('dashboard.diary_book.form',$item->id) }}" wire:navigate class="stretched-link"></a>
-                            {{ $item->id }}
+                            <a href="{{ route('dashboard.diary_book.form',$item->id) }}" wire:navigate>{{ $item->id }}</a>
+                            {{-- {{ $item->id }} --}}
                         </td>
                         <td class="col-fecha">{{ Carbon\Carbon::parse($item->date)->toDateString() }}</td>
                         <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}

@@ -8,8 +8,8 @@
     <div class="card">
         <div class="card-body">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                <li class="nav-item"><a class="nav-link active" id="transactions-tab" data-toggle="tab" href="#transactions"
-                        role="tab">Transacciones</a></li>
+                <li class="nav-item"><a class="nav-link active" id="transactions-tab" data-toggle="tab"
+                        href="#transactions" role="tab">Transacciones</a></li>
                 <li class="nav-item"><a class="nav-link" id="users-tab" data-toggle="tab" href="#users"
                         role="tab">Usuarios</a></li>
                 <li class="nav-item"><a class="nav-link" id="products-tab" data-toggle="tab" href="#products"
@@ -291,10 +291,11 @@
 
 @script
     <script>
-        document.querySelectorAll('.restore-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                let model = btn.getAttribute('data-model'); // Ej: 'User', 'Assembly'
-                let id = btn.getAttribute('data-id');
+        document.addEventListener('click', async (e) => {
+            const restoreBtn = e.target.closest('.restore-btn');
+            if (restoreBtn) {
+                let model = restoreBtn.getAttribute('data-model'); // Ej: 'User', 'Assembly'
+                let id = restoreBtn.getAttribute('data-id');
 
                 Swal.fire({
                     title: 'Restaurar?',
@@ -333,14 +334,13 @@
                         });
                     }
                 });
-            });
-        });
+            }
 
 
-        document.querySelectorAll('.remove-btn').forEach(btn => {
-            btn.addEventListener('click', async () => {
-                let model = btn.getAttribute('data-model');
-                let id = btn.getAttribute('data-id');
+            const removeBtn = e.target.closest('.remove-btn');
+            if (removeBtn) {
+                let model = removeBtn.getAttribute('data-model'); // Ej: 'User', 'Assembly'
+                let id = removeBtn.getAttribute('data-id');
 
                 // Llamamos a Livewire para obtener los registros enlazados
                 let linked = await $wire["linkedData" + model](id);
@@ -377,7 +377,54 @@
                                 `Error: ${error.message}`));
                     }
                 });
-            });
+            }
         });
+
+
+        Livewire.hook('morphed', ({
+            el,
+            component
+        }) => {
+            $('#tableTransactions').DataTable({
+                destroy: true
+            });
+            $('#tableUsers').DataTable({
+                destroy: true
+            });
+            $('#tableProducts').DataTable({
+                destroy: true
+            });
+            $('#tablePartners').DataTable({
+                destroy: true
+            });
+            $('#tableClient').DataTable({
+                destroy: true
+            });
+            $('#tableContracts').DataTable({
+                destroy: true
+            });
+            $('#tableDetailContracts').DataTable({
+                destroy: true
+            });
+            $('#tableAccounts').DataTable({
+                destroy: true
+            });
+            $('#tableSuppliers').DataTable({
+                destroy: true
+            });
+            $('#tableAssemblies').DataTable({
+                destroy: true
+            });
+            $('#tableContractPartners').DataTable({
+                destroy: true
+            });
+            $('#tableCategories').DataTable({
+                destroy: true
+            });
+            $('#tableItemDetails').DataTable({
+                destroy: true
+            });
+
+        })
     </script>
 @endscript
