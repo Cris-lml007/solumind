@@ -125,14 +125,14 @@ class Userform extends Component
         $this->permissions->config = $this->p11;
         $this->permissions->history = $this->p12;
         $this->permissions->save();
-        $this->redirect(route('dashboard.settings'));
+        $this->redirect(route('dashboard.settings'), navigate: true);
     }
 
     public function remove(){
         if(!Gate::allows('config-permission',3))
             abort('404');
         $this->user->delete();
-        $this->redirect(route('dashboard.settings'));
+        $this->redirect(route('dashboard.settings'), navigate: true);
     }
 
     public function render()

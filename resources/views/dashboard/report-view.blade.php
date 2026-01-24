@@ -55,7 +55,7 @@
 
 @section('js')
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('mousemove', () => {
 
             function getRandomColor() {
                 var letters = '0123456789ABCDEF';

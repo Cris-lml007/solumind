@@ -42,14 +42,14 @@ class CategoryForm extends Component
         $this->category->name = $this->name;
         $this->category->alias = $this->alias;
         $this->category->save();
-        return $this->redirect(route('dashboard.settings'));
+        return $this->redirect(route('dashboard.settings'), navigate: true);
     }
 
     public function remove(){
         if(!Gate::allows('config-permission',3))
             abort('404');
         $this->category->delete();
-        return $this->redirect(route('dashboard.settings'));
+        return $this->redirect(route('dashboard.settings'), navigate: true);
     }
 
     public function render()

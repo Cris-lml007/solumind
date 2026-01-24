@@ -38,7 +38,7 @@ class AccountForm extends Component
             if($t->trashed()){
                 return $this->dispatch('active');
             }
-            if($t->id == 1) return redirect()->route('dashboard.settings');
+            if($t->id == 1) return $this->redirect(route('dashboard.settings'), navigate: true);
             $this->validate([
                 'name' => 'required|string|max:255|unique:accounts,name,' . ($this->account->id ?? 'null'),
             ]);
@@ -47,21 +47,21 @@ class AccountForm extends Component
         $this->account->name = $this->name;
         $this->account->save();
 
-        return redirect()->route('dashboard.settings');
+        return $this->redirect(route('dashboard.settings'), navigate:true);
     }
 
     public function remove(){
         if(!Gate::allows('config-permission',3))
             abort('404');
         $this->account->delete();
-        return redirect()->route('dashboard.settings');
+        return $this->redirect(route('dashboard.settings'), navigate: true);
     }
 
     public function restore(){
         if(!Gate::allows('config-permission',3))
             abort('404');
         Account::where('name',$this->name)->restore();
-        return redirect()->route('dashboard.settings');
+        return $this->redirect(route('dashboard.settings'), navigate: true);
     }
 
     public function render()

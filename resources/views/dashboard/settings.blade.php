@@ -43,7 +43,7 @@
                                 <td>{{ $item?->name ?? 'anonimo' }}</td>
                                 <td>{{ $item->email }}</td>
                                 <td><i class="nf {{ $item->is_active == 1 ? 'nf-fa-check text-success' : 'nf-fa-xmark text-danger' }}"></i></td>
-                                <td><a href="{{ route('dashboard.settings.user.form', $item->id) }}"
+                                <td><a wire:navigate href="{{ route('dashboard.settings.user.form', $item->id) }}"
                                         class="btn btn-primary"><i class="fa fa-pen"></i></a></td>
                             </tr>
                         @endforeach
@@ -60,7 +60,7 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->name }}</td>
                                 <td>
-                                    <a href="{{ route('dashboard.settings.account', $item->id) }}"
+                                    <a wire:navigate href="{{ route('dashboard.settings.account', $item->id) }}"
                                         class="btn btn-primary"><i class="fa fa-pen"></i></a>
                                 </td>
                             </tr>
@@ -78,7 +78,7 @@
                                 <td>{{ $item->id }}</td>
                                 <td>{{ $item->alias }}</td>
                                 <td>{{ $item->name }}</td>
-                                <td><a class="btn btn-primary"
+                                <td><a wire:navigate class="btn btn-primary"
                                         href="{{ route('dashboard.settings.category', $item->id) }}"><i
                                             class="fa fa-ellipsis-v"></i></a></td>
                             </tr>
@@ -97,7 +97,7 @@
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->email }}</td>
                             <td>{{ $item->phone }}</td>
-                            <td><a href="{{ route('dashboard.settings.person.form', $item->id) }}"
+                            <td><a wire:navigate href="{{ route('dashboard.settings.person.form', $item->id) }}"
                                     class="btn btn-primary"><i class="fa fa-pen"></i></a></td>
                         </tr>
                     @endforeach

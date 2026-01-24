@@ -43,14 +43,14 @@ class PersonForm extends Component
         $this->person->email = $this->email;
         $this->person->phone = $this->phone;
         $this->person->save();
-        $this->redirect(route('dashboard.settings'));
+        $this->redirect(route('dashboard.settings'), navigate: true);
     }
 
     public function remove(){
         if(!Gate::allows('config-permission',3))
             abort('404');
         $this->person->delete();
-        $this->redirect(route('dashboard.settings'));
+        $this->redirect(route('dashboard.settings'), navigate: true);
     }
 
 
