@@ -11,7 +11,23 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <x-adminlte.tool.datatable id="table" :heads="$heads" :config="['order' => [0, 'desc']]">
+            <div class="d-flex justify-content-between mb-3">
+                <div class="d-flex align-items-center">
+                    <span >Pagina: </span>
+                    <input type="number" class="form-control" style="width: 80px;" wire:keyup="setPage($event.target.value)" min="1" value="{{ $data->currentPage() }}">
+                </div>
+                <input wire:model.live="search" type="text" class="form-control w-25" placeholder="Buscar...">
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Contrato</th>
+                        <th>Importe (Bs)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
                 @foreach ($data as $item)
                     @php
                         $amount = 0;
@@ -44,7 +60,8 @@
                         @endcan
                     </tr>
                 @endforeach
-            </x-adminlte.tool.datatable>
+            </table>
+            {{ $data->links() }}
         </div>
     </div>
 

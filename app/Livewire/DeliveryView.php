@@ -4,13 +4,18 @@ namespace App\Livewire;
 
 use App\Models\Delivery;
 use App\Models\DeliveryDetailContract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class DeliveryView extends Component
 {
+    use WithPagination;
+
+    public $search = '';
 
     public function valideWithPassword($password)
     {
@@ -37,6 +42,10 @@ class DeliveryView extends Component
         return $this->redirect(route('dashboard.delivery'),navigate: true);
     }
 
+    public function updatedSearch(){
+        $this->render();
+    }
+
 
 
     public function render()
@@ -44,7 +53,15 @@ class DeliveryView extends Component
         if(!Gate::allows('delivery-read'))
             abort('404');
         $heads = ['ID','Fecha','Codigo de Contrato','Importe (Bs)','Generar'];
-        $data = Delivery::all();
+        if($this->search != ''){
+            $data = Delivery::where('id','like','%'.$this->search.'%')
+                ->orWhere('date','like','%'.$this->search.'%')
+                ->orWhereHas('contract',function(Builder $builder){
+                    $builder->where('cod','like','%'.$this->search.'%');
+                })->orderBy('date','desc')->paginate();
+        }else{
+            $data = Delivery::orderBy('date','desc')->paginate();
+        }
         return view('livewire.delivery-view', compact(['heads','data']));
     }
 }
