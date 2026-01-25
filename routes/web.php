@@ -10,6 +10,7 @@ use App\Livewire\PartnerForm;
 use App\Livewire\ProductForm;
 use App\Livewire\SupplierForm;
 use App\Livewire\ClientForm;
+use App\Livewire\ClientView;
 use App\Livewire\ContractForm;
 use App\Livewire\DeliveryForm;
 use App\Livewire\DeliveryView;
@@ -43,7 +44,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
 
         Route::get('delivery/delete/{delivery?}','removeDelivery')->name('dashboard.delivery.remove');
 
-        Route::get('client','client')->name('dashboard.client');
+        // Route::get('client','client')->name('dashboard.client');
 
         Route::get('proof', 'proof')->name('dashboard.proof');
 
@@ -58,6 +59,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('supplier',SupplierView::class)->name('dashboard.supplier');
     Route::get('partner',PartnerView::class)->name('dashboard.partner');
     Route::get('delivery',DeliveryView::class)->name('dashboard.delivery');
+    Route::get('client',ClientView::class)->name('dashboard.client');
 
 
 

@@ -11,23 +11,8 @@
     </div>
     <div class="card">
         <div class="card-body">
-            <div class="d-flex justify-content-between mb-3">
-                <div class="d-flex align-items-center">
-                    <span >Pagina: </span>
-                    <input type="number" class="form-control" style="width: 80px;" wire:keyup="setPage($event.target.value)" min="1" value="{{ $data->currentPage() }}">
-                </div>
-                <input wire:model.live="search" type="text" class="form-control w-25" placeholder="Buscar...">
-            </div>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Fecha</th>
-                        <th>Contrato</th>
-                        <th>Importe (Bs)</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
+
+            <livewire:table :heads="['ID', 'Fecha', 'Contrato', 'Importe (Bs)', 'Acciones']" wire:key="delivery-table" name="Delivery">
                 @foreach ($data as $item)
                     @php
                         $amount = 0;
@@ -59,9 +44,16 @@
                             <td></td>
                         @endcan
                     </tr>
-                @endforeach
-            </table>
-            {{ $data->links() }}
+                    @endforeach
+                    <livewire:slot name="paginate">
+                        {{ $data->links() }}
+                    </livewire:slot>
+            </livewire:table>
+
+
+
+
+
         </div>
     </div>
 

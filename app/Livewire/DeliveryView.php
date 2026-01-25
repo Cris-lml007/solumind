@@ -15,6 +15,8 @@ class DeliveryView extends Component
 {
     use WithPagination;
 
+    public $listeners = ['tablePageDelivery','tableSearchDelivery'];
+
     public $search = '';
 
     public function valideWithPassword($password)
@@ -46,7 +48,14 @@ class DeliveryView extends Component
         $this->render();
     }
 
+    public function tablePageDelivery($page){
+        $this->setPage($page);
+    }
 
+    public function tableSearchDelivery($search){
+        $this->search = $search;
+        $this->render();
+    }
 
     public function render()
     {
