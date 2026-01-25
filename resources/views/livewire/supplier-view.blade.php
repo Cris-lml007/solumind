@@ -12,7 +12,7 @@
 
     <div class="card">
         <div class="card-body">
-            <x-adminlte.tool.datatable id="table1" :heads="$heads" :config="$config">
+            <livewire:table :heads="$heads" name="Supplier" wire:key="suppliersTable">
                 @foreach ($data as $item)
                 <tr>
                         <td class="simpleline"><strong>{{ $item->id }}</strong>
@@ -26,8 +26,11 @@
                                 class="btn btn-primary"><i class="fa fa-ellipsis-v"></i></a>
                         </td>
                     </tr>
-                @endforeach
-            </x-adminlte.tool.datatable>
+                    @endforeach
+                    <livewire:slot name="paginate">
+                        {{ $data->links() }}
+                    </livewire:slot>
+            </livewire:table>
         </div>
     </div>
     <x-modal id="modal" title="Nuevo Proveedor" class="modal-lg">
