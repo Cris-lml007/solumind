@@ -45,6 +45,15 @@ class DeliveryForm extends Component
 
     public $search_product;
 
+    public function updatedAmount(){
+        try{
+            $this->amount = Number::parse($this->amount);
+            $this->amount = Number::format(empty($this->amount) ? 0 : $this->amount, precision: 2);
+        }catch(\Exception){
+            $this->amount = Number::format(0, precision: 2);
+        }
+    }
+
     public function setNow(){
         $this->date = Carbon::now()->format('Y-m-d');
     }

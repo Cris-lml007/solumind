@@ -45,7 +45,7 @@
             <div class="w-50 ms-1">
                 <label for="">Importe</label>
                 <div class="input-group">
-                    <input type="number" class="form-control" placeholder="Ingrese importe" wire:model.live="amount">
+                    <input type="tel" class="form-control" placeholder="Ingrese importe" wire:model.blur="amount">
                     <span class="input-group-text">Bs</span>
                 </div>
                 <div class="text-danger" style="height: 20px;">

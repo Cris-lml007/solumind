@@ -125,16 +125,16 @@
                 <div class="w-100">
                     <label>Importe</label>
                     <div class="input-group">
-                        <input type="number"
+                        <input type="tel"
                             placeholder="{{ App\Models\Contract::where('id', $this->contract_id)->exists() && ($this->type == 2 || $this->assigned == 9) ? 'Total: ' . Number::format($this->balance, precision: 2) . ' Bs' : 'Ingrese Importe' }}"
-                            wire:model.live="import" @class([
+                            wire:model.blur="import" @class([
                                 'form-control',
                                 'bg-danger' =>
-                                    $this->balance - (empty($this->import) ? 0 : $this->import) < 0 &&
+                                    $this->balance - (empty($this->import) ? 0 : Number::parse($this->import)) < 0 &&
                                     App\Models\Contract::where('id', $this->contract_id)->exists() &&
                                     $this->type == 2,
                                 'bg-success' =>
-                                    $this->balance - (empty($this->import) ? 0 : $this->import) >= 0 &&
+                                    $this->balance - (empty($this->import) ? 0 : Number::parse($this->import)) >= 0 &&
                                     App\Models\Contract::where('id', $this->contract_id)->exists(),
                             ])>
                         <span class="input-group-text">Bs</span>

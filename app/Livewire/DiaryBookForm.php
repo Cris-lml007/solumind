@@ -29,7 +29,7 @@ class DiaryBookForm extends Component
     #[Validate('integer', message: 'Seleccione un tipo')]
     #[Validate('between:1,2', message: 'Debe ser un Ingreso o Egreso')]
     public $type;
-    #[Validate('required|numeric',as:'importe')]
+    #[Validate('required',as:'importe')]
     public $import;
     public $contract_id;
     #[Validate('required|string')]
@@ -53,6 +53,16 @@ class DiaryBookForm extends Component
     public $assigned = 0;
     public $partner_id = null;
     public $partners = [];
+
+
+    public function updatedImport(){
+        try{
+            $this->import = Number::parse($this->import ?? 0);
+            $this->import = Number::format(empty($this->import) ? 0 : $this->import, precision: 2);
+        }catch(\Exception){
+            $this->import = Number::format(0, precision: 2);
+        }
+    }
 
 
     public function setNow(){
