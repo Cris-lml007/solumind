@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class LedgerView extends Component
 {
+
+    use WithPagination;
+
     public $filterStartDate;
     public $filterEndDate;
 
@@ -21,7 +25,14 @@ class LedgerView extends Component
     public $filterFondo;
     public $filterAccount;
 
+    public $q = 15;
+    public $all= 0;
+
     public $data;
+
+    public function updatedQ(){
+        $this->render();
+    }
 
     public function ir(){
         $this->render();
@@ -72,7 +83,9 @@ class LedgerView extends Component
               $q->whereHas('account', fn($a) => $a->where('name','like','%'.$this->filterAccount.'%'));
           })
           ->orderBy('date','asc')
-          ->get();
+          ->paginate($this->q);
+
+        $this->all = Transaction::count();
 
         $data1 = DB::table('transactions')
             ->join('accounts','accounts.id','=','transactions.account_id')

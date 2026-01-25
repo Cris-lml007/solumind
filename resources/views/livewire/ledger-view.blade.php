@@ -13,7 +13,12 @@
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex align-items-center">
+            <span for="">Cantidad:</span>
+            <input type="number" class="form-control" style="width: 100px;" wire:model.live="q">
+            <span>/ {{ $all }}</span>
+        </div>
         <div class="d-flex align-items-center mb-3" style="gap: 0.5rem; justify-content: center;">
             <input type="date" class="form-control" wire:model="filterStartDate">
             <span style="margin: 0 0.5rem;">a</span>
@@ -110,4 +115,5 @@
             </tr>
         </tfoot>
     </table>
+    {{ $data0->links() }}
 </div>
