@@ -6,14 +6,15 @@
             <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Socios</strong></h6>
         </div>
         @can('partner-permission', 3)
-            <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir Nuevo
+            <button data-bs-target="#modal" data-bs-toggle="modal" class="btn btn-primary"><i class="fa fa-plus"></i> Añadir
+                Nuevo
                 Socio</button>
         @endcan
     </div>
 
     <div class="card">
         <div class="card-body">
-            <x-adminlte.tool.datatable id="table1" :heads="$heads" :config="$config">
+            <livewire:table :heads="$heads" wire:key="partner-table" name="Partner">
                 @foreach ($data as $item)
                     <tr>
                         <td class="simpleline"><strong>{{ $item->id }}</strong></td>
@@ -25,7 +26,10 @@
                         </td>
                     </tr>
                 @endforeach
-            </x-adminlte.tool.datatable>
+                <livewire:slot name="paginate">
+                    {{ $data->links() }}
+                </livewire:slot>
+            </livewire:table>
         </div>
     </div>
 
