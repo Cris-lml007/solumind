@@ -1,0 +1,167 @@
+<div>
+    <style>
+        .text-right {
+            text-align: right;
+        }
+
+        .card-top-border-radius-0 {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        table td.simpleline {
+            vertical-align: middle;
+        }
+
+        .col-fecha {
+            width: 120px;
+            white-space: nowrap;
+        }
+    </style>
+    {{-- We must ship. - Taylor Otwell --}}
+    @php
+        $activeTab = request()->query('tab', 'comprobantes');
+    @endphp
+
+    <div class="d-flex justify-content-between mb-3 p-0" style="align-items: center;">
+        <div>
+            <h1 class="m-0">Comprobantes</h1>
+            <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Comprobantes</strong>
+            </h6>
+        </div>
+    </div>
+
+
+    <ul class="nav nav-tabs" id="contabilidadTab" role="tablist">
+
+        <div class="d-flex w-50">
+            <li class="nav-item" role="presentation"><button
+                    class="nav-link {{ $status_tab == 1 ? 'active' : '' }}" id="comprobantes-tab"
+                    data-bs-toggle="tab" data-bs-target="#comprobantes-pane" type="button" wire:click="setTab(1)">Comprobantes</button></li>
+            <li class="nav-item" role="presentation"><button
+                    class="nav-link {{ $status_tab == 2 ? 'active' : '' }}" id="proformas-tab"
+                    data-bs-toggle="tab" data-bs-target="#proformas-pane" type="button" wire:click="setTab(2)">Proformas</button>
+            </li>
+            <li class="nav-item" role="presentation"><button
+                    class="nav-link {{ $status_tab == 3 ? 'active' : '' }}" id="contratos-tab"
+                    data-bs-toggle="tab" data-bs-target="#contratos-pane" type="button" wire:click="setTab(3)">Contratos</button>
+            </li>
+        </div>
+        <div class="d-flex justify-content-end w-50">
+            @can('voucher-permission', 3)
+                <button data-bs-target="#modalNuevaProforma" data-bs-toggle="modal" class="btn btn-primary"
+                    style="height: 38px;">
+                    <i class="fa fa-plus"></i> Crear Nueva Proforma
+                </button>
+            @endcan
+        </div>
+    </ul>
+
+    <div class="tab-content" id="contabilidadTabContent">
+        {{-- COMPROBANTES --}}
+        <div class="tab-pane fade {{ $status_tab == 1 ? 'show active' : '' }}" id="comprobantes-pane"
+            role="tabpanel">
+            <div class="card card-top-border-radius-0">
+                <div class="card-body">
+
+                    <livewire:table :heads="$heads['comprobantes']" name="Comprobante" wire:key="table-comprobantes">
+                        @foreach ($data['comprobantes'] as $item)
+                            <tr>
+                                <td><strong>{{ $item->id }}</strong></td>
+                                <td class="col-fecha">{{ \Carbon\Carbon::parse($item->date)->format('Y-m-d') }}</td>
+                                <td>
+                                    @if ($item->type == 1)
+                                        <span class="badge badge-success">Ingreso</span>
+                                    @elseif($item->type == 2)
+                                        <span class="badge badge-danger">Egreso</span>
+                                    @endif
+                                </td>
+                                <td>{{ $item->description }}</td>
+                                <td><strong>{{ Illuminate\Support\Number::format($item->amount, precision: 2) }}</strong>
+                                </td>
+                                @can('voucher-permission', 3)
+                                    <td><a href="{{ route('dashboard.proof.pdf', $item->id) }}" class="btn btn-primary"
+                                            target="_blank"><i class="fa fa-file-pdf"></i> Exportar</a></td>
+                                @else
+                                    <td></td>
+                                @endcan
+                            </tr>
+                        @endforeach
+                        <livewire:slot name="paginate">
+                            {{ $data['comprobantes']->links() }}
+                        </livewire:slot>
+                    </livewire:table>
+                </div>
+            </div>
+        </div>
+
+        {{-- PROFORMAS --}}
+        <div class="tab-pane fade {{ $status_tab == 2 ? 'show active' : '' }}" id="proformas-pane"
+            role="tabpanel">
+            <div class="card card-top-border-radius-0">
+                <div class="card-body">
+                    <livewire:table :heads="$heads['proformas']" name="Proforma" wire:key="table-proformas">
+                        @foreach ($data['proformas'] as $item)
+                            <tr>
+                                <td><strong>{{ $item->id }}</strong></td>
+                                <td>{{ $item->cod }}</td>
+                                <td>{{ $item->client->person->name }}<br>{{ $item->client->organization }}</td>
+                                <td>{{ \Carbon\Carbon::parse($item->create_at) }}</td>
+                                <td><span
+                                        class="badge {{ $item->status->value == 1 && Carbon\Carbon::parse($item->created_at)->diffInDays(Carbon\Carbon::parse(now())) <= $item->time_valide ? 'badge-success' : 'badge-danger' }}">{{ $item->status->value == 1 ? 'Activo' : 'Fallido' }}</span>
+                                </td>
+                                {{-- <td class="text-right"><strong>{{ number_format($item->total, 2, ',', '.') }}</strong></td> --}}
+                                <td>
+                                    <a wire:navigate href="{{ route('dashboard.proof.form', $item->id) }}"
+                                        class="btn btn-primary"><i class="fa fa-ellipsis-v"></i></a>
+                                    <a target="_blank" class="btn btn-secondary"
+                                        href="{{ route('dashboard.proof.form.pdf', $item->id) }}"><i
+                                            class="fa fa-file"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        <livewire:slot name="paginate">
+                            {{ $data['proformas']->links() }}
+                        </livewire:slot>
+                    </livewire:table>
+                </div>
+            </div>
+        </div>
+
+        {{-- CONTRATOS --}}
+        <div class="tab-pane fade {{ $status_tab == 3 ? 'show active' : '' }}" id="contratos-pane"
+            role="tabpanel">
+            <div class="card card-top-border-radius-0">
+                <div class="card-body">
+                    <livewire:table :heads="$heads['contratos']" name="Contrato" wire:key="table-contratos">
+                        @foreach ($data['contratos'] as $item)
+                            <tr>
+                                <td><strong>{{ $item->id }}</strong></td>
+                                <td>{{ $item->cod }}</td>
+                                <td>{{ $item->client->person->name }}</td>
+                                <td>{{ $item->time_delivery }}</td>
+                                <td><span
+                                        class="badge {{ $item->status->value == 3 || $item->status->value == 5 ? 'badge-success' : 'badge-danger' }}">{{ __('messages.' . $item->status->name) }}</span>
+                                </td>
+                                <td>
+                                    <a wire:navigate href="{{ route('dashboard.proof.form', $item->id) }}"
+                                        class="btn btn-primary"><i class="fa fa-ellipsis-v"></i></a>
+                                    <a target="_blank" class="btn btn-secondary"
+                                        href="{{ route('dashboard.proof.form.pdf', $item->id) }}"><i
+                                            class="fa fa-file"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        <livewire:slot name="paginate">
+                            {{ $data['contratos']->links() }}
+                        </livewire:slot>
+                    </livewire:table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <x-modal id="modalNuevaProforma" title="Nueva Proforma" class="">
+        <livewire:contract-form></livewire:contract-form>
+    </x-modal>
+</div>

@@ -15,12 +15,15 @@ use App\Livewire\ContractForm;
 use App\Livewire\DeliveryForm;
 use App\Livewire\DeliveryView;
 use App\Livewire\DiaryBookForm;
+use App\Livewire\DiaryBookView;
 use App\Livewire\History;
+use App\Livewire\LedgerView;
 use App\Livewire\PartnerView;
 use App\Livewire\PersonForm;
 use App\Livewire\ProductView;
 use App\Livewire\SupplierView;
 use App\Livewire\Userform;
+use App\Livewire\VoucherView;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,17 +42,17 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
         // Route::get('product','product')->name('dashboard.product');
         //Route::get('assembly','assembly')->name('dashboard.assembly');
         // Route::get('partner','partner')->name('dashboard.partner');
-        Route::get('ledger','ledger')->name('dashboard.ledger');
+        // Route::get('ledger','ledger')->name('dashboard.ledger');
         // Route::get('delivery','delivery')->name('dashboard.delivery');
 
         Route::get('delivery/delete/{delivery?}','removeDelivery')->name('dashboard.delivery.remove');
 
         // Route::get('client','client')->name('dashboard.client');
 
-        Route::get('proof', 'proof')->name('dashboard.proof');
+        // Route::get('proof', 'proof')->name('dashboard.proof');
 
         Route::get('settings','settings')->name('dashboard.settings');
-        Route::get('diary-book','diaryBook')->name('dashboard.diary_book');
+        // Route::get('diary-book','diaryBook')->name('dashboard.diary_book');
         Route::get('report','report')->name('dashboard.report');
         // Route::get('support','support')->name('dashboard.support');
     });
@@ -60,6 +63,9 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('partner',PartnerView::class)->name('dashboard.partner');
     Route::get('delivery',DeliveryView::class)->name('dashboard.delivery');
     Route::get('client',ClientView::class)->name('dashboard.client');
+    Route::get('proof', VoucherView::class)->name('dashboard.proof');
+    Route::get('diary-book',DiaryBookView::class)->name('dashboard.diary_book');
+    Route::get('ledger',LedgerView::class)->name('dashboard.ledger');
 
 
 

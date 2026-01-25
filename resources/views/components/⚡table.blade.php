@@ -42,6 +42,11 @@ new class extends Component {
         <tbody>
             {{ $slot }}
         </tbody>
+        @if ($slots->has('footer'))
+        <tfoot>
+            {{ $slots['footer'] }}
+        </tfoot>
+        @endif
     </table>
     {{ $slots['paginate'] }}
 </div>
