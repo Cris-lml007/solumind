@@ -1,10 +1,19 @@
 <div>
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <h1 class="m-0">Libro Mayor</h1>
+            <h6 class="m-0 p-0" style="align-self: center;"><strong>Dashboard</strong> > <strong>Libro Mayor</strong>
+            </h6>
+        </div>
+        <div>
+            <div class="input-group">
+                <button class="btn btn-secondary"><i class="nf nf-cod-file_pdf"></i> PDF</button>
+                <button class="btn btn-secondary"><i class="nf nf-md-file_excel"></i> Excel</button>
+                <button class="btn btn-secondary"><i class="nf nf-fa-print"></i> Imprimir</button>
+            </div>
+        </div>
+    </div>
     <div class="d-flex justify-content-end mb-3">
-        <!-- <div class="d-flex align-items-center"> -->
-        <!--     <span>Pagina: </span> -->
-        <!--     <input type="number" class="form-control" style="width: 80px;" wire:model.live="page" min="1" -->
-        <!--         value="1"> -->
-        <!-- </div> -->
         <div class="d-flex align-items-center mb-3" style="gap: 0.5rem; justify-content: center;">
             <input type="date" class="form-control" wire:model="filterStartDate">
             <span style="margin: 0 0.5rem;">a</span>

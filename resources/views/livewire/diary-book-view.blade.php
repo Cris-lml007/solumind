@@ -24,6 +24,15 @@
     </div>
     <div class="card">
         <div class="card-body">
+            <div class="mb-3">
+                <div>
+                    <div class="input-group">
+                        <button class="btn btn-secondary"><i class="nf nf-cod-file_pdf"></i> PDF</button>
+                        <button class="btn btn-secondary"><i class="nf nf-md-file_excel"></i> Excel</button>
+                        <button class="btn btn-secondary"><i class="nf nf-fa-print"></i> Imprimir</button>
+                    </div>
+                </div>
+            </div>
             <livewire:table :heads="$heads" name="DiaryBook" wire:key="diarybook-table">
                 @php
                     $t_income = 0;
