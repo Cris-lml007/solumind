@@ -7,6 +7,7 @@ use App\Models\Delivery;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -82,6 +83,37 @@ class PdfController extends Controller
         $pdf->setPaper('letter');
         $pdf->render();
         return $pdf->stream();
+    }
+
+    public function generateDiaryBook($search = null){
+        if($search != null || $search != ''){
+            $data = Transaction::where('id','like','%'.$search.'%')
+                ->orWhere('date','like','%'.$search.'%')
+                ->orWhere('description','like','%'.$search.'%')
+                ->orWherehas('contract',function(Builder $builder) use ($search){
+                    $builder->where('cod','like','%'.$search.'%');
+                })->orWherehas('account',function(Builder $builder) use ($search){
+                    $builder->where('name','like','%'.$search.'%');
+                })->orderBy('date','desc')->get();
+
+        }else{
+            $data = Transaction::where('date',Carbon::now())->orderBy('date','desc')->get();
+        }
+        // dd($data);
+        $pdf = Pdf::setOptions([
+            'isHtmlParseEnabled' => true,
+            'isRemoteEnabled' => true,
+        ])->loadView('pdf.diarybook',[
+            'data' => $data,
+            'user' => Auth::user(),
+            'logo' => 'data:image/png;base64,' . base64_encode(file_get_contents(public_path('img/logo.png'))),
+            'search' => $search,
+            'title' => 'Libro Diario'
+        ]);
+        $pdf->setPaper('letter', 'landscape');
+        $pdf->render();
+        return $pdf->stream();
+        // return view('pdf.diarybook',compact(['data']));
     }
 
     public function generateProof($id){

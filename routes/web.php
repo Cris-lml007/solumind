@@ -68,6 +68,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function(){
     Route::get('ledger',LedgerView::class)->name('dashboard.ledger');
 
 
+    Route::get('diary-book/pdf/{search?}',[PdfController::class,'generateDiaryBook'])->name('dashboard.diary_book.pdf');
 
 
     Route::get('supplier/{id}',SupplierForm::class)->name('dashboard.supplier.form');

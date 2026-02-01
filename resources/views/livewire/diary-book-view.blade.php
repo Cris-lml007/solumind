@@ -25,11 +25,11 @@
     <div class="card">
         <div class="card-body">
             <div class="mb-3">
-                <div>
+                <div class="d-flex justify-content-end">
                     <div class="input-group">
-                        <button class="btn btn-secondary"><i class="nf nf-cod-file_pdf"></i> PDF</button>
-                        <button class="btn btn-secondary"><i class="nf nf-md-file_excel"></i> Excel</button>
-                        <button class="btn btn-secondary"><i class="nf nf-fa-print"></i> Imprimir</button>
+                        <a href="{{ route('dashboard.diary_book.pdf',$search) }}" class="btn btn-secondary"><i class="nf nf-cod-file_pdf"></i> Exportar</a>
+                        {{-- <button class="btn btn-secondary"><i class="nf nf-md-file_excel"></i> Excel</button> --}}
+                        {{-- <button class="btn btn-secondary"><i class="nf nf-fa-print"></i> Imprimir</button> --}}
                     </div>
                 </div>
             </div>
@@ -83,15 +83,15 @@
                     </tr>
                 </livewire:slot>
             </livewire:table>
-            <div class="d-flex justify-content-end">
-                <div class="d-flex align-items-center mb-2">
-                    <button id="prev-page" class="btn btn-primary me-2">Anterior</button>
-                    <input type="number" id="page-number" min="1" value="1"
-                        style="width: 60px; text-align:center;">
-                    <button id="next-page" class="btn btn-primary ms-2">Siguiente</button>
-                    <span id="total-pages" class="ms-2"></span>
-                </div>
-            </div>
+            <!-- <div class="d-flex justify-content-end"> -->
+            <!--     <div class="d-flex align-items-center mb-2"> -->
+            <!--         <button id="prev-page" class="btn btn-primary me-2">Anterior</button> -->
+            <!--         <input type="number" id="page-number" min="1" value="1" -->
+            <!--             style="width: 60px; text-align:center;"> -->
+            <!--         <button id="next-page" class="btn btn-primary ms-2">Siguiente</button> -->
+            <!--         <span id="total-pages" class="ms-2"></span> -->
+            <!--     </div> -->
+            <!-- </div> -->
         </div>
     </div>
 

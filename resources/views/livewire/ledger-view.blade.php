@@ -7,9 +7,9 @@
         </div>
         <div>
             <div class="input-group">
-                <button class="btn btn-secondary"><i class="nf nf-cod-file_pdf"></i> PDF</button>
-                <button class="btn btn-secondary"><i class="nf nf-md-file_excel"></i> Excel</button>
-                <button class="btn btn-secondary"><i class="nf nf-fa-print"></i> Imprimir</button>
+                <button wire:click="export" class="btn btn-secondary"><i class="nf nf-cod-file_pdf"></i> Exportar</button>
+                <!-- <button class="btn btn-secondary"><i class="nf nf-md-file_excel"></i> Excel</button> -->
+                <!-- <button class="btn btn-secondary"><i class="nf nf-fa-print"></i> Imprimir</button> -->
             </div>
         </div>
     </div>

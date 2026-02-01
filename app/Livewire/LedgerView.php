@@ -3,7 +3,10 @@
 namespace App\Livewire;
 
 use App\Models\Transaction;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
@@ -56,6 +59,52 @@ class LedgerView extends Component
 
     public function updatedFilterAccount(){
         $this->render();
+    }
+
+    public function export(){
+        $data0 = Transaction::when($this->filterStartDate && $this->filterEndDate, function($q) {
+            $q->whereBetween('date', [$this->filterStartDate, $this->filterEndDate]);
+        })->when($this->filterDate != '', function ($q) {
+            $q->where('date','like','%'.$this->filterDate.'%');
+        })->when($this->filterIncome != '', function ($q) {
+            $q->where(fn($sub) => $sub->where('type',1)->where('amount','like','%'.$this->filterIncome.'%'));
+        })
+          ->when($this->filterExpense != '', function ($q) {
+              $q->where(fn($sub) => $sub->where('type',2)->where('amount','like','%'.$this->filterExpense.'%'));
+          })
+          ->when($this->filterDescription != '', function ($q) {
+              $q->where('description','like','%'.$this->filterDescription.'%');
+          })
+          ->when($this->filterContract != '', function ($q) {
+              $q->whereHas('contract', fn($c) => $c->where('cod','like','%'.$this->filterContract.'%'));
+          })
+          ->when($this->filterAccount != '', function ($q) {
+              $q->whereHas('account', fn($a) => $a->where('name','like','%'.$this->filterAccount.'%'));
+          })
+          ->orderBy('date','asc')->paginate($this->q);
+        $pdf = Pdf::setOptions([
+            'isHtmlParseEnabled' => true,
+            'isRemoteEnabled' => true,
+        ])->loadView('pdf.diarybook',[
+            'data' => $data0,
+            'user' => Auth::user(),
+            'title' => 'Libro Mayor',
+            'search' => [
+                $this->filterDate,
+                $this->filterStartDate,
+                $this->filterEndDate,
+                $this->filterIncome,
+                $this->filterExpense,
+                $this->filterDescription,
+                $this->filterContract,
+                $this->filterAccount
+            ]
+        ]);
+        $pdf->setPaper('letter', 'landscape');
+        $pdf->render();
+        return response()->streamDownload(function() use ($pdf){
+            echo $pdf->stream();
+        }, now().'.pdf');
     }
 
 
