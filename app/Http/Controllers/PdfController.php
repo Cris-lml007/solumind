@@ -87,16 +87,31 @@ class PdfController extends Controller
 
     public function generateDiaryBook($search = null){
         if($search != null || $search != ''){
-            $data = Transaction::whereDate('date',Carbon::now())->where(function(Builder $b) use($search){
-                $b->orWhere('id','like','%'.$search.'%')
-                ->orWhere('description','like','%'.$search.'%')
-                ->orWherehas('contract',function(Builder $builder) use($search){
-                    $builder->where('cod','like','%'.$search.'%');
-                })->orWherehas('account',function(Builder $builder) use($search){
-                    $builder->where('name','like','%'.$search.'%');
-                });
-            })->orderBy('date','desc')
-              ->get();
+            $terms = explode(' ', $search);
+
+            $data = Transaction::whereDate('date', Carbon::now())
+                ->where(function(Builder $query) use ($terms){
+
+                    foreach ($terms as $term) {
+
+                        $query->where(function(Builder $b) use ($term){
+
+                            $b->orWhere('id','like','%'.$term.'%')
+                              ->orWhere('description','like','%'.$term.'%')
+                              ->orWhereHas('contract', function(Builder $builder) use ($term){
+                                  $builder->where('cod','like','%'.$term.'%');
+                              })
+                              ->orWhereHas('account', function(Builder $builder) use ($term){
+                                  $builder->where('name','like','%'.$term.'%');
+                              });
+
+                        });
+
+                    }
+
+                })
+                ->orderBy('date','desc')
+                ->paginate();
 
         }else{
             $data = Transaction::where('date',Carbon::now())->orderBy('date','desc')->get();

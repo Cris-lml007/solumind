@@ -46,19 +46,39 @@ class DiaryBookView extends Component
         $heads = ['ID', 'Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato','a Fondo', 'a Cuenta'];
 
         if($this->search != null && $this->search != ''){
-            $data = Transaction::whereDate('date',Carbon::now())->where(function(Builder $b){
-                $b->orWhere('id','like','%'.$this->search.'%')
-                ->orWhere('description','like','%'.$this->search.'%')
-                ->orWherehas('contract',function(Builder $builder){
-                    $builder->where('cod','like','%'.$this->search.'%');
-                })->orWherehas('account',function(Builder $builder){
-                    $builder->where('name','like','%'.$this->search.'%');
-                });
-            })->orderBy('date','desc')
-              ->paginate();
-                // ->orWhere('date','like','%'.$this->search.'%')
+
+            $terms = explode(' ', $this->search);
+
+            $data = Transaction::whereDate('date', Carbon::now())
+                ->where(function(Builder $query) use ($terms){
+
+                    foreach ($terms as $term) {
+
+                        $query->where(function(Builder $b) use ($term){
+
+                            $b->orWhere('id','like','%'.$term.'%')
+                              ->orWhere('description','like','%'.$term.'%')
+                              ->orWhereHas('contract', function(Builder $builder) use ($term){
+                                  $builder->where('cod','like','%'.$term.'%');
+                              })
+                              ->orWhereHas('account', function(Builder $builder) use ($term){
+                                  $builder->where('name','like','%'.$term.'%');
+                              });
+
+                        });
+
+                    }
+
+                })
+                ->orderBy('date','desc')
+                ->paginate();
+
         }else{
-            $data = Transaction::whereDate('date',Carbon::now())->orderBy('date','desc')->paginate();
+
+            $data = Transaction::whereDate('date', Carbon::now())
+                ->orderBy('date','desc')
+                ->paginate();
+
         }
         return view('livewire.diary-book-view', compact(['data','heads']));
     }
