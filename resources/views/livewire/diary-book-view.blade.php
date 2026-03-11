@@ -27,8 +27,8 @@
             <div class="mb-3">
                 <div class="d-flex justify-content-end">
                     <div class="input-group">
-                        <a href="{{ route('dashboard.diary_book.pdf',$search) }}" class="btn btn-secondary"><i class="nf nf-cod-file_pdf"></i> Exportar</a>
-                        {{-- <button class="btn btn-secondary"><i class="nf nf-md-file_excel"></i> Excel</button> --}}
+                        <a href="{{ route('dashboard.diary_book.pdf',$search) }}" class="btn btn-secondary"><i class="nf nf-cod-file_pdf"></i> PDF</a>
+                        <button wire:click="exportExcel" class="btn btn-secondary"><i class="nf nf-md-file_excel"></i> Excel</button>
                         {{-- <button class="btn btn-secondary"><i class="nf nf-fa-print"></i> Imprimir</button> --}}
                     </div>
                 </div>

@@ -87,14 +87,16 @@ class PdfController extends Controller
 
     public function generateDiaryBook($search = null){
         if($search != null || $search != ''){
-            $data = Transaction::where('id','like','%'.$search.'%')
-                ->orWhere('date','like','%'.$search.'%')
+            $data = Transaction::whereDate('date',Carbon::now())->where(function(Builder $b) use($search){
+                $b->orWhere('id','like','%'.$search.'%')
                 ->orWhere('description','like','%'.$search.'%')
-                ->orWherehas('contract',function(Builder $builder) use ($search){
+                ->orWherehas('contract',function(Builder $builder) use($search){
                     $builder->where('cod','like','%'.$search.'%');
-                })->orWherehas('account',function(Builder $builder) use ($search){
+                })->orWherehas('account',function(Builder $builder) use($search){
                     $builder->where('name','like','%'.$search.'%');
-                })->orderBy('date','desc')->get();
+                });
+            })->orderBy('date','desc')
+              ->get();
 
         }else{
             $data = Transaction::where('date',Carbon::now())->orderBy('date','desc')->get();

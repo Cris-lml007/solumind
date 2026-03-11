@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Exports\DiaryBookExport;
+use App\Exports\LedgerExport;
 use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -11,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LedgerView extends Component
 {
@@ -60,6 +63,26 @@ class LedgerView extends Component
     public function updatedFilterAccount(){
         $this->render();
     }
+
+
+    public function exportExcel(){
+        // return response()->streamDownload(function(){
+        $list = [
+            'filterStartDate' => $this->filterStartDate,
+            'filterEndDate' => $this->filterEndDate,
+            'filterDate' => $this->filterDate,
+            'filterIncome' => $this->filterIncome,
+            'filterExpense' => $this->filterExpense,
+            'filterDescription' => $this->filterDescription,
+            'filterContract' => $this->filterContract,
+            'filterAccount' => $this->filterAccount,
+            'q' => $this->q
+        ];
+        return Excel::download(new LedgerExport($list,'Libro Mayor'),now().'.xlsx');
+        // },now().'.xlsx');
+    }
+
+
 
     public function export(){
         $data0 = Transaction::when($this->filterStartDate && $this->filterEndDate, function($q) {
