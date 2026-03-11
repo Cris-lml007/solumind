@@ -66,18 +66,18 @@
                 <livewire:slot name="footer">
                     <tr>
                         <th colspan="2">TOTAL</th>
-                        <td class="bg-primary"><strong>{{ Illuminate\Support\Number::format($t_income, precision: 2) }}
+                        <td class="bg-primary"><strong>{{ Illuminate\Support\Number::format($income, precision: 2) }}
                                 Bs</strong></td>
                         <td class="bg-secondary">
-                            <strong>{{ Illuminate\Support\Number::format($t_expense, precision: 2) }}
+                            <strong>{{ Illuminate\Support\Number::format($expense, precision: 2) }}
                                 Bs</strong>
                         </td>
                     </tr>
                     <tr>
                         <th colspan="2">SALDO EFECTIVO</th>
                         <td colspan="2" style="text-align: center;"
-                            class="{{ $t_income - $t_expense >= 0 ? 'bg-success' : 'bg-danger' }}">
-                            <strong>{{ Illuminate\Support\Number::format($t_income - $t_expense, precision: 2) }}
+                            class="{{ $income - $expense >= 0 ? 'bg-success' : 'bg-danger' }}">
+                            <strong>{{ Illuminate\Support\Number::format($amount, precision: 2) }}
                                 Bs</strong>
                         </td>
                     </tr>

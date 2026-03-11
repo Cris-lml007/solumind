@@ -44,6 +44,9 @@ class DiaryBookView extends Component
         if(!Gate::allows('transaction-read'))
             abort('404');
         $heads = ['ID', 'Fecha','Ingreso (Bs)','Egreso (Bs)','Descripción', 'Contrato','a Fondo', 'a Cuenta'];
+        $income = Transaction::whereDate('date', Carbon::now())->where('type',1)->sum('amount');
+        $expense = Transaction::whereDate('date', Carbon::now())->where('type',2)->sum('amount');
+        $amount = $income - $expense;
 
         if($this->search != null && $this->search != ''){
 
@@ -80,6 +83,6 @@ class DiaryBookView extends Component
                 ->paginate();
 
         }
-        return view('livewire.diary-book-view', compact(['data','heads']));
+        return view('livewire.diary-book-view', compact(['data','heads','amount','income','expense']));
     }
 }
