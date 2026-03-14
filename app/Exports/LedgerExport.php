@@ -22,6 +22,8 @@ class LedgerExport implements FromView, ShouldAutoSize
     public $filterAccount;
     public $q = 15;
 
+    public $filterId;
+
 
     public function __construct($list = null){
         $this->list = $list;
@@ -41,6 +43,7 @@ class LedgerExport implements FromView, ShouldAutoSize
         $this->filterDescription = $this->list['filterDescription'] ?? '';
         $this->filterContract = $this->list['filterContract'] ?? '';
         $this->filterAccount = $this->list['filterAccount'] ?? '';
+        $this->filterId = $this->list['filterId'] ?? '';
         $this->q = $this->list['q'] ?? 15;
 
 
@@ -62,7 +65,11 @@ class LedgerExport implements FromView, ShouldAutoSize
           })
           ->when($this->filterAccount != '', function ($q) {
               $q->whereHas('account', fn($a) => $a->where('name','like','%'.$this->filterAccount.'%'));
-          })->orderBy('date','asc')->paginate($this->q);
+          })
+          ->when($this->filterId != '', function ($q) {
+              $q->where('id', $this->filterId);
+          })
+          ->orderBy('date','asc')->paginate($this->q);
 
         return view('exports.ledger', compact('data'));
     }

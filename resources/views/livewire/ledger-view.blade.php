@@ -29,6 +29,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <td>ID</td>
                 <th>Fecha</th>
                 <th>Ingreso</th>
                 <th>Egreso</th>
@@ -38,6 +39,7 @@
                 <th>Cuenta</th>
             </tr>
             <tr>
+                <th><input type="text" class="form-control" placeholder="Buscar ID" wire:model.live="filterId"></th>
                 <th><input type="text" class="form-control" placeholder="Buscar fecha" wire:model.live="filterDate">
                 </th>
                 <th><input type="text" class="form-control" placeholder="Buscar ingreso"
@@ -64,6 +66,8 @@
                 $t_expense += $item->type == 2 ? $item->amount : 0;
             @endphp
             <tr onclick="edit({{ $item->id }})" class="item-table">
+                <td><a href="{{ route('dashboard.diary_book.form', $item->id) }}"
+                                wire:navigate>{{ $item->id }}</a></td>
                 <td>{{ Carbon\Carbon::parse($item->date)->toDateString() }}</td>
                 <td>{{ $item->type == 1 ? Illuminate\Support\Number::format($item->amount, precision: 2) : '' }}
                 </td>

@@ -30,6 +30,7 @@ class LedgerView extends Component
     public $filterContract;
     public $filterFondo;
     public $filterAccount;
+    public $filterId;
 
     public $q = 15;
     public $all= 0;
@@ -64,6 +65,10 @@ class LedgerView extends Component
         $this->render();
     }
 
+    public function updatedFilterId(){
+        $this->render();
+    }
+
 
     public function exportExcel(){
         // return response()->streamDownload(function(){
@@ -76,7 +81,8 @@ class LedgerView extends Component
             'filterDescription' => $this->filterDescription,
             'filterContract' => $this->filterContract,
             'filterAccount' => $this->filterAccount,
-            'q' => $this->q
+            'q' => $this->q,
+            'filterId' => $this->filterId
         ];
         return Excel::download(new LedgerExport($list,'Libro Mayor'),now().'.xlsx');
         // },now().'.xlsx');
@@ -104,6 +110,9 @@ class LedgerView extends Component
           ->when($this->filterAccount != '', function ($q) {
               $q->whereHas('account', fn($a) => $a->where('name','like','%'.$this->filterAccount.'%'));
           })
+          ->when($this->filterId != '', function ($q) {
+              $q->where('id', $this->filterId);
+          })
           ->orderBy('date','asc')->paginate($this->q);
         $pdf = Pdf::setOptions([
             'isHtmlParseEnabled' => true,
@@ -120,7 +129,8 @@ class LedgerView extends Component
                 $this->filterExpense,
                 $this->filterDescription,
                 $this->filterContract,
-                $this->filterAccount
+                $this->filterAccount,
+                $this->filterId
             ]
         ]);
         $pdf->setPaper('letter', 'landscape');
@@ -153,6 +163,9 @@ class LedgerView extends Component
           })
           ->when($this->filterAccount != '', function ($q) {
               $q->whereHas('account', fn($a) => $a->where('name','like','%'.$this->filterAccount.'%'));
+          })
+          ->when($this->filterId != '', function ($q) {
+              $q->where('id', $this->filterId);
           })
           ->orderBy('date','asc')
           ->paginate($this->q);
