@@ -113,7 +113,7 @@ class LedgerView extends Component
           ->when($this->filterId != '', function ($q) {
               $q->where('id', $this->filterId);
           })
-          ->orderBy('date','asc')->paginate($this->q);
+          ->orderBy('date','desc')->paginate($this->q);
         $pdf = Pdf::setOptions([
             'isHtmlParseEnabled' => true,
             'isRemoteEnabled' => true,
@@ -167,7 +167,7 @@ class LedgerView extends Component
           ->when($this->filterId != '', function ($q) {
               $q->where('id', $this->filterId);
           })
-          ->orderBy('date','asc')
+          ->orderBy('date','desc')
           ->paginate($this->q);
 
         $this->all = Transaction::count();

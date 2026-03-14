@@ -69,7 +69,7 @@ class LedgerExport implements FromView, ShouldAutoSize
           ->when($this->filterId != '', function ($q) {
               $q->where('id', $this->filterId);
           })
-          ->orderBy('date','asc')->paginate($this->q);
+          ->orderBy('date','desc')->paginate($this->q);
 
         return view('exports.ledger', compact('data'));
     }
